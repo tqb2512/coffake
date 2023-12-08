@@ -28,12 +28,12 @@ type OrderItemsToppings {
 }
 
 type ProductSizeList {
-  price   Float
-  receipe ProductSizeListReceipe[]
-  size    String
+  price  Float
+  recipe ProductSizeListRecipe[]
+  size   String
 }
 
-type ProductSizeListReceipe {
+type ProductSizeListRecipe {
   ingredientId String @db.ObjectId
   quantity     Int
 }

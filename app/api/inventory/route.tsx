@@ -10,3 +10,26 @@ export async function GET() {
     });
     return NextResponse.json(inventory);
 }
+
+export async function POST(req: Request) {
+    const { name, stock, unit, unitPrice } = await req.json();
+
+    if (!name || !stock || !unit || !unitPrice) {
+        return NextResponse.json({"message": "Missing fields"}, { status: 400 });
+    }
+
+    const inventory = await prisma.inventory.create({
+        data: {
+            name,
+            stock,
+            unit,
+            unitPrice
+        }
+    });
+
+    if (!inventory) {
+        return NextResponse.json({"message": "Inventory not created"}, { status: 500 });
+    }
+
+    return NextResponse.json({"message": "Inventory created"});
+}
