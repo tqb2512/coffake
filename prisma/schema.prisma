@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type InvoiceImportList {
+  ingredientId String @db.ObjectId
+  note         String
+  quantity     Int
+  suppilerId   String @db.ObjectId
+  unitPrice    Float
+}
+
+type OrderItems {
+  note      String
+  productID String               @db.ObjectId
+  quantity  Int
+  toppings  OrderItemsToppings[]
+}
+
+type OrderItemsToppings {
+  productID String @db.ObjectId
+  quantity  Int
+}
+
+type ProductSizeList {
+  price   Float
+  receipe ProductSizeListReceipe[]
+  size    String
+}
+
+type ProductSizeListReceipe {
+  ingredientId String @db.ObjectId
+  quantity     Int
+}
+
+model Customer {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  email         String
+  loyaltyPoints Float
+  name          String
+  phone         String
+}
+
+model Employee {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String
+  name     String
+  password String
+  phone    String
+  position String
+  salary   Float
+  username String
+}
+
+model Inventory {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  stock     Int
+  unit      String
+  unitPrice Float
+}
+
+model Invoice {
+  id         String              @id @default(auto()) @map("_id") @db.ObjectId
+  date       DateTime            @db.Date
+  importList InvoiceImportList[]
+  total      Float
+}
+
+model Order {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  date       DateTime     @db.Date
+  items      OrderItems[]
+  status     String
+  totalPrice Float
+}
+
+model Product {
+  id       String            @id @default(auto()) @map("_id") @db.ObjectId
+  category String
+  name     String
+  sizeList ProductSizeList[]
+}
+
+model Shift {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model Supplier {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  company String
+  email   String
+  name    String
+  phone   String
+}
