@@ -4,77 +4,77 @@ import { IoFastFoodOutline, IoStatsChart, IoSettingsOutline, IoServerOutline, Io
 import MenuLink from './menuLink';
 
 const menuItems = [
-    {
+  {
+    title: "Dashboard",
+    list: [
+      {
         title: "Dashboard",
-        list: [
-            {
-                title: "Dashboard",
-                path: "/dashboard",
-                icon: <HiOutlineHome/>,
-            }
-        ],
-    },
-    {
+        path: "/dashboard",
+        icon: <HiOutlineHome />,
+      },
+    ],
+  },
+  {
+    title: "Employees",
+    list: [
+      {
         title: "Users",
-        list: [
-            {
-                title: "Users",
-                path: "/users",
-                icon: <HiOutlineUserGroup/>,
-            }
-        ]
-    },
-    {
+        path: "/users",
+        icon: <HiOutlineUserGroup />,
+      },
+    ],
+  },
+  {
+    title: "Suppliers",
+    list: [
+      {
         title: "Suppliers",
-        list: [
-            {
-                title: "Suppliers",
-                path: "/suppliers",
-                icon: <IoStorefrontOutline/>,
-            }
-        ]
-    },
-    {
+        path: "/suppliers",
+        icon: <IoStorefrontOutline />,
+      },
+    ],
+  },
+  {
+    title: "Products",
+    list: [
+      {
         title: "Products",
-        list: [
-            {
-                title: "Products",
-                path: "/products",
-                icon: <IoFastFoodOutline/>,
-            }
-        ]
-    },
-    {
+        path: "/products",
+        icon: <IoFastFoodOutline />,
+      },
+    ],
+  },
+  {
+    title: "Inventory",
+    list: [
+      {
         title: "Inventory",
-        list: [
-            {
-                title: "Inventory",
-                path: "/inventory",
-                icon: <IoServerOutline/>,
-            }
-        ]
-    },
-    {
+        path: "/inventory",
+        icon: <IoServerOutline />,
+      },
+    ],
+  },
+  {
+    title: "Sales Reports",
+    list: [
+      {
         title: "Sales Reports",
-        list: [
-            {
-                title: "Sales Reports",
-                path: "/reports",
-                icon: <IoStatsChart/>,
-            }
-        ]
-    },
-    {
+        path: "/reports",
+        icon: <IoStatsChart />,
+      },
+    ],
+  },
+  {
+    title: "Settings",
+    list: [
+      {
         title: "Settings",
-        list: [
-            {
-                title: "Settings",
-                path: "/settings",
-                icon: <IoSettingsOutline/>,
-            }
-        ]
-    }
-]
+        path: "/settings",
+        icon: <IoSettingsOutline />,
+      },
+    ],
+  },
+];
 
 export default function SideBar() {
     return (
