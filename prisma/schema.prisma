@@ -8,23 +8,27 @@ datasource db {
 }
 
 type InvoiceImportList {
-  ingredientId String @db.ObjectId
-  note         String
-  quantity     Int
-  suppilerId   String @db.ObjectId
-  unitPrice    Float
+  ingredientId   String @db.ObjectId
+  ingredientName String
+  note           String
+  quantity       Float
+  suppilerId     String @db.ObjectId
+  supplierName   String
+  unitPrice      Float
 }
 
 type OrderItems {
-  note      String
-  productID String               @db.ObjectId
-  quantity  Int
-  toppings  OrderItemsToppings[]
+  note        String
+  productID   String               @db.ObjectId
+  productName String
+  quantity    Float
+  toppings    OrderItemsToppings[]
 }
 
 type OrderItemsToppings {
-  productID String @db.ObjectId
-  quantity  Int
+  productID   String @db.ObjectId
+  productName String
+  quantity    Float
 }
 
 type ProductSizeList {
@@ -35,7 +39,7 @@ type ProductSizeList {
 
 type ProductSizeListRecipe {
   ingredientId String @db.ObjectId
-  quantity     Int
+  quantity     Float
 }
 
 model Customer {
@@ -60,7 +64,7 @@ model Employee {
 model Inventory {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  stock     Int
+  stock     Float
   unit      String
   unitPrice Float
 }

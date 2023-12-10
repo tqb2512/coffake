@@ -1,4 +1,4 @@
-import UserAddForm from "@/components/ui/users/addUser"
+import UserAddForm from "@/components/ui/users/addForm"
 
 export default function UserAddPage() {
   return (
