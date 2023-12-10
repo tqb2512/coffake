@@ -1,6 +1,6 @@
 import styles from './sidebar.module.css';
 import { HiOutlineHome, HiOutlineUserGroup } from "react-icons/hi";
-import { IoFastFoodOutline, IoStatsChart, IoSettingsOutline, IoServerOutline, IoStorefrontOutline } from "react-icons/io5";
+import { IoFastFoodOutline, IoStatsChart, IoSettingsOutline, IoServerOutline, IoStorefrontOutline, IoDocumentTextOutline  } from "react-icons/io5";
 import MenuLink from './menuLink';
 
 const menuItems = [
@@ -51,6 +51,16 @@ const menuItems = [
         title: "Inventory",
         path: "/inventory",
         icon: <IoServerOutline />,
+      },
+    ],
+  },
+  {
+    title: "Invoices",
+    list: [
+      {
+        title: "Invoices",
+        path: "/invoices",
+        icon: <IoDocumentTextOutline />,
       },
     ],
   },
