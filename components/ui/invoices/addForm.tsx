@@ -4,13 +4,15 @@ import React from "react"
 import { Supplier, Inventory, Invoice }from "@prisma/client"
 import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Button } from '@nextui-org/react';
 import InvoiceImportModal from "./importModal";
+import { HiDotsVertical } from 'react-icons/hi';
 
 const collumns = [
     { name: "Name", key: "name" },
     { name: "Quantity", key: "quantity" },
     { name: "Unit Price", key: "unitPrice" },
     { name: "Supplier", key: "supplier" },
-    { name: "Total", key: "total" }
+    { name: "Total", key: "total" },
+    { name: "Actions", key: "actions" }
 ]
 
 export default function InvoiceAddForm() {
@@ -35,6 +37,13 @@ export default function InvoiceAddForm() {
             .then((data) => console.log(data))
     }
 
+    const handleDelete = (index: number) => {
+        setInvoice({
+            ...invoice,
+            importList: invoice.importList?.filter((_, i) => i !== index)
+        })
+    }
+
     return (
         <div>
             <InvoiceImportModal invoice={invoice} setInvoice={setInvoice}/>
@@ -52,6 +61,20 @@ export default function InvoiceAddForm() {
                             <TableCell>{item.unitPrice}</TableCell>
                             <TableCell>{item.supplierName}</TableCell>
                             <TableCell>{item.quantity * item.unitPrice}</TableCell>
+                            <TableCell>
+                                <Dropdown>
+                                    <DropdownTrigger>
+                                        <Button>
+                                            <HiDotsVertical />
+                                        </Button>
+                                    </DropdownTrigger>
+                                    <DropdownMenu>
+                                        <DropdownItem>
+                                            <Button onClick={() => handleDelete(invoice.importList?.indexOf(item) || 0)}>Delete</Button>
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
