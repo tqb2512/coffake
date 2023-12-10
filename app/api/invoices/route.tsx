@@ -1,4 +1,4 @@
-import { PrismaClient, Invoice } from "@prisma/client";
+import { PrismaClient, Invoice, Inventory } from "@prisma/client";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { NextResponse } from "next/server";
 
@@ -25,6 +25,25 @@ export async function POST(req: Request) {
             total,
             importList: importList
         }
+    });
+
+    const updateInventory = importList.map(async (item: any) => {
+        const inventory = await prisma.inventory.findFirst({
+            where: {
+                id: item.ingredientId
+            }
+        });
+        if (!inventory) {
+            return NextResponse.json({"message": "Inventory not found"}, { status: 404 });
+        }
+        await prisma.inventory.update({
+            where: {
+                id: inventory.id
+            },
+            data: {
+                stock: inventory.stock + item.quantity
+            }
+        });
     });
 
     if (!invoice) {
