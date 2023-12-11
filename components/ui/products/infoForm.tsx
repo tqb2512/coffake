@@ -32,7 +32,7 @@ export default function ProductInfoForm( params: { productId: string }) {
                 value={product?.name}
                 onChange={() => {}}
             />
-
+//
             <label>Category</label>
             <select className='px-2 py-1 border rounded-md mt-1 mb-4'>
                 <option value="">Uncategorized</option>
