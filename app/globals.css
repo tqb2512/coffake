@@ -25,3 +25,20 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+h1 {
+  /* @apply text-purple-600 */
+}
+
+label {
+  @apply text-purple-500
+}
+
+input:focus, textarea:focus, select:focus {
+  @apply border focus:border-purple-600
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #805ad5; 
+  outline: none;
+}

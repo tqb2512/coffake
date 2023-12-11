@@ -1,6 +1,6 @@
 'use client'
 
-import { Card } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 const categories = [
@@ -17,9 +17,10 @@ export default function CategoryGrid(params: { onPress: (category: string) => vo
         
     }
     return (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-4">
             {categories.map((category) => (
                 <Card 
+                    className="bg-red-500 rounded-md w-24 h-24"
                     isPressable
                     key={category.id}
                     onPress={() => params.onPress(category.name)}

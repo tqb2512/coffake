@@ -6,11 +6,10 @@ const prisma = new PrismaClient().$extends(withAccelerate());
 
 export async function GET(req: Request) {
     const query = new URL(req.url).searchParams;
-
     const category = query.get("category") ?? "";
     const products = await prisma.product.findMany({
         where: {
-            category: category
+            category: (category!=='All' ? category: {})
         },
         cacheStrategy: { ttl: 60 },
     });

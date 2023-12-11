@@ -4,7 +4,7 @@ import ProductsGrid from "@/components/ui/products/productsGrid"
 export default function ProductsPage() {
 
     return (
-      <div>
+      <div className="flex bg-light-background ">
         <ProductsGrid/>
       </div>
     )

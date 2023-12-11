@@ -40,23 +40,24 @@ export default function UsersTable() {
     return (
         <Table
             aria-label='Users Table'
+            className='border-b-1 border-b-gray-200' 
         >
             <TableHeader>
                 {columns.map((column) => (
-                    <TableColumn key={column.uid}>
+                    <TableColumn className='' key={column.uid}>
                         {column.name}
                     </TableColumn>
                 ))}
             </TableHeader>
             <TableBody>
                 {employee.map((employee) => (
-                    <TableRow key={employee.id}>
+                    <TableRow className='pt-4 border-b-2 border-gray-300' key={employee.id}>
                         <TableCell>{employee.name}</TableCell>
                         <TableCell>{employee.email}</TableCell>
                         <TableCell>{employee.position}</TableCell>
                         <TableCell>{employee.salary}</TableCell>
-                        <TableCell>
-                            <Dropdown>
+                        <TableCell className="relative">
+                            <Dropdown className="border origin-top-right ">
                                 <DropdownTrigger>
                                     <Button>
                                         <HiDotsVertical />
