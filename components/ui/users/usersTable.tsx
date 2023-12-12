@@ -14,11 +14,7 @@ import {
   DropdownTrigger,
   DropdownItem,
   Button,
-  getKeyValue,
-  Radio,
-  RadioGroup,
-  Chip,
-  User,
+  Pagination,
 } from "@nextui-org/react";
 import { Employee } from "@prisma/client";
 import { HiDotsVertical } from "react-icons/hi";
@@ -32,19 +28,9 @@ const columns = [
   { name: "Actions", uid: "actions" },
 ];
 
-let colors = [
-  "default",
-  "primary",
-  "secondary",
-  "success",
-  "warning",
-  "danger",
-] as const;
-
 export default function UsersTable() {
   const [employee, setEmployee] = React.useState<Employee[]>([]);
-  const [selectedColor, setSelectedColor] = React.useState("default");
-
+  const [filterValue, setFilterValue] = React.useState("");
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
 
@@ -114,11 +100,15 @@ export default function UsersTable() {
   };
 
   return (
-    <div className="w-11/12">
+    <div className="w-11/12 flex flex-col">
       <Table
-        className="table-auto"
+        className="flex-wrap"
         aria-label="Users Table"
-        selectionMode="multiple"
+        bottomContent={
+          <div className="flex w-full justify-center">
+            <Pagination isCompact showControls showShadow color="primary" />
+          </div>
+        }
       >
         <TableHeader>
           {columns.map((column) => (
