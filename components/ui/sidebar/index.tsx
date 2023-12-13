@@ -45,6 +45,16 @@ const menuItems = [
     ],
   },
   {
+    title: "Orders",
+    list: [
+      {
+        title: "Orders",
+        path: "/orders",
+        icon: <IoFastFoodOutline />,
+      },
+    ],
+  },
+  {
     title: "Inventory",
     list: [
       {
@@ -78,9 +88,9 @@ const menuItems = [
 
 export default function SideBar() {
     return (
-        <div className="flex flex-col bg-gray-500">
-            <div className="flex items-center bg-red-500 h-full">
-                <h1 className='font-extrabold text-3xl mx-auto'>Coffake</h1>
+        <div className="flex flex-col bg-[#2F2C2B] min-h-full fixed">
+            <div className="flex items-center">
+                <h1 className='font-extrabold text-white text-3xl mx-auto pt-2 mb-6'>Coffake</h1>
             </div>
             <ul className="">
                 {menuItems.map((cat) => (
