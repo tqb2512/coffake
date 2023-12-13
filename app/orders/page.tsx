@@ -50,12 +50,12 @@ export default function OrderPage() {
     return (
       <div className="flex flex-col bg-light-background ">
         <div className="mt-8 mb-4 mx-8 bg-white p-4">
-          <h4 className="font-semibold">Orders/</h4>
+          <h4 className="font-semibold">Orders/ Add Order</h4>
           <h1 className="text-purple-600 text-2xl font-bold">Orders</h1>
         </div>
         <div className="flex flex-row flex-1">
           {/* Container bên trái */}
-          <div className="flex flex-col w-3/5 mt-4 mx-8 bg-heavy-background p-4">
+          <div className="relative flex flex-col w-3/5 mt-4 mx-8 bg-heavy-background p-4">
             <h1 className="text-purple-600 text-2xl font-bold mb-8">Choose Menu</h1>
             <CategoryGrid onPress={(category) => setCategory(category)} />
 
@@ -66,7 +66,7 @@ export default function OrderPage() {
             </div>
           </div>
           {/* //OrderInfoSection */}
-          <div className="flex flex-col w-2/5 mt-4 ms-2 me-8 bg-white p-4 h-screen">
+          <div className="flex flex-col w-2/5 mt-4 ms-2 me-8 bg-white p-4 h-fit">
             <h1 className="text-2xl font-bold">Order Information</h1>
             <Table 
               aria-label="Order Table pagination"
@@ -135,10 +135,27 @@ export default function OrderPage() {
                 ))}
              
               </TableBody>
-            </Table>           
+            </Table>     
+            {/* Chỗ tính tổng và nút checkout*/}
+            <div className="flex flex-col border border-purple-600 mt-4 p-4 rounded-md">
+              <div className="flex justify-between">
+                <h2>Discount</h2>
+                <h2>1 USD</h2>
+              </div>
+              <div className="flex justify-between">
+                <h2 className="font-bold">Subtotal</h2>
+                <h2 className="font-bold">1 USD</h2>
+              </div>
+              <button
+                      onClick={()=>{}}
+                      type="button"
+                      className="bg-purple-600 rounded-md bottom-0 mt-2 py-1"
+                  >
+                      <h3 className="text-white font-semibold py-1">Continue to Checkout</h3>
+              </button>
+            </div>      
           </div>
-          {/* Chỗ tính tổng và nút checkout*/}
-          <div></div>
+
         </div>
       </div>
     )
