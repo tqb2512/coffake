@@ -8,7 +8,7 @@ import CategoryGrid from './categoryGrid';
 export default function ProductsGrid() {
 
     const [products, setProducts] = React.useState([] as Product[]);
-    const [category, setCategory] = React.useState("");
+    const [category, setCategory] = React.useState("All");
 
     React.useEffect(() => {
         fetch(`/api/products?category=${category}`)

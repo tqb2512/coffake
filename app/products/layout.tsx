@@ -3,11 +3,11 @@ import NavBar from "@/components/ui/navbar";
 
 export default function Layout({ children }: { children: React.ReactNode }){
     return (
-        <div className="flex flex-row">
+        <div className="flex">
             <div className="w-64 h-screen">
                 <SideBar />
             </div>
-            <div className="flex flex-col w-full h-screen">
+            <div className="-ms-8 w-full flex flex-col h-screen">
                 <NavBar />
                 {children}
             </div>
