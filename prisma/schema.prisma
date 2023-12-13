@@ -19,16 +19,20 @@ type InvoiceImportList {
 
 type OrderItems {
   note        String
+  price       Float
   productID   String               @db.ObjectId
   productName String
   quantity    Float
+  size        String
   toppings    OrderItemsToppings[]
 }
 
 type OrderItemsToppings {
+  price       Float
   productID   String @db.ObjectId
   productName String
   quantity    Float
+  size        String
 }
 
 type ProductSizeList {

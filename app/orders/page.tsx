@@ -47,6 +47,7 @@ export default function OrderPage() {
         .then((res) => res.json())
         .then((data) => setProducts(data))
     }, [category])
+    
     return (
       <div className="flex flex-col bg-light-background ">
         <div className="mt-8 mb-4 mx-8 bg-white p-4">
