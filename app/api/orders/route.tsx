@@ -5,7 +5,12 @@ import { NextResponse } from 'next/server';
 const prisma = new PrismaClient().$extends(withAccelerate());
 
 export async function GET(req: Request) {
+    const query = new URL(req.url).searchParams;
+    const status = query.get("status") ?? "";
     const orders = await prisma.order.findMany({
+        where: {
+            status: (status!=='All' ? status: {})
+        },
         cacheStrategy: { ttl: 60 },
     });
     return NextResponse.json(orders);
