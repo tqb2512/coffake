@@ -81,11 +81,13 @@ model Invoice {
 }
 
 model Order {
-  id         String       @id @default(auto()) @map("_id") @db.ObjectId
-  date       DateTime     @db.Date
-  items      OrderItems[]
-  status     String
-  totalPrice Float
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  customerID   String       @db.ObjectId
+  customerName String
+  date         DateTime     @db.Date
+  items        OrderItems[]
+  status       String
+  totalPrice   Float
 }
 
 model Product {
