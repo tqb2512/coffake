@@ -17,10 +17,12 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-    const { date, totalPrice, status, items } = await req.json();
+    const { date, totalPrice, status, items, customerID, customerName } = await req.json();
 
     const createdOrder = await prisma.order.create({
         data: {
+            customerID,
+            customerName,
             date,
             totalPrice,
             status,

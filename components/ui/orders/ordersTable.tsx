@@ -16,7 +16,7 @@ const columns = [
 const statuses = [
     "All",
     "Pending",
-    "Processing",
+    "Confirmed",
     "Completed",
     "Cancelled"
 ]
@@ -32,12 +32,6 @@ export default function OrdersTable() {
             .then((res) => res.json())
             .then((data) => setOrders(data));
     }, [status]);
-
-    useEffect(() => {
-        fetch("/api/orders")
-            .then((res) => res.json())
-            .then((data) => setOrders(data));
-    }, []);
 
     return (
         <div>
