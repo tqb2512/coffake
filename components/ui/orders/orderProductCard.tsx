@@ -6,11 +6,15 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 
+import OrderModal from "./orderModal";
+
 export default function OrderProductCard({ product, handleAddToOrder,}: {product: { id: string; name: string }, handleAddToOrder: (product: any, selectedSize: string) => void}) 
 {
     const router = useRouter();
-    const [size, setSize] = React.useState<string>("")
+    const [isOpen, setIsOpen] = React.useState<boolean>(false)
+    const [size, setSize] = React.useState("")
     const handleOnPress = () => {
+        console.log("okay button")
         handleAddToOrder(product, size)
     };
 
@@ -80,13 +84,7 @@ export default function OrderProductCard({ product, handleAddToOrder,}: {product
                     </button>
                     
                 </div>
-                <button
-                    onClick={handleOnPress}
-                    type="submit"
-                    className="bg-gray-600 rounded-md bottom-0 mt-2 me-2"
-                >
-                    <h3 className="text-white font-semibold py-1">Add to Order</h3>
-                </button>
+                <OrderModal onClick={handleOnPress}/>
             </div>
         </div>
     );
