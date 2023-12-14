@@ -28,13 +28,15 @@ export default function OrderPage() {
       const newItem = {
         note: '',
         productID: product.id,
-        quantity: 1, 
+        productName: product.name,
+        quantity: 1,
         size: selectedSize,
-        price: selectedSizeInfo?.price,
-        toppings: [], 
+        price: selectedSizeInfo?.price ?? 0, // Provide a default value of 0 if price is undefined
+        toppings: [],
+        // ... other pro
       };
 
-      setProductOrder(prevOrder => ({
+      setProductOrder( prevOrder => ({
         ...prevOrder,
         items: [...prevOrder.items, newItem]
       }))
@@ -42,11 +44,14 @@ export default function OrderPage() {
       console.log(productOrder)
     }
 
+
+
     React.useEffect(() => {
       fetch(`/api/products?category=${category}`)
         .then((res) => res.json())
         .then((data) => setProducts(data))
     }, [category])
+    
     return (
       <div className="flex flex-col bg-light-background ">
         <div className="mt-8 mb-4 mx-8 bg-white p-4">

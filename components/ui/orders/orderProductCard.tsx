@@ -6,20 +6,18 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-export default function OrderProductCard({
-    product,
-    handleAddToOrder,
-}: {
-    product: { id: string; name: string },
-    handleAddToOrder: (product: any, selectedSize: string) => void
-}) {
+import OrderModal from "./orderModal";
+
+export default function OrderProductCard({ product, handleAddToOrder,}: {product: { id: string; name: string }, handleAddToOrder: (product: any, selectedSize: string) => void}) 
+{
     const router = useRouter();
-    const [size, setSize] = React.useState<string>("")
-    const [ice, setIce] = React.useState<string>("")
-    const [sugar, setSugar] = React.useState<string>("")
+    const [isOpen, setIsOpen] = React.useState<boolean>(false)
+    const [size, setSize] = React.useState("")
     const handleOnPress = () => {
+        console.log("okay button")
         handleAddToOrder(product, size)
     };
+
     return (
         <div className="flex flex-col bg-white p-2 rounded-md shadow-lg">
             <div className="flex flex-1">
@@ -86,69 +84,7 @@ export default function OrderProductCard({
                     </button>
                     
                 </div>
-                {/* <p className="text-tiny uppercase font-bold">Ice</p>
-                <div className="flex items-center">
-                    <button
-                        onClick={() => {
-                            setIce("ice");
-                        }}
-                        className={`w-1/4 bg-gray-300 rounded-xl my-2 me-4 p-2 ${
-                            ice==="ice" ? "bg-purple-600 text-white font-semibold" : "bg-black"
-                        }`}
-                    >
-                        Ice
-                    </button>
-                    <button
-                        onClick={() => {
-                            setIce("noIce");
-                        }}                    
-                        className={`w-1/4 bg-gray-300 rounded-xl my-2 me-4 p-2 ${
-                            ice==="noIce" ? "bg-purple-600 text-white font-semibold" : "bg-black"
-                        }`}
-                    >
-                        No Ice
-                    </button>
-                </div> */}
-                {/* <p className="text-tiny uppercase font-bold">Sugar</p>
-                <div className="flex items-center">
-                    <button
-                        onClick={() => {
-                            setSugar("30");
-                        }}
-                        className={`w-1/4 bg-gray-300 rounded-xl my-2 me-4 p-2 ${
-                            sugar==='30' ? "bg-purple-600 text-white font-semibold" : "bg-black"
-                        }`}
-                    >
-                        30%
-                    </button>
-                    <button
-                        onClick={() => {
-                            setSugar("50");
-                        }}                    
-                        className={`w-1/4 bg-gray-300 rounded-xl my-2 me-4 p-2 ${
-                            sugar==='50' ? "bg-purple-600 text-white font-semibold" : "bg-black"
-                        }`}
-                    >
-                        50%
-                    </button>
-                    <button
-                        onClick={() => {
-                            setSugar("70");
-                        }}                     
-                        className={`w-1/4 bg-gray-300 rounded-xl my-2 me-4 p-2 ${
-                            sugar==='70' ? "bg-purple-600 text-white font-semibold" : "bg-black"
-                        }`}
-                    >
-                        70%
-                    </button>   
-                </div> */}
-                <button
-                    onClick={handleOnPress}
-                    type="submit"
-                    className="bg-gray-600 rounded-md bottom-0 mt-2 me-2"
-                >
-                    <h3 className="text-white font-semibold py-1">Add to Order</h3>
-                </button>
+                <OrderModal onClick={handleOnPress}/>
             </div>
         </div>
     );
