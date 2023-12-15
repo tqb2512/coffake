@@ -46,6 +46,14 @@ type ProductSizeListRecipe {
   quantity     Float
 }
 
+type ShiftEmployees {
+  employeeID   String @db.ObjectId
+  employeeName String
+  from         String
+  to           String
+  workHours    Float
+}
+
 model Customer {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   email         String
@@ -98,7 +106,9 @@ model Product {
 }
 
 model Shift {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  date      DateTime         @db.Date
+  employees ShiftEmployees[]
 }
 
 model Supplier {
