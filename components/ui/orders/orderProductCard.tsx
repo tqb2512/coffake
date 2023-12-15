@@ -41,17 +41,10 @@ export default function OrderProductCard({ product, handleAddToOrder,}: {product
                         (Price) $35
                     </h4>
                 </div>
-                {/* <button
-                    onClick={handleOnPress}
-                    type="button"
-                    className="bg-gray-600 rounded-md bottom-0 mt-2 me-2"
-                >
-                    <h3 className="text-white font-semibold py-1">details</h3>
-                </button> */}
             </div>
             <div className="flex flex-1 flex-col overflow-visible py-2 px-1">
                 <p className="text-tiny uppercase font-bold">Size</p>
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                     <button
                         onClick={() => {
                             setSize("S");
@@ -83,7 +76,7 @@ export default function OrderProductCard({ product, handleAddToOrder,}: {product
                         Size L
                     </button>
                     
-                </div>
+                </div> */}
                 <OrderModal onClick={handleOnPress}/>
             </div>
         </div>

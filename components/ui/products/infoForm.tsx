@@ -1,6 +1,6 @@
 'use client'
 
-import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Button, Input } from '@nextui-org/react';
+import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Button, Input, Textarea } from '@nextui-org/react';
 import { Product } from '@prisma/client';
 import { HiDotsVertical } from 'react-icons/hi';
 import React, { Fragment } from 'react';
@@ -26,7 +26,7 @@ export default function ProductInfoForm( params: { productId: string }) {
     
     return (
       <Fragment>
-        <div className="flex flex-col bg-white first-letter:bg-white ps-8 m-6">
+        <div className="flex flex-col bg-white h-fit ps-8 m-6 rounded-md">
           <label className="font-light text-violet-800 text-3xl pt-4">
             Product Information
           </label>
@@ -115,18 +115,31 @@ export default function ProductInfoForm( params: { productId: string }) {
                     className="px-4 rounded-lg"
                   />
                 </div>
+
+                <div className="flex col-span-2 flex-row items-center">
+                  <label htmlFor="recipe" className="text-gray-800 hidden">
+                    Recipe
+                  </label>
+                  <Input
+                    id="recipe"
+                    type="text"
+                    label="Recipe"
+                    className="px-4 rounded-lg w-full"
+                  />
+                </div>
+
                 <div className="flex col-span-2 flex-row items-center">
                   <label htmlFor="notes" className="text-gray-800 hidden">
                     Notes
                   </label>
-                  <Input
+                  <Textarea
                     id="notes"
                     type="text"
                     label="Notes"
                     className="px-4 rounded-lg w-full"
                   />
                 </div>
-                <div className="col-span-2 flex justify-end gap-x-6">
+                <div className="col-span-2 flex justify-end gap-x-6 mb-8">
                   <Button
                     color="default"
                     className="text-neutral-500 "

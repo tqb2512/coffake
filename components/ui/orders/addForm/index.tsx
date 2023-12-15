@@ -17,7 +17,7 @@ export default function OrderAddForm() {
             customerID: "657b3eb54760b545e3d830a6",
             totalPrice: 0,
             status: "Pending",
-        } as Order
+        } as unknown as Order
     )
 
     React.useEffect(() => {
@@ -42,7 +42,7 @@ export default function OrderAddForm() {
 
     return (
         <div>
-            <ProductGrid order={order} setOrder={setOrder} />
+            <ProductGrid order={order} setOrder={setOrder} handleCheckoutButton={handleSubmit}/>
             <button onClick={handleSubmit}>Submit</button>
         </div>
     )

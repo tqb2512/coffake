@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Order, Customer } from '@prisma/client'
-import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Button } from '@nextui-org/react';
+import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Textarea, RadioGroup, Radio, Select, SelectItem, Button } from '@nextui-org/react';
 
 const columns = [
     { name: "Name", uid: "name", sortable: true },
@@ -69,18 +69,26 @@ export default function CheckOutForm({ params }: { params: { orderId: string } }
     }
 
     return (
-        <div>
+        <div className='p-4 bg-white h-full'>
+            <h1 className='font-bold text-3xl text-purple-600'>Checkout</h1>
             <div>
                 <h1>{order?.customerName}</h1>
-                <select onChange={handleCustomerChange}>
+                <Select 
+                    className='w-1/3 p-4'
+                    onChange={handleCustomerChange}
+                    label="Customer"
+                    placeholder='Select Customer'
+                    selectionMode='single'>
                     {customer.map((customer) => (
-                        <option key={customer.id} value={customer.id}>{customer.name}</option>
+                        <SelectItem key={customer.id} value={customer.id}>
+                            {customer.name}
+                        </SelectItem>
                     ))}
-                </select>
-                <h1>{order?.totalPrice}</h1>
+                </Select>
             </div>
             {order && (
                 <Table
+                    className='px-4'
                     aria-label='Orders Table'>
                     <TableHeader>
                         {columns.map((column) => (
@@ -105,7 +113,61 @@ export default function CheckOutForm({ params }: { params: { orderId: string } }
                     </TableBody>
                 </Table>
             )}
-            <button onClick={handleSubmit}>Submit</button>
+
+            <div className='flex w-full mt-8 p-4'>
+                <div className='flex flex-col w-2/3'>
+                    <label className='font-semibold'>Notes</label>          
+                    <Textarea
+                        variant="bordered"
+                        labelPlacement="outside"
+                        placeholder="Enter your description"
+                        className="max-w-xs mb-4"
+                    />     
+                    <label className='font-semibold'>Status</label>          
+                    <RadioGroup
+                        orientation="horizontal"
+                        defaultValue="pending"
+                    >
+                        <Radio value="served">Served</Radio>
+                        <Radio value="pending">Pending</Radio>
+                        <Radio value="debt">In Debt</Radio>
+                    </RadioGroup>
+                </div>
+                <div className='flex flex-col w-1/3 bg-[#F0F0F0] rounded-md pt-4'>
+                    <div className="flex justify-between p-2 px-4">
+                        <h2>Subtotal</h2>
+                        <h2>1 USD</h2>
+                    </div>
+                    <div className="flex justify-between p-2 px-4">
+                        <h2>Discount</h2>
+                        <h2>1 USD</h2>
+                    </div>
+                    <div className="flex justify-between p-2 px-4">
+                        <h2 className="font-bold text-lg text-purple-600">Total</h2>
+                        <h2 className="font-bold text-lg text-purple-600">{order?.totalPrice} USD</h2>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <div className="col-span-2 flex justify-end gap-x-6 my-6 p-4">
+                  <Button
+                    color="default"
+                    className="text-neutral-500 "
+                    variant="bordered"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleSubmit}
+                    color="secondary"
+                    className="text-white font-bold bg-violet-800"
+                    variant="solid"
+                  >
+                    Confirm
+                  </Button>
+                </div>
+            </div>
         </div>
     )
 }
