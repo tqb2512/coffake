@@ -15,9 +15,13 @@ import {
   DropdownItem,
   Button,
   Pagination,
+  Input,
 } from "@nextui-org/react";
 import { Employee } from "@prisma/client";
 import { HiDotsVertical } from "react-icons/hi";
+import { FaSearch } from "react-icons/fa";
+import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
+import { FaPlus } from "react-icons/fa";
 import Link from "next/link";
 
 const columns = [
@@ -31,6 +35,60 @@ const columns = [
 export default function UsersTable() {
   const [employee, setEmployee] = React.useState<Employee[]>([]);
   const [filterValue, setFilterValue] = React.useState("");
+
+  const [page, setPage] = React.useState(1);
+  const onClear = React.useCallback(() => {
+    setFilterValue("");
+    setPage(1);
+  }, []);
+
+  const onSearchChange = React.useCallback((value?: string) => {
+    if (value) {
+      setFilterValue(value);
+      setPage(1);
+    } else {
+      setFilterValue("");
+    }
+  }, []);
+
+  const topContent = React.useMemo(() => {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between gap-3 items-end">
+          <Input
+            isClearable
+            className="w-full sm:max-w-[44%]"
+            placeholder="Search by name..."
+            startContent={<FaSearch />}
+            value={filterValue}
+            onClear={() => onClear()}
+            onValueChange={onSearchChange}
+          />
+          <div className="flex gap-3">
+            <Dropdown>
+              <DropdownTrigger className="hidden sm:flex">
+                <Button endContent={<MdOutlineKeyboardDoubleArrowDown />}>
+                  Filter
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem key="name">Name</DropdownItem>
+                <DropdownItem key="email">Email</DropdownItem>
+                <DropdownItem key="position">Position</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <Button
+              className="text-white bg-violet-800"
+              endContent={<FaPlus />}
+            >
+              Add New
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }, [filterValue, onSearchChange, onClear]);
+
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
 
@@ -106,9 +164,10 @@ export default function UsersTable() {
         aria-label="Users Table"
         bottomContent={
           <div className="flex w-full justify-center">
-            <Pagination isCompact showControls showShadow color="primary" />
+            <Pagination isCompact showControls showShadow color="secondary" />
           </div>
         }
+        topContent={topContent}
       >
         <TableHeader>
           {columns.map((column) => (
