@@ -13,10 +13,14 @@ import {
   DropdownTrigger,
   DropdownItem,
   Button,
+  Input,
+  Divider,
 } from "@nextui-org/react";
 import { Invoice } from "@prisma/client";
+import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
+import { FaPlus, FaSearch } from "react-icons/fa";
 
-const collumns = [
+const columns = [
   { name: "Name", key: "name" },
   { name: "Quantity", key: "quantity" },
   { name: "Unit Price", key: "unitPrice" },
@@ -42,12 +46,19 @@ export default function InvoiceInfoForm({
   }
   return (
     <div>
-      <h1>{invoice.date.toString()}</h1>
-      <h1>{invoice.total}</h1>
+      <label className="font-light text-violet-800 text-3xl">
+        Invoice Details
+      </label>
+      <Divider className="my-4" />
+      <h1 className="font-semibold my-4">
+        Date: {new Date(invoice.date).toLocaleString("en-GB")}
+      </h1>
       <Table>
         <TableHeader>
-          {collumns.map((collumn) => (
-            <TableColumn key={collumn.key}>{collumn.name}</TableColumn>
+          {columns.map((column) => (
+            <TableColumn className="font-bold" key={column.key}>
+              {column.name}
+            </TableColumn>
           ))}
         </TableHeader>
         <TableBody>

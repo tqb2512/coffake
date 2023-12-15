@@ -33,6 +33,11 @@ const columns = [
 ];
 
 export default function UsersTable() {
+  React.useEffect(() => {
+    fetch("/api/users")
+      .then((res) => res.json())
+      .then((data) => setEmployee(data));
+  }, []);
   const [employee, setEmployee] = React.useState<Employee[]>([]);
   const [filterValue, setFilterValue] = React.useState("");
 
@@ -80,6 +85,7 @@ export default function UsersTable() {
             <Button
               className="text-white bg-violet-800"
               endContent={<FaPlus />}
+              href={`/users/${employee.id}`}
             >
               Add New
             </Button>
@@ -88,6 +94,14 @@ export default function UsersTable() {
       </div>
     );
   }, [filterValue, onSearchChange, onClear]);
+
+  const bottomContent = React.useMemo(() => {
+    return (
+      <div className="flex w-full justify-center">
+        <Pagination isCompact showControls showShadow color="secondary" />
+      </div>
+    );
+  }, []);
 
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
@@ -129,7 +143,9 @@ export default function UsersTable() {
               <DropdownMenu>
                 <DropdownItem>View</DropdownItem>
                 <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem onClick={() => handleDelete(user.id)}>
+                  Delete
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -162,11 +178,7 @@ export default function UsersTable() {
       <Table
         className="flex-wrap"
         aria-label="Users Table"
-        bottomContent={
-          <div className="flex w-full justify-center">
-            <Pagination isCompact showControls showShadow color="secondary" />
-          </div>
-        }
+        bottomContent={bottomContent}
         topContent={topContent}
       >
         <TableHeader>

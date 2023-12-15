@@ -14,10 +14,13 @@ import {
   DropdownItem,
   Button,
   Pagination,
+  Input,
 } from "@nextui-org/react";
 import { Invoice } from "@prisma/client";
 import { HiDotsVertical } from "react-icons/hi";
 import Link from "next/link";
+import { FaPlus, FaSearch } from "react-icons/fa";
+import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 
 const columns = [
   { name: "Date", uid: "date", sortable: true },
@@ -32,14 +35,54 @@ export default function InvoicesTable() {
       .then((res) => res.json())
       .then((data) => setInvoices(data));
   }, []);
+
+  const topContent = React.useMemo(() => {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between gap-3 items-end">
+          <Input
+            isClearable
+            className="w-full sm:max-w-[44%]"
+            placeholder="Search by name..."
+            startContent={<FaSearch />}
+          />
+          <div className="flex gap-3">
+            <Dropdown>
+              <DropdownTrigger className="hidden sm:flex">
+                <Button endContent={<MdOutlineKeyboardDoubleArrowDown />}>
+                  Filter
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem key="date">Date</DropdownItem>
+                <DropdownItem key="total">Total</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <Button
+              className="text-white bg-violet-800"
+              endContent={<FaPlus />}
+            >
+              Add New
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }, []);
+
+  const bottomContent = React.useMemo(() => {
+    return (
+      <div className="flex w-full justify-center">
+        <Pagination isCompact showControls showShadow color="secondary" />
+      </div>
+    );
+  }, []);
+
   return (
     <Table
       aria-label="Invoices Table"
-      bottomContent={
-        <div className="flex w-full justify-center">
-          <Pagination isCompact showControls showShadow color="secondary" />
-        </div>
-      }
+      topContent={topContent}
+      bottomContent={bottomContent}
     >
       <TableHeader>
         {columns.map((column) => (
@@ -49,7 +92,9 @@ export default function InvoicesTable() {
       <TableBody>
         {invoices.map((invoice) => (
           <TableRow key={invoice.id}>
-            <TableCell>{invoice.date.toString()}</TableCell>
+            <TableCell>
+              {new Date(invoice.date).toLocaleString("en-GB")}
+            </TableCell>
             <TableCell>{invoice.total}</TableCell>
             <TableCell>
               <Dropdown>
@@ -59,8 +104,11 @@ export default function InvoicesTable() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem>
-                    <Link href={`/invoices/${invoice.id}`}>Edit</Link>
+                  <DropdownItem href={`/invoices/${invoice.id}`}>
+                    View
+                  </DropdownItem>
+                  <DropdownItem href={`/invoices/${invoice.id}`}>
+                    Print
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>

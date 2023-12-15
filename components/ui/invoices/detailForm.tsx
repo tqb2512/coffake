@@ -28,7 +28,7 @@ const columns = [
 
 export default function DetailForm() {
   return (
-    <div className="w-6/12">
+        <div className="w-6/12">
       <h1 className="text-4xl font-bold">Coffake</h1>
       <Divider className="my-4" />
       <div className="flex flex-col">
@@ -66,7 +66,7 @@ export default function DetailForm() {
                 {"Date: "}
               </label>
               <p id="date" className="mx-1">
-                13/12/2023
+                {new Date(invoice.date).toLocaleDateString("en-GB")}
               </p>
             </div>
             <div className="flex flex-row">
@@ -79,43 +79,24 @@ export default function DetailForm() {
             </div>
           </div>
         </div>
-        <Table className="mt-6" aria-label="Example static collection table">
+        <Table className="mt-6">
           <TableHeader>
             {columns.map((column) => (
-              <TableColumn className="font-bold" key={column.uid}>
+              <TableColumn className="font-bold" key={column.key}>
                 {column.name}
               </TableColumn>
             ))}
           </TableHeader>
           <TableBody>
-            <TableRow key="1">
-              <TableCell>1</TableCell>
-              <TableCell>Espresso</TableCell>
-              <TableCell>$3.00</TableCell>
-              <TableCell>1</TableCell>
-              <TableCell>$3.00</TableCell>
-            </TableRow>
-            <TableRow key="2">
-              <TableCell>1</TableCell>
-              <TableCell>Latte</TableCell>
-              <TableCell>$4.50</TableCell>
-              <TableCell>1</TableCell>
-              <TableCell>$4.50</TableCell>
-            </TableRow>
-            <TableRow key="3">
-              <TableCell>3</TableCell>
-              <TableCell>Americano</TableCell>
-              <TableCell>$2.00</TableCell>
-              <TableCell>2</TableCell>
-              <TableCell>$4.00</TableCell>
-            </TableRow>
-            <TableRow key="4">
-              <TableCell>4</TableCell>
-              <TableCell>Dark Mocha</TableCell>
-              <TableCell>$4.00</TableCell>
-              <TableCell>1</TableCell>
-              <TableCell>$4.00</TableCell>
-            </TableRow>
+            {invoice.importList.map((item) => (
+              <TableRow key={item.ingredientId + item.suppilerId}>
+                <TableCell>{item.ingredientName}</TableCell>
+                <TableCell>{item.quantity}</TableCell>
+                <TableCell>{item.unitPrice}</TableCell>
+                <TableCell>{item.supplierName}</TableCell>
+                <TableCell>{item.quantity * item.unitPrice}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
         <Divider className="my-8" />
@@ -158,6 +139,26 @@ export default function DetailForm() {
           </div>
         </div>
       </div>
+      {/* <h1>{invoice.date.toString()}</h1>
+      <h1>{invoice.total}</h1>
+      <Table>
+        <TableHeader>
+          {columns.map((column) => (
+            <TableColumn key={column.key}>{column.name}</TableColumn>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {invoice.importList.map((item) => (
+            <TableRow key={item.ingredientId + item.suppilerId}>
+              <TableCell>{item.ingredientName}</TableCell>
+              <TableCell>{item.quantity}</TableCell>
+              <TableCell>{item.unitPrice}</TableCell>
+              <TableCell>{item.supplierName}</TableCell>
+              <TableCell>{item.quantity * item.unitPrice}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table> */}
     </div>
   );
 }

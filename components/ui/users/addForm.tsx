@@ -54,7 +54,7 @@ export default function UserAddForm() {
   return (
     <Fragment>
       <label className="font-light text-violet-800 text-3xl">
-        Employee Information
+        Add an Employee
       </label>
       <form className="flex flex-wrap px-24 mt-16" onSubmit={handlerSubmit}>
         <div className="grid grid-cols-3 gap-x-16">
