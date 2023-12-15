@@ -11,6 +11,7 @@ import {
   DropdownMenu,
   DropdownSection,
   DropdownItem,
+  Textarea,
 } from "@nextui-org/react";
 
 export default function UserAddForm() {
@@ -63,22 +64,20 @@ export default function UserAddForm() {
             </label>
             <div
               id="image"
-              className="flex justify-center min-h-[75%] min-w-[75%] align-center border-dashed border-2 border-sky-500"
+              className="flex justify-center min-h-[75%] min-w-[75%] align-center border-dashed border-2 border-sky-500  rounded-xl"
             >
               <SlPicture />
             </div>
           </div>
           <div className="col-span-2 grid grid-cols-2 gap-x-20 gap-y-10 grid-flow-row">
             <div className="flex flex-row items-center">
-              <label htmlFor="name" className="text-gray-800">
-                Name
-              </label>
               <Input
                 id="name"
                 isRequired
                 type="text"
                 label="Name"
                 className="px-4 rounded-lg"
+                placeholder="Enter Name"
               />
             </div>
             <div className="flex flex-row items-center ">
@@ -94,11 +93,10 @@ export default function UserAddForm() {
                 color={isInvalid ? "danger" : "success"}
                 errorMessage={isInvalid && "Please enter a valid email"}
                 onValueChange={setValue}
-                labelPlacement="outside-left"
+                placeholder="Enter Email"
               />
             </div>
             <div className="flex flex-row col-span-2 items-center">
-              <label className="text-gray-800">Position</label>
               <Dropdown type="listbox" showArrow>
                 <DropdownTrigger>
                   <Input
@@ -120,62 +118,52 @@ export default function UserAddForm() {
               </Dropdown>
             </div>
             <div className="flex flex-row items-center">
-              <label htmlFor="salary" className="text-gray-800">
-                Salary
-              </label>
               <Input
                 id="salary"
                 isRequired
                 type="number"
                 label="Salary"
                 className="px-4 rounded-lg"
+                placeholder="Enter Salary"
               />
             </div>
             <div className="flex flex-row items-center">
-              <label htmlFor="username" className="text-gray-800">
-                Username
-              </label>
               <Input
                 id="username"
                 isRequired
                 type="text"
                 label="Username"
                 className="px-4 rounded-lg"
+                placeholder="Enter Username"
               />
             </div>
             <div className="flex flex-row items-center">
-              <label htmlFor="password" className="text-gray-800">
-                Password
-              </label>
               <Input
                 id="password"
                 isRequired
                 type="password"
                 label="Password"
                 className="px-4 rounded-lg"
+                placeholder="Enter Password"
               />
             </div>
             <div className="flex flex-row items-center">
-              <label htmlFor="phone" className="text-gray-800">
-                Phone Number
-              </label>
               <Input
                 id="phone"
                 isRequired
                 type="text"
                 label="Phone"
                 className="px-4 rounded-lg "
+                placeholder="Enter Phone Number"
               />
             </div>
             <div className="flex col-span-2 flex-row items-center">
-              <label htmlFor="notes" className="text-gray-800">
-                Notes
-              </label>
-              <Input
+              <Textarea
                 id="notes"
                 type="text"
                 label="Notes"
                 className="px-4 rounded-lg w-full"
+                placeholder="Enter notes here"
               />
             </div>
             <div className="col-span-2 flex justify-end gap-x-6">
