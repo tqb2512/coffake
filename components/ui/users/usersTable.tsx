@@ -2,6 +2,7 @@
 
 import { FaEllipsisVertical } from "react-icons/fa6";
 import React from "react";
+import { useRouter } from "next/navigation";
 import {
   Table,
   TableHeader,
@@ -33,6 +34,7 @@ const columns = [
 ];
 
 export default function UsersTable() {
+  const router = useRouter();
   React.useEffect(() => {
     fetch("/api/users")
       .then((res) => res.json())
@@ -85,7 +87,9 @@ export default function UsersTable() {
             <Button
               className="text-white bg-violet-800"
               endContent={<FaPlus />}
-              href={`/users/${employee.id}`}
+              onClick={() => {
+                router.push(`/users/add`);
+              }}
             >
               Add New
             </Button>
