@@ -59,8 +59,8 @@ export default function InvoicesTable() {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem>
-                    <Link href={`/invoices/${invoice.id}`}>Edit</Link>
+                  <DropdownItem href={`/invoices/${invoice.id}`}>
+                    Edit
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
