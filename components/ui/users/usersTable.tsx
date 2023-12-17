@@ -107,58 +107,6 @@ export default function UsersTable() {
     );
   }, []);
 
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
-
-    switch (columnKey) {
-      case "name":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold">{user.name}</p>
-          </div>
-        );
-      case "email":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold">{cellValue}</p>
-          </div>
-        );
-      case "position":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-          </div>
-        );
-      case "salary":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-          </div>
-        );
-      case "actions":
-        return (
-          <div className="relative flex justify-start items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <FaEllipsisVertical />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem onClick={() => handleDelete(user.id)}>
-                  Delete
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
-
   React.useEffect(() => {
     fetch("/api/users")
       .then((res) => res.json())
@@ -178,30 +126,43 @@ export default function UsersTable() {
   };
 
   return (
-    <div className="p-8 flex flex-col h-screen">
-      <Table
-        className="flex-wrap"
-        aria-label="Users Table"
-        bottomContent={bottomContent}
-        topContent={topContent}
-      >
-        <TableHeader>
-          {columns.map((column) => (
-            <TableColumn key={column.uid}>{column.name}</TableColumn>
-          ))}
-        </TableHeader>
-        <TableBody text-left>
-          {employee.map((employee) => (
-            <TableRow key={employee.id}>
-              {(columnKey) => (
-                <TableCell text-left>
-                  {renderCell(employee, columnKey)}
-                </TableCell>
-              )}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <Table
+      topContent={topContent}
+      bottomContent={bottomContent}
+      aria-label="Users Table"
+    >
+      <TableHeader>
+        {columns.map((column) => (
+          <TableColumn key={column.uid}>{column.name}</TableColumn>
+        ))}
+      </TableHeader>
+      <TableBody>
+        {employee.map((employee) => (
+          <TableRow key={employee.id}>
+            <TableCell>{employee.name}</TableCell>
+            <TableCell>{employee.email}</TableCell>
+            <TableCell>{employee.position}</TableCell>
+            <TableCell>{employee.salary}</TableCell>
+            <TableCell>
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button>
+                    <HiDotsVertical />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownItem href={`/users/${employee.username}`}>
+                    View
+                  </DropdownItem>
+                  <DropdownItem onClick={() => handleDelete(employee.id)}>
+                    Delete
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
