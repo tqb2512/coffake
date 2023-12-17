@@ -35,6 +35,7 @@ export default function InvoiceInfoForm({
 }) {
   const [invoice, setInvoice] = useState<Invoice>();
 
+
   useEffect(() => {
     fetch(`/api/invoices/${params.invoiceId}`)
       .then((res) => res.json())

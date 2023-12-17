@@ -126,8 +126,8 @@ export default function InventoryTable() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu>
-                    <DropdownItem>
-                      <Link href={`/inventory/${inventory.id}`}>View</Link>
+                    <DropdownItem href={`/inventory/${inventory.id}`}>
+                      View
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>

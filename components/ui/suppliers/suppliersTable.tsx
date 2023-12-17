@@ -21,17 +21,18 @@ import { HiDotsVertical } from "react-icons/hi";
 import Link from "next/link";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
 const columns = [
   { name: "Name", uid: "name", sortable: true },
   { name: "Email", uid: "email" },
-  { name: "Phone", uid: "phone" },
+  { name: "Phone Number", uid: "phone" },
   { name: "Actions", uid: "actions" },
 ];
 
 export default function SuppliersTable() {
   const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
-
+  const router = useRouter();
   React.useEffect(() => {
     fetch("/api/suppliers")
       .then((res) => res.json())
@@ -96,6 +97,9 @@ export default function SuppliersTable() {
             <Button
               className="text-white bg-violet-800"
               endContent={<FaPlus />}
+              onClick={() => {
+                router.push(`/suppliers/add`);
+              }}
             >
               Add New
             </Button>
@@ -135,8 +139,11 @@ export default function SuppliersTable() {
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Actions">
-                    <DropdownItem aria-label="View">
-                      <Link href={`/suppliers/${supplier.id}`}>View</Link>
+                    <DropdownItem
+                      href={`/suppliers/${supplier.id}`}
+                      aria-label="View"
+                    >
+                      View
                     </DropdownItem>
                     <DropdownItem
                       aria-label="Delete"

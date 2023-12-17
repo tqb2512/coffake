@@ -13,10 +13,10 @@ import {
   DropdownTrigger,
   DropdownItem,
   Button,
+  Divider,
 } from "@nextui-org/react";
 import { Inventory, Invoice } from "@prisma/client";
 import { HiDotsVertical } from "react-icons/hi";
-import Link from "next/link";
 
 const columns = [
   { name: "Date", uid: "date", sortable: true },
@@ -49,7 +49,13 @@ export default function IngredientInfoForm({
 
   return (
     <div>
-      <h1>{inventory?.name}</h1>
+      <label className="font-light text-violet-800 text-3xl">
+        Inventory Details
+      </label>
+      <Divider className="my-4" />
+      <h1 className="font-semibold text-violet-800 text-xl my-4">
+        NAME: {inventory?.name}
+      </h1>
       <Table aria-label="Inventory Table">
         <TableHeader>
           {columns.map((column) => (
@@ -59,7 +65,9 @@ export default function IngredientInfoForm({
         <TableBody>
           {invoices.map((invoice) => (
             <TableRow key={invoice.id}>
-              <TableCell>{invoice.date.toString()}</TableCell>
+              <TableCell>
+                {new Date(invoice.date).toLocaleString("en-GB")}
+              </TableCell>
               <TableCell>
                 {
                   invoice.importList.filter(

@@ -57,12 +57,15 @@ export default function UserAddForm() {
         <label className=" font-light text-violet-800 text-3xl">
           Add an Employee
         </label>
-        <form className="flex flex-wrap items-center justify-center mt-16" onSubmit={handlerSubmit}>
+        <form
+          className="flex flex-wrap items-center justify-center mt-16"
+          onSubmit={handlerSubmit}
+        >
           <div className="grid grid-cols-3 gap-x-16 px-8">
             <div className="col-span-1 min-h-full min-w-full">
               <label htmlFor="image" className="text-gray-800">
                 Profile Picture
-              </label> 
+              </label>
               <div
                 id="image"
                 className="flex justify-center min-h-[75%] min-w-[75%] align-center border-dashed border-2 border-sky-500  rounded-xl"
@@ -97,7 +100,7 @@ export default function UserAddForm() {
                   placeholder="Enter Email"
                 />
               </div>
-              
+
               <div className="flex flex-row col-span-2 items-center">
                 <Dropdown type="listbox" showArrow>
                   <DropdownTrigger>
@@ -119,7 +122,7 @@ export default function UserAddForm() {
                   </DropdownMenu>
                 </Dropdown>
               </div>
-              
+
               <div className="flex flex-row items-center">
                 <Input
                   id="salary"
@@ -161,7 +164,7 @@ export default function UserAddForm() {
                   placeholder="Enter Phone Number"
                 />
               </div>
-              
+
               <div className="flex col-span-2 flex-row items-center">
                 <Textarea
                   id="notes"
@@ -189,7 +192,6 @@ export default function UserAddForm() {
               </div>
             </div>
           </div>
-          
         </form>
       </div>
     </div>
