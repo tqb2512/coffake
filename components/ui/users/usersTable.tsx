@@ -126,43 +126,45 @@ export default function UsersTable() {
   };
 
   return (
-    <Table
-      topContent={topContent}
-      bottomContent={bottomContent}
-      aria-label="Users Table"
-    >
-      <TableHeader>
-        {columns.map((column) => (
-          <TableColumn key={column.uid}>{column.name}</TableColumn>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {employee.map((employee) => (
-          <TableRow key={employee.id}>
-            <TableCell>{employee.name}</TableCell>
-            <TableCell>{employee.email}</TableCell>
-            <TableCell>{employee.position}</TableCell>
-            <TableCell>{employee.salary}</TableCell>
-            <TableCell>
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button>
-                    <HiDotsVertical />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu>
-                  <DropdownItem href={`/users/${employee.username}`}>
-                    View
-                  </DropdownItem>
-                  <DropdownItem onClick={() => handleDelete(employee.id)}>
-                    Delete
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="p-8 flex flex-col h-screen">
+      <Table
+        topContent={topContent}
+        bottomContent={bottomContent}
+        aria-label="Users Table"
+      >
+        <TableHeader>
+          {columns.map((column) => (
+            <TableColumn key={column.uid}>{column.name}</TableColumn>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {employee.map((employee) => (
+            <TableRow key={employee.id}>
+              <TableCell>{employee.name}</TableCell>
+              <TableCell>{employee.email}</TableCell>
+              <TableCell>{employee.position}</TableCell>
+              <TableCell>{employee.salary}</TableCell>
+              <TableCell>
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button>
+                      <HiDotsVertical />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu>
+                    <DropdownItem href={`/users/${employee.username}`}>
+                      View
+                    </DropdownItem>
+                    <DropdownItem onClick={() => handleDelete(employee.id)}>
+                      Delete
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
