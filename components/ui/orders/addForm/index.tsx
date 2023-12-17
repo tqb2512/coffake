@@ -43,7 +43,7 @@ export default function OrderAddForm() {
     return (
         <div>
             <ProductGrid order={order} setOrder={setOrder} handleCheckoutButton={handleSubmit}/>
-            <button onClick={handleSubmit}>Submit</button>
+            {/* <button onClick={handleSubmit}>Submit</button> */}
         </div>
     )
 }

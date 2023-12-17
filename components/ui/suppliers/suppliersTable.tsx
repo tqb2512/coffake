@@ -106,49 +106,51 @@ export default function SuppliersTable() {
   }, [filterValue, onSearchChange, onClear]);
 
   return (
-    <Table
-      aria-label="Supplier Table"
-      topContent={topContent}
-      bottomContent={
-        <div className="flex w-full justify-center">
-          <Pagination isCompact showControls showShadow color="secondary" />
-        </div>
-      }
-    >
-      <TableHeader>
-        {columns.map((column) => (
-          <TableColumn key={column.uid}>{column.name}</TableColumn>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {suppliers.map((supplier) => (
-          <TableRow key={supplier.id}>
-            <TableCell>{supplier.name}</TableCell>
-            <TableCell>{supplier.email}</TableCell>
-            <TableCell>{supplier.phone}</TableCell>
-            <TableCell>
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button>
-                    <HiDotsVertical />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu aria-label="Actions">
-                  <DropdownItem aria-label="View">
-                    <Link href={`/suppliers/${supplier.id}`}>View</Link>
-                  </DropdownItem>
-                  <DropdownItem
-                    aria-label="Delete"
-                    onClick={() => handleDelete(supplier.id)}
-                  >
-                    Delete
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="p-8 h-screen">
+      <Table
+        aria-label="Supplier Table"
+        topContent={topContent}
+        bottomContent={
+          <div className="flex w-full justify-center">
+            <Pagination isCompact showControls showShadow color="secondary" />
+          </div>
+        }
+      >
+        <TableHeader>
+          {columns.map((column) => (
+            <TableColumn key={column.uid}>{column.name}</TableColumn>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {suppliers.map((supplier) => (
+            <TableRow key={supplier.id}>
+              <TableCell>{supplier.name}</TableCell>
+              <TableCell>{supplier.email}</TableCell>
+              <TableCell>{supplier.phone}</TableCell>
+              <TableCell>
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button>
+                      <HiDotsVertical />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="Actions">
+                    <DropdownItem aria-label="View">
+                      <Link href={`/suppliers/${supplier.id}`}>View</Link>
+                    </DropdownItem>
+                    <DropdownItem
+                      aria-label="Delete"
+                      onClick={() => handleDelete(supplier.id)}
+                    >
+                      Delete
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

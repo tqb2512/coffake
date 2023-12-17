@@ -96,44 +96,46 @@ export default function InventoryTable() {
   }, [filterValue, onSearchChange, onClear]);
 
   return (
-    <Table
-      aria-label="Inventory Table"
-      topContent={topContent}
-      bottomContent={
-        <div className="flex w-full justify-center">
-          <Pagination isCompact showControls showShadow color="secondary" />
-        </div>
-      }
-    >
-      <TableHeader>
-        {columns.map((column) => (
-          <TableColumn key={column.uid}>{column.name}</TableColumn>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {inventory.map((inventory) => (
-          <TableRow key={inventory.id}>
-            <TableCell>{inventory.name}</TableCell>
-            <TableCell>{inventory.stock}</TableCell>
-            <TableCell>{inventory.unit}</TableCell>
-            <TableCell>{inventory.unitPrice}</TableCell>
-            <TableCell>
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button>
-                    <HiDotsVertical />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu>
-                  <DropdownItem>
-                    <Link href={`/inventory/${inventory.id}`}>View</Link>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="p-8 h-screen">
+      <Table
+        aria-label="Inventory Table"
+        topContent={topContent}
+        bottomContent={
+          <div className="flex w-full justify-center">
+            <Pagination isCompact showControls showShadow color="secondary" />
+          </div>
+        }
+      >
+        <TableHeader>
+          {columns.map((column) => (
+            <TableColumn key={column.uid}>{column.name}</TableColumn>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {inventory.map((inventory) => (
+            <TableRow key={inventory.id}>
+              <TableCell>{inventory.name}</TableCell>
+              <TableCell>{inventory.stock}</TableCell>
+              <TableCell>{inventory.unit}</TableCell>
+              <TableCell>{inventory.unitPrice}</TableCell>
+              <TableCell>
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button>
+                      <HiDotsVertical />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu>
+                    <DropdownItem>
+                      <Link href={`/inventory/${inventory.id}`}>View</Link>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

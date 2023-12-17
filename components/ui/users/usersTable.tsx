@@ -178,7 +178,7 @@ export default function UsersTable() {
   };
 
   return (
-    <div className="w-11/12 flex flex-col">
+    <div className="p-8 flex flex-col h-screen">
       <Table
         className="flex-wrap"
         aria-label="Users Table"

@@ -74,9 +74,9 @@ export default function ProductsGrid({
     }, [category]);
 
     return (
-        <div className="flex flex-row flex-1">
-            <div className="flex flex-col w-3/5 mt-4 mx-8 bg-heavy-background p-4">
-                <h1 className="text-purple-600 text-2xl font-bold">
+        <div className="flex flex-row flex-1 mb-8 h-fit">
+            <div className="flex flex-col w-3/5 mt-4 mx-8 bg-white p-4 rounded-lg">
+                <h1 className="text-purple-600 text-2xl font-bold mb-4">
                     Select Category
                 </h1>
 
@@ -97,7 +97,7 @@ export default function ProductsGrid({
                 </div>
             </div>
             {/* //OrderInfoSection */}
-            <div className="flex flex-col w-2/5 mt-4 ms-2 me-8 bg-white p-4 h-fit">
+            <div className="flex flex-col w-2/5 mt-4 ms-2 me-8 bg-white p-4 h-fit rounded-lg">
                 <h1 className="text-2xl font-bold">Order Information</h1>
                 <Table
                     aria-label="Order Table pagination"

@@ -26,7 +26,7 @@ export default function ProductInfoForm( params: { productId: string }) {
     
     return (
       <Fragment>
-        <div className="flex flex-col bg-white h-fit ps-8 m-6 rounded-md">
+        <div className="flex flex-col bg-white h-fit ps-8 m-8 rounded-md">
           <label className="font-light text-violet-800 text-3xl pt-4">
             Product Information
           </label>
@@ -139,7 +139,7 @@ export default function ProductInfoForm( params: { productId: string }) {
                     className="px-4 rounded-lg w-full"
                   />
                 </div>
-                <div className="col-span-2 flex justify-end gap-x-6 mb-8">
+                <div className="col-span-2 flex justify-end gap-x-6 mb-4 me-4">
                   <Button
                     color="default"
                     className="text-neutral-500 "

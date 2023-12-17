@@ -38,35 +38,35 @@ export default function InvoicesTable() {
 
   const topContent = React.useMemo(() => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Search by name..."
-            startContent={<FaSearch />}
-          />
-          <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button endContent={<MdOutlineKeyboardDoubleArrowDown />}>
-                  Filter
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem key="date">Date</DropdownItem>
-                <DropdownItem key="total">Total</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-            <Button
-              className="text-white bg-violet-800"
-              endContent={<FaPlus />}
-            >
-              Add New
-            </Button>
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-between gap-3 items-end">
+            <Input
+              isClearable
+              className="w-full sm:max-w-[44%]"
+              placeholder="Search by name..."
+              startContent={<FaSearch />}
+            />
+            <div className="flex gap-3">
+              <Dropdown>
+                <DropdownTrigger className="hidden sm:flex">
+                  <Button endContent={<MdOutlineKeyboardDoubleArrowDown />}>
+                    Filter
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownItem key="date">Date</DropdownItem>
+                  <DropdownItem key="total">Total</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+              <Button
+                className="text-white bg-violet-800"
+                endContent={<FaPlus />}
+              >
+                Add New
+              </Button>
+            </div>
           </div>
-        </div>
-      </div>
+        </div>  
     );
   }, []);
 
@@ -79,43 +79,45 @@ export default function InvoicesTable() {
   }, []);
 
   return (
-    <Table
-      aria-label="Invoices Table"
-      topContent={topContent}
-      bottomContent={bottomContent}
-    >
-      <TableHeader>
-        {columns.map((column) => (
-          <TableColumn key={column.uid}>{column.name}</TableColumn>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {invoices.map((invoice) => (
-          <TableRow key={invoice.id}>
-            <TableCell>
-              {new Date(invoice.date).toLocaleString("en-GB")}
-            </TableCell>
-            <TableCell>{invoice.total}</TableCell>
-            <TableCell>
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button>
-                    <HiDotsVertical />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu>
-                  <DropdownItem href={`/invoices/${invoice.id}`}>
-                    View
-                  </DropdownItem>
-                  <DropdownItem href={`/invoices/${invoice.id}`}>
-                    Print
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="p-8 h-screen">
+      <Table
+        aria-label="Invoices Table"
+        topContent={topContent}
+        bottomContent={bottomContent}
+      >
+        <TableHeader>
+          {columns.map((column) => (
+            <TableColumn key={column.uid}>{column.name}</TableColumn>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {invoices.map((invoice) => (
+            <TableRow key={invoice.id}>
+              <TableCell>
+                {new Date(invoice.date).toLocaleString("en-GB")}
+              </TableCell>
+              <TableCell>{invoice.total}</TableCell>
+              <TableCell>
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button>
+                      <HiDotsVertical />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu>
+                    <DropdownItem href={`/invoices/${invoice.id}`}>
+                      View
+                    </DropdownItem>
+                    <DropdownItem href={`/invoices/${invoice.id}`}>
+                      Print
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
