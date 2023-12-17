@@ -9,10 +9,12 @@ import {
   Input,
   Textarea,
 } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { SlPicture } from "react-icons/sl";
 
 export default function SupplierAddForm() {
+  const router = useRouter();
   const handlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { name, email, address, phone, company } = e.currentTarget;
@@ -119,6 +121,7 @@ export default function SupplierAddForm() {
                   color="default"
                   className="text-neutral-500"
                   variant="bordered"
+                  onClick={() => router.push("/suppliers/")}
                 >
                   Cancel
                 </Button>

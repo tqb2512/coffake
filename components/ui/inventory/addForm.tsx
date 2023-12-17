@@ -1,8 +1,10 @@
 "use client";
 
 import { Button, Input } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 export default function InventoryAddForm() {
+  const router = useRouter();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { name, unitPrice, stock, unit } = e.currentTarget;
@@ -36,7 +38,12 @@ export default function InventoryAddForm() {
               <Input type="text" name="name" label="Name" isRequired></Input>
             </div>
             <div>
-              <Input type="text" name="stock" label="Stock" isRequired></Input>
+              <Input
+                type="number"
+                name="stock"
+                label="Stock"
+                isRequired
+              ></Input>
             </div>
             <div>
               <Input type="text" name="unit" label="Unit" isRequired></Input>
@@ -47,6 +54,7 @@ export default function InventoryAddForm() {
                 name="unit_price"
                 label="Unit Price"
                 isRequired
+                startContent={"$"}
               ></Input>
             </div>
           </div>
@@ -55,6 +63,9 @@ export default function InventoryAddForm() {
               color="default"
               className="text-neutral-500 "
               variant="bordered"
+              onClick={() => {
+                router.push("/inventory/");
+              }}
             >
               Cancel
             </Button>

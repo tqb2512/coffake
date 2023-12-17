@@ -21,6 +21,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import Link from "next/link";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
 const columns = [
   { name: "Name", uid: "name", sortable: true },
@@ -31,6 +32,7 @@ const columns = [
 ];
 
 export default function InventoryTable() {
+  const router = useRouter();
   const [inventory, setInventory] = React.useState<Inventory[]>([]);
 
   useEffect(() => {
@@ -86,6 +88,9 @@ export default function InventoryTable() {
             <Button
               className="text-white bg-violet-800"
               endContent={<FaPlus />}
+              onClick={() => {
+                router.push("/inventory/add");
+              }}
             >
               Add New
             </Button>
@@ -117,7 +122,7 @@ export default function InventoryTable() {
               <TableCell>{inventory.name}</TableCell>
               <TableCell>{inventory.stock}</TableCell>
               <TableCell>{inventory.unit}</TableCell>
-              <TableCell>{inventory.unitPrice}</TableCell>
+              <TableCell>${inventory.unitPrice}</TableCell>
               <TableCell>
                 <Dropdown>
                   <DropdownTrigger>
