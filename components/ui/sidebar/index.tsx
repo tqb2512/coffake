@@ -1,5 +1,5 @@
 import styles from './sidebar.module.css';
-import { HiOutlineHome, HiOutlineUser, HiOutlineUserGroup, HiOutlineTruck, HiOutlineCube, HiOutlineShoppingCart, HiOutlineCircleStack, HiOutlineDocument, HiOutlinePresentationChartLine } from 'react-icons/hi2';
+import { HiOutlineHome, HiOutlineUser, HiOutlineUserGroup, HiOutlineTruck, HiOutlineCube, HiOutlineShoppingCart, HiOutlineCircleStack, HiOutlineDocument, HiOutlinePresentationChartLine, HiOutlineCalendarDays } from 'react-icons/hi2';
 import MenuLink from './menuLink';
 
 const menuItems = [
@@ -80,6 +80,16 @@ const menuItems = [
         title: "Invoices",
         path: "/invoices",
         icon: <HiOutlineDocument />,
+      },
+    ],
+  },
+  {
+    title: "Shifts",
+    list: [
+      {
+        title: "Shifts",
+        path: "/shifts",
+        icon: <HiOutlineCalendarDays />,
       },
     ],
   },

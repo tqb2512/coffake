@@ -2,13 +2,15 @@
 
 import React from 'react'
 import { Shift, ShiftEmployees } from '@prisma/client'
-import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Button } from '@nextui-org/react';
+import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Button, Link } from '@nextui-org/react';
 import { HiDotsVertical } from 'react-icons/hi';
 import { DateRangePicker, DateRangePickerValue } from '@tremor/react';
+import { useRouter } from 'next/navigation';
 
 
 export default function ShiftTable() {
 
+    const router = useRouter();
     const [shifts, setShifts] = React.useState<Shift[]>([]);
     const [dates, setDates] = React.useState<DateRangePickerValue>({ from: new Date(), to: new Date() } as DateRangePickerValue);
     const [employees, setEmployees] = React.useState<ShiftEmployees[]>([]);
@@ -31,7 +33,9 @@ export default function ShiftTable() {
 
     return (
         <div>
-            <DateRangePicker className="max-w-sm mx-auto" enableSelect={false} value={dates} onValueChange={(value) => { setDates(value); }} />
+            <div className="float-left max-w my-5">
+                <DateRangePicker className="" enableSelect={false} value={dates} onValueChange={(value) => { setDates(value); }} />
+            </div>  
             <div>
                 {shifts.length != 0 &&
                     <Table
@@ -58,9 +62,10 @@ export default function ShiftTable() {
                                                 </Button>
                                             </DropdownTrigger>
                                             <DropdownMenu>
-                                                <DropdownItem>View</DropdownItem>
-                                                <DropdownItem>Edit</DropdownItem>
-                                                <DropdownItem>Delete</DropdownItem>
+                                                <DropdownItem onClick={() => {
+                                                    router.push(`/shifts/${shift.id}`)
+                                                }}>View
+                                                </DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>
                                     </TableCell>
