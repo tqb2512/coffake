@@ -1,83 +1,44 @@
 "use client";
 
-import { Button, Input } from "@nextui-org/react";
+import { Button, Divider, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { Inventory } from "@prisma/client";
+import React from "react";
 
 export default function InventoryAddForm() {
   const router = useRouter();
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { name, unitPrice, stock, unit } = e.currentTarget;
-    const product = {
-      name: (name as any).value,
-      unitPrice: parseInt(unitPrice.value),
-      stock: parseInt(stock.value),
-      unit: unit.value,
-    };
+  const [ingredient, setIngredient] = React.useState({} as Inventory);
+
+  const handleSubmit = () => {
+    
 
     fetch("/api/inventory", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(product),
+      body: JSON.stringify(ingredient),
     })
       .then((res) => res.json())
       .then((data) => console.log(data));
   };
 
   return (
-    <div className="mt-6 mx-16">
-      <label className="font-light text-violet-800 text-3xl">
-        Add New Inventory Item
+    <div>
+      <label className="text-violet-800 text-3xl">
+        {"Add Ingredient"}
       </label>
-      <div className="flex flex-col mt-12">
-        <form className="w-3/6 mx-24" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 gap-y-6">
-            <div>
-              <Input type="text" name="name" label="Name" isRequired></Input>
-            </div>
-            <div>
-              <Input
-                type="number"
-                name="stock"
-                label="Stock"
-                isRequired
-              ></Input>
-            </div>
-            <div>
-              <Input type="text" name="unit" label="Unit" isRequired></Input>
-            </div>
-            <div>
-              <Input
-                type="number"
-                name="unit_price"
-                label="Unit Price"
-                isRequired
-                startContent={"$"}
-              ></Input>
-            </div>
-          </div>
-          <div className="mt-10 col-span-2 flex justify-end gap-x-6">
-            <Button
-              color="default"
-              className="text-neutral-500 "
-              variant="bordered"
-              onClick={() => {
-                router.push("/inventory/");
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              color="secondary"
-              className="text-white font-bold bg-violet-800"
-              variant="solid"
-            >
-              Save and Add
-            </Button>
-          </div>
-        </form>
+      <Divider className="my-4" />
+
+      <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
+        <Input label="Name" value={ingredient.name} onValueChange={(value) => setIngredient({...ingredient, name: value})} />
+        <Input label="Stock" value={ingredient.stock?.toString()} onValueChange={(value) => setIngredient({...ingredient, stock: parseInt(value)})} />
+        <Input label="Unit" value={ingredient.unit} onValueChange={(value) => setIngredient({...ingredient, unit: value})} />
+        <Input label="Unit Price" value={ingredient.unitPrice?.toString()} onValueChange={(value) => setIngredient({...ingredient, unitPrice: parseInt(value)})} />
+      </div>
+
+      <div className="flex justify-end gap-3">
+        <Button className="text-white bg-violet-800" onPress={handleSubmit}>Add</Button>
       </div>
     </div>
   );

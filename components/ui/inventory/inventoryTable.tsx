@@ -18,7 +18,6 @@ import {
 } from "@nextui-org/react";
 import { Inventory } from "@prisma/client";
 import { HiDotsVertical } from "react-icons/hi";
-import Link from "next/link";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 import { useRouter } from "next/navigation";
@@ -31,114 +30,109 @@ const columns = [
   { name: "Actions", uid: "actions" },
 ];
 
+const searchColumns = [
+  { name: "Name", uid: "name" },
+  { name: "Stock", uid: "stock" },
+  { name: "Unit", uid: "unit" },
+  { name: "Unit Price", uid: "unitPrice" },
+];
+
 export default function InventoryTable() {
   const router = useRouter();
   const [inventory, setInventory] = React.useState<Inventory[]>([]);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [searchColumn, setSearchColumn] = React.useState(columns[0].uid);
 
   useEffect(() => {
     fetch("/api/inventory")
       .then((res) => res.json())
-      .then((data) => setInventory(data));
+      .then((data) => setInventory(data))
   }, []);
 
-  const [filterValue, setFilterValue] = React.useState("");
-
-  const [page, setPage] = React.useState(1);
-  const onClear = React.useCallback(() => {
-    setFilterValue("");
-    setPage(1);
-  }, []);
-
-  const onSearchChange = React.useCallback((value?: string) => {
-    if (value) {
-      setFilterValue(value);
-      setPage(1);
-    } else {
-      setFilterValue("");
-    }
-  }, []);
-
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Search by name..."
-            startContent={<FaSearch />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-          <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button endContent={<MdOutlineKeyboardDoubleArrowDown />}>
-                  Filter
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem key="name">Name</DropdownItem>
-                <DropdownItem key="stock">Stock</DropdownItem>
-                <DropdownItem key="unit">Unit</DropdownItem>
-                <DropdownItem key="unit_price">Unit Price</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-            <Button
-              className="text-white bg-violet-800"
-              endContent={<FaPlus />}
-              onClick={() => {
-                router.push("/inventory/add");
-              }}
-            >
-              Add New
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }, [filterValue, onSearchChange, onClear]);
 
   return (
-    <div className="p-8 h-screen">
-      <Table
-        aria-label="Inventory Table"
-        topContent={topContent}
-        bottomContent={
-          <div className="flex w-full justify-center">
-            <Pagination isCompact showControls showShadow color="secondary" />
-          </div>
-        }
-      >
+    <div>
+      <div className="flex justify-between">
+        <div className="flex gap-2 items-center">
+          <Input
+            className="w-64"
+            startContent={<FaSearch />}
+            endContent={
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button>
+                    {searchColumns.find((column) => column.uid === searchColumn)?.name}
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  {searchColumns.map((column) => (
+                    <DropdownItem
+                      key={column.uid}
+                      onClick={() => setSearchColumn(column.uid)}
+                    >
+                      {column.name}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            }
+            placeholder="Search by"
+            value={searchValue}
+            onValueChange={(value) => setSearchValue(value)}
+          />
+        </div>
+        <div className="flex gap-2 items-center">
+          <Button
+            className="text-white bg-violet-800 h-full"
+            onClick={() => router.push("/inventory/add")}
+          >
+            Add
+          </Button>
+        </div>
+      </div>
+
+      <Table className="mt-5">
         <TableHeader>
           {columns.map((column) => (
-            <TableColumn key={column.uid}>{column.name}</TableColumn>
+            <TableColumn key={column.uid}>
+              {column.name}
+            </TableColumn>
           ))}
         </TableHeader>
         <TableBody>
-          {inventory.map((inventory) => (
-            <TableRow key={inventory.id}>
-              <TableCell>{inventory.name}</TableCell>
-              <TableCell>{inventory.stock}</TableCell>
-              <TableCell>{inventory.unit}</TableCell>
-              <TableCell>${inventory.unitPrice}</TableCell>
-              <TableCell>
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button>
-                      <HiDotsVertical />
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu>
-                    <DropdownItem href={`/inventory/${inventory.id}`}>
-                      View
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </TableCell>
-            </TableRow>
-          ))}
+          {inventory
+            .filter((item) => {
+              if (searchColumn in item) {
+                const searchValueLower = searchValue.toLowerCase();
+                return String(item[searchColumn as keyof typeof item]).toLowerCase().includes(searchValueLower);
+              }
+              return false;
+            })
+            .map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.stock}</TableCell>
+                <TableCell>{item.unit}</TableCell>
+                <TableCell>{item.unitPrice}</TableCell>
+                <TableCell className="w-10">
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button>
+                        <HiDotsVertical />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                      <DropdownItem
+                        onClick={() => router.push(`/inventory/${item.id}`)}
+                      >
+                        Edit
+                      </DropdownItem>
+                      <DropdownItem>Delete</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>

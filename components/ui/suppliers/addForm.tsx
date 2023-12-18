@@ -2,6 +2,7 @@
 
 import {
   Button,
+  Divider,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -11,21 +12,13 @@ import {
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { SlPicture } from "react-icons/sl";
+import { Supplier } from "@prisma/client";
 
 export default function SupplierAddForm() {
   const router = useRouter();
-  const handlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { name, email, address, phone, company } = e.currentTarget;
-    const supplier = {
-      name: (name as any).value,
-      email: email.value,
-      address: address.value,
-      phone: phone.value,
-      company: company.value,
-    };
+  const [supplier, setSupplier] = React.useState({} as Supplier);
 
+  const handleSubmit = () => {
     fetch("/api/suppliers", {
       method: "POST",
       headers: {
@@ -36,106 +29,23 @@ export default function SupplierAddForm() {
       .then((res) => res.json())
       .then((data) => console.log(data));
   };
-  const [value, setValue] = React.useState("email@gmail.com");
-
-  const validateEmail = (value) =>
-    value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i);
-
-  const isInvalid = React.useMemo(() => {
-    if (value === "") return false;
-
-    return validateEmail(value) ? false : true;
-  }, [value]);
 
   return (
-    <div className="p-8 h-full">
-      <div className="bg-white p-4 rounded-lg">
-        <label className=" font-light text-violet-800 text-3xl">
-          Add a Supplier
-        </label>
-        <form
-          className="flex flex-wrap items-center justify-center mt-16"
-          onSubmit={handlerSubmit}
-        >
-          <div className="grid grid-cols-2 gap-x-16 px-8">
-            <div className="col-span-2 grid grid-cols-2 gap-x-20 gap-y-10 grid-flow-row">
-              <div className="flex flex-row items-center">
-                <Input
-                  id="name"
-                  isRequired
-                  type="text"
-                  label="Name"
-                  className="px-4 rounded-lg"
-                  placeholder="Enter Name"
-                />
-              </div>
-              <div className="flex flex-row items-center">
-                <Input
-                  id="company"
-                  isRequired
-                  type="text"
-                  label="Company"
-                  className="px-4 rounded-lg "
-                  placeholder="Enter Company Name"
-                />
-              </div>
-              <div className="flex flex-row items-center ">
-                <Input
-                  id="email"
-                  isRequired
-                  type="email"
-                  label="Email"
-                  className="px-4 rounded-lg"
-                  value={value}
-                  variant="bordered"
-                  isInvalid={isInvalid}
-                  color={isInvalid ? "danger" : "success"}
-                  errorMessage={isInvalid && "Please enter a valid email"}
-                  onValueChange={setValue}
-                  placeholder="Enter Email"
-                />
-              </div>
+    <div>
+      <label className="text-violet-800 text-3xl">
+        {"Add Supplier"}
+      </label>
+      <Divider className="my-4" />
 
-              <div className="flex flex-row items-center">
-                <Input
-                  id="phone"
-                  isRequired
-                  type="text"
-                  label="Phone"
-                  className="px-4 rounded-lg "
-                  placeholder="Enter Phone Number"
-                />
-              </div>
+      <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
+        <Input label="Name" value={supplier.name} />
+        <Input label="Company" value={supplier.company} />
+        <Input label="Phone Number" value={supplier.phone} />
+        <Input label="Email" value={supplier.email} />
+      </div>
 
-              <div className="flex col-span-2 flex-row items-center">
-                <Textarea
-                  id="notes"
-                  type="text"
-                  label="Notes"
-                  className="px-4 rounded-lg w-full"
-                  placeholder="Enter notes here"
-                />
-              </div>
-              <div className="col-span-2 flex justify-end gap-x-6 mb-4 me-4">
-                <Button
-                  color="default"
-                  className="text-neutral-500"
-                  variant="bordered"
-                  onClick={() => router.push("/suppliers/")}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  color="secondary"
-                  className="text-white font-bold bg-violet-800"
-                  variant="solid"
-                >
-                  Save and Add
-                </Button>
-              </div>
-            </div>
-          </div>
-        </form>
+      <div className="flex justify-end gap-3">
+        <Button className="text-white bg-violet-800" onPress={handleSubmit}>Add</Button>
       </div>
     </div>
   );

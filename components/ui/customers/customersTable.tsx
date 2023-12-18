@@ -18,7 +18,7 @@ import {
 } from "@nextui-org/react";
 import { Customer } from "@prisma/client";
 import { HiDotsVertical } from "react-icons/hi";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 
@@ -29,8 +29,17 @@ const columns = [
   { name: "Actions", uid: "actions" },
 ];
 
+const searchColumns = [
+  { name: "Name", uid: "name" },
+  { name: "Email", uid: "email" },
+  { name: "Phone", uid: "phone" },
+];
+
 export default function CustomersTable() {
   const [customers, setCustomers] = React.useState<Customer[]>([]);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [searchColumn, setSearchColumn] = React.useState(columns[0].uid);
+  const router = useRouter();
 
   useEffect(() => {
     fetch("/api/customers")
@@ -38,99 +47,90 @@ export default function CustomersTable() {
       .then((data) => setCustomers(data));
   }, []);
 
-  const [filterValue, setFilterValue] = React.useState("");
-
-  const [page, setPage] = React.useState(1);
-  const onClear = React.useCallback(() => {
-    setFilterValue("");
-    setPage(1);
-  }, []);
-
-  const onSearchChange = React.useCallback((value?: string) => {
-    if (value) {
-      setFilterValue(value);
-      setPage(1);
-    } else {
-      setFilterValue("");
-    }
-  }, []);
-
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Search by name..."
-            startContent={<FaSearch />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-          <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button endContent={<MdOutlineKeyboardDoubleArrowDown />}>
-                  Filter
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem key="name">Name</DropdownItem>
-                <DropdownItem key="email">Email</DropdownItem>
-                <DropdownItem key="phone">Phone</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-            <Button
-              className="text-white bg-violet-800"
-              endContent={<FaPlus />}
-            >
-              Add New
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }, [filterValue, onSearchChange, onClear]);
 
   return (
-    <Table
-      aria-label="Customers Table"
-      topContent={topContent}
-      bottomContent={
-        <div className="flex w-full justify-center">
-          <Pagination isCompact showControls showShadow color="secondary" />
-        </div>
-      }
-    >
-      <TableHeader>
-        {columns.map((column) => (
-          <TableColumn key={column.uid}>{column.name}</TableColumn>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {customers.map((customer) => (
-          <TableRow key={customer.id}>
-            <TableCell>{customer.name}</TableCell>
-            <TableCell>{customer.email}</TableCell>
-            <TableCell>{customer.phone}</TableCell>
-            <TableCell>
+    <div>
+      <div className="flex justify-between">
+        <div className="flex gap-2 items-center">
+          <Input
+            className="w-64"
+            startContent={<FaSearch />}
+            endContent={
               <Dropdown>
                 <DropdownTrigger>
                   <Button>
-                    <HiDotsVertical />
+                    {searchColumns.find((column) => column.uid === searchColumn)?.name}
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem>
-                    <Link href={`/customers/${customer.id}`}>View</Link>
-                  </DropdownItem>
+                  {searchColumns.map((column) => (
+                    <DropdownItem
+                      key={column.uid}
+                      onClick={() => setSearchColumn(column.uid)}
+                    >
+                      {column.name}
+                    </DropdownItem>
+                  ))}
                 </DropdownMenu>
               </Dropdown>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+            }
+            placeholder="Search by"
+            value={searchValue}
+            onValueChange={(value) => setSearchValue(value)}
+          />
+        </div>
+        <div className="flex gap-2 items-center">
+          <Button
+            className="text-white bg-violet-800 h-full"
+            onClick={() => router.push("/customers/add")}
+          >
+            Add
+          </Button>
+        </div>
+      </div>
+
+      <Table className="mt-5">
+        <TableHeader>
+          {columns.map((column) => (
+            <TableColumn key={column.uid}>
+              {column.name}
+            </TableColumn>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {customers
+            .filter((item) => {
+              if (searchColumn in item) {
+                const searchValueLower = searchValue.toLowerCase();
+                return String(item[searchColumn as keyof typeof item]).toLowerCase().includes(searchValueLower);
+              }
+              return false;
+            })
+            .map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.email}</TableCell>
+                <TableCell>{item.phone}</TableCell>
+                <TableCell className="w-10">
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button>
+                        <HiDotsVertical />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                      <DropdownItem
+                        onClick={() =>
+                          router.push("/customers/" + item.id)
+                        }
+                      >View</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

@@ -1,6 +1,5 @@
 import styles from './sidebar.module.css';
-import { HiOutlineHome, HiOutlineUserGroup } from "react-icons/hi";
-import { IoFastFoodOutline, IoStatsChart, IoSettingsOutline, IoServerOutline, IoStorefrontOutline, IoDocumentTextOutline  } from "react-icons/io5";
+import { HiOutlineHome, HiOutlineUser, HiOutlineUserGroup, HiOutlineTruck, HiOutlineCube, HiOutlineShoppingCart, HiOutlineCircleStack, HiOutlineDocument, HiOutlinePresentationChartLine } from 'react-icons/hi2';
 import MenuLink from './menuLink';
 
 const menuItems = [
@@ -15,12 +14,22 @@ const menuItems = [
     ],
   },
   {
+    title: "Customers",
+    list: [
+      {
+        title: "Customers",
+        path: "/customers",
+        icon: <HiOutlineUserGroup />,
+      },
+    ],
+  },
+  {
     title: "Employees",
     list: [
       {
         title: "Users",
         path: "/users",
-        icon: <HiOutlineUserGroup />,
+        icon: <HiOutlineUser />,
       },
     ],
   },
@@ -30,7 +39,7 @@ const menuItems = [
       {
         title: "Suppliers",
         path: "/suppliers",
-        icon: <IoStorefrontOutline />,
+        icon: <HiOutlineTruck />,
       },
     ],
   },
@@ -40,7 +49,7 @@ const menuItems = [
       {
         title: "Products",
         path: "/products",
-        icon: <IoFastFoodOutline />,
+        icon: <HiOutlineCube />,
       },
     ],
   },
@@ -50,7 +59,7 @@ const menuItems = [
       {
         title: "Orders",
         path: "/orders",
-        icon: <IoFastFoodOutline />,
+        icon: <HiOutlineShoppingCart />,
       },
     ],
   },
@@ -60,7 +69,7 @@ const menuItems = [
       {
         title: "Inventory",
         path: "/inventory",
-        icon: <IoServerOutline />,
+        icon: <HiOutlineCircleStack />,
       },
     ],
   },
@@ -70,7 +79,7 @@ const menuItems = [
       {
         title: "Invoices",
         path: "/invoices",
-        icon: <IoDocumentTextOutline />,
+        icon: <HiOutlineDocument />,
       },
     ],
   },
@@ -80,20 +89,10 @@ const menuItems = [
       {
         title: "Sales Reports",
         path: "/reports",
-        icon: <IoStatsChart />,
+        icon: <HiOutlinePresentationChartLine />,
       },
     ],
-  },
-  {
-    title: "Settings",
-    list: [
-      {
-        title: "Settings",
-        path: "/settings",
-        icon: <IoSettingsOutline />,
-      },
-    ],
-  },
+  }
 ];
 
 export default function SideBar() {

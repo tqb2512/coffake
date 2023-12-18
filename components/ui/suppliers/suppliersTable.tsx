@@ -20,7 +20,6 @@ import {
 import { HiDotsVertical } from "react-icons/hi";
 import Link from "next/link";
 import { FaPlus, FaSearch } from "react-icons/fa";
-import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
 const columns = [
@@ -30,132 +29,105 @@ const columns = [
   { name: "Actions", uid: "actions" },
 ];
 
+const searchColumns = [
+  { name: "Name", uid: "name" },
+  { name: "Email", uid: "email" },
+  { name: "Phone Number", uid: "phone" },
+];
+
 export default function SuppliersTable() {
-  const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
   const router = useRouter();
+  const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [searchColumn, setSearchColumn] = React.useState(columns[0].uid);
+
   React.useEffect(() => {
     fetch("/api/suppliers")
       .then((res) => res.json())
       .then((data) => setSuppliers(data));
   }, []);
 
-  const handleDelete = (id: string) => {
-    fetch("/api/suppliers", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id }),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  };
-
-  const [filterValue, setFilterValue] = React.useState("");
-
-  const [page, setPage] = React.useState(1);
-  const onClear = React.useCallback(() => {
-    setFilterValue("");
-    setPage(1);
-  }, []);
-
-  const onSearchChange = React.useCallback((value?: string) => {
-    if (value) {
-      setFilterValue(value);
-      setPage(1);
-    } else {
-      setFilterValue("");
-    }
-  }, []);
-
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
+  return (
+    <div>
+      <div className="flex justify-between">
+        <div className="flex gap-2 items-center">
           <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Search by name..."
+            className="w-64"
             startContent={<FaSearch />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
+            endContent={
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button>
+                    {searchColumns.find((column) => column.uid === searchColumn)?.name}
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  {searchColumns.map((column) => (
+                    <DropdownItem
+                      key={column.uid}
+                      onClick={() => setSearchColumn(column.uid)}
+                    >
+                      {column.name}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            }
+            placeholder="Search by"
+            value={searchValue}
+            onValueChange={(value) => setSearchValue(value)}
           />
-          <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button endContent={<MdOutlineKeyboardDoubleArrowDown />}>
-                  Filter
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem key="name">Name</DropdownItem>
-                <DropdownItem key="email">Email</DropdownItem>
-                <DropdownItem key="phone">Phone</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-            <Button
-              className="text-white bg-violet-800"
-              endContent={<FaPlus />}
-              onClick={() => {
-                router.push(`/suppliers/add`);
-              }}
-            >
-              Add New
-            </Button>
-          </div>
+        </div>
+        <div className="flex gap-2 items-center">
+          <Button
+            className="text-white bg-violet-800 h-full"
+            onClick={() => router.push("/suppliers/add")}
+          >
+            Add
+          </Button>
         </div>
       </div>
-    );
-  }, [filterValue, onSearchChange, onClear]);
 
-  return (
-    <div className="p-8 h-screen">
-      <Table
-        aria-label="Supplier Table"
-        topContent={topContent}
-        bottomContent={
-          <div className="flex w-full justify-center">
-            <Pagination isCompact showControls showShadow color="secondary" />
-          </div>
-        }
-      >
+      <Table className="mt-5">
         <TableHeader>
           {columns.map((column) => (
-            <TableColumn key={column.uid}>{column.name}</TableColumn>
+            <TableColumn key={column.uid}>
+              {column.name}
+            </TableColumn>
           ))}
         </TableHeader>
         <TableBody>
-          {suppliers.map((supplier) => (
-            <TableRow key={supplier.id}>
-              <TableCell>{supplier.name}</TableCell>
-              <TableCell>{supplier.email}</TableCell>
-              <TableCell>{supplier.phone}</TableCell>
-              <TableCell>
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button>
-                      <HiDotsVertical />
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu aria-label="Actions">
-                    <DropdownItem
-                      href={`/suppliers/${supplier.id}`}
-                      aria-label="View"
-                    >
-                      View
-                    </DropdownItem>
-                    <DropdownItem
-                      aria-label="Delete"
-                      onClick={() => handleDelete(supplier.id)}
-                    >
-                      Delete
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </TableCell>
-            </TableRow>
-          ))}
+          {suppliers
+            .filter((item) => {
+              if (searchColumn in item) {
+                const searchValueLower = searchValue.toLowerCase();
+                return String(item[searchColumn as keyof typeof item]).toLowerCase().includes(searchValueLower);
+              }
+              return false;
+            })
+            .map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.email}</TableCell>
+                <TableCell>{item.phone}</TableCell>
+                <TableCell className="w-10">
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button>
+                        <HiDotsVertical />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                      <DropdownItem
+                        onClick={() =>
+                          router.push("/suppliers/" + item.id)
+                        }
+                      >View</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>

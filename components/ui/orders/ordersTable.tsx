@@ -1,7 +1,7 @@
 'use client'
 
 import React, { use, useEffect } from 'react';
-import {useRouter} from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Button, Input } from '@nextui-org/react';
 import { Order } from '@prisma/client';
 import { HiDotsVertical } from 'react-icons/hi';
@@ -9,129 +9,145 @@ import { FaPlus, FaSearch } from 'react-icons/fa';
 import { MdOutlineKeyboardDoubleArrowDown } from 'react-icons/md';
 
 const columns = [
-    { name: "Date", uid: "date", sortable: true },
-    { name: "Customer", uid: "customer"},
-    { name: "Total", uid: "total" },
-    { name: "Status", uid: "status" },
-    { name: "Actions", uid: "actions" }
+  { name: "Date", uid: "date", sortable: true },
+  { name: "Customer", uid: "customer" },
+  { name: "Total", uid: "total" },
+  { name: "Status", uid: "status" },
+  { name: "Actions", uid: "actions" }
 ];
 
 const statuses = [
-    "All",
-    "Pending",
-    "Confirmed",
-    "Completed",
-    "Cancelled"
+  "All",
+  "Pending",
+  "Confirmed",
+  "Completed",
+  "Cancelled"
 ]
+
+const searchColumns = [
+  { name: "Date", uid: "date" },
+  { name: "Customer", uid: "customer" },
+  { name: "Total", uid: "total" },
+];
 
 
 export default function OrdersTable() {
 
-    const router = useRouter();
-    const [orders, setOrders] = React.useState<Order[]>([]);
-    const [status, setStatus] = React.useState<string>("All");
-    const [filterValue, setFilterValue] = React.useState("");
+  const router = useRouter();
+  const [orders, setOrders] = React.useState<Order[]>([]);
+  const [status, setStatus] = React.useState<string>("All");
+  const [searchValue, setSearchValue] = React.useState("");
+  const [searchColumn, setSearchColumn] = React.useState(columns[0].uid);
 
-    useEffect(() => {
-        fetch("/api/orders?status=" + status)
-            .then((res) => res.json())
-            .then((data) => setOrders(data));
-    }, [status]);
+  useEffect(() => {
+    fetch("/api/orders?status=" + status)
+      .then((res) => res.json())
+      .then((data) => setOrders(data));
+  }, [status]);
 
-    const [page, setPage] = React.useState(1);
-    const onClear = React.useCallback(() => {
-      setFilterValue("");
-      setPage(1);
-    }, []);
-
-    const onSearchChange = React.useCallback((value?: string) => {
-        if (value) {
-          setFilterValue(value);
-          setPage(1);
-        } else {
-          setFilterValue("");
-        }
-      }, []);
-
-      const topContent = React.useMemo(() => {
-        return (
-          <div className="flex flex-col gap-4">
-            <div className="flex justify-between gap-3 items-end">
-              <Input
-                isClearable
-                className="w-full sm:max-w-[44%]"
-                placeholder="Search by name..."
-                startContent={<FaSearch />}
-                value={filterValue}
-                onClear={() => onClear()}
-                onValueChange={onSearchChange}
-              />
-              <div className="flex gap-3">
-                <Dropdown>
-                  <DropdownTrigger className="hidden sm:flex">
-                    <Button endContent={<MdOutlineKeyboardDoubleArrowDown />}>
-                      Filter
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu>
-                    {statuses.map((status) => (
-                        <DropdownItem key={status} onClick={() => setStatus(status)}>
-                            {status}
-                        </DropdownItem>
-                    ))}
-                  </DropdownMenu>
-                </Dropdown>
-                <Button
-                  onClick={() => router.push("/orders/add")}
-                  className="text-white bg-violet-800"
-                  endContent={<FaPlus />}
-                >
-                  Add New
-                </Button>
-              </div>
-            </div>
-          </div>
-        );
-      }, [filterValue, onSearchChange, onClear]);
-
-    return (
-        <div className='p-8 h-screen'>
-            <Table
-                topContent={topContent}
-                aria-label='Orders Table'
-            >
-                <TableHeader>
-                    {columns.map((column) => (
-                        <TableColumn key={column.uid}>
-                            {column.name}
-                        </TableColumn>
-                    ))}
-                </TableHeader>
-                <TableBody>
-                    {orders.map((order) => (
-                        <TableRow key={order.id}>
-                            <TableCell>{order.date.toString()}</TableCell>
-                            <TableCell>{order.customerName}</TableCell>
-                            <TableCell>{order.totalPrice}</TableCell>
-                            <TableCell>{order.status}</TableCell>
-                            <TableCell>
-                                <Dropdown>
-                                    <DropdownTrigger>
-                                        <Button>
-                                            <HiDotsVertical />
-                                        </Button>
-                                    </DropdownTrigger>
-                                    <DropdownMenu>
-                                        <DropdownItem>
-                                            View
-                                        </DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+  return (
+    <div>
+      <div className="flex justify-between">
+        <div className="flex gap-2 items-center">
+          <Input
+            className="w-64"
+            startContent={<FaSearch />}
+            endContent={
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button>
+                    {searchColumns.find((column) => column.uid === searchColumn)?.name}
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  {searchColumns.map((column) => (
+                    <DropdownItem
+                      key={column.uid}
+                      onClick={() => setSearchColumn(column.uid)}
+                    >
+                      {column.name}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            }
+            placeholder="Search by"
+            value={searchValue}
+            onValueChange={(value) => setSearchValue(value)}
+          />
         </div>
-    )
+
+        <div className="flex gap-2 items-center">
+          <Dropdown>
+            <DropdownTrigger>
+              <Button className="h-full">
+                {status}
+                <MdOutlineKeyboardDoubleArrowDown />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu>
+              {statuses.map((status) => (
+                <DropdownItem
+                  key={status}
+                  onClick={() => setStatus(status)}
+                >
+                  {status}
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
+          <Button
+            className="text-white bg-violet-800 h-full"
+            onClick={() => router.push("/orders/add")}
+          >
+            Add
+          </Button>
+        </div>
+      </div>
+
+      <Table className="mt-5">
+        <TableHeader>
+          {columns.map((column) => (
+            <TableColumn key={column.uid}>
+              {column.name}
+            </TableColumn>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {orders
+            .filter((item) => {
+              if (searchColumn in item) {
+                const searchValueLower = searchValue.toLowerCase();
+                return String(item[searchColumn as keyof typeof item]).toLowerCase().includes(searchValueLower);
+              }
+              return false;
+            })
+            .map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.date.toString()}</TableCell>
+                <TableCell>{item.customerName}</TableCell>
+                <TableCell>{item.totalPrice}</TableCell>
+                <TableCell>{item.status}</TableCell>
+                <TableCell className="w-10">
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button>
+                        <HiDotsVertical />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                      <DropdownItem
+                        onClick={() =>
+                          router.push("/orders/" + item.id)
+                        }
+                      >View</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </div>
+  )
 }

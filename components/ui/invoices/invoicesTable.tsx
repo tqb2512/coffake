@@ -18,9 +18,8 @@ import {
 } from "@nextui-org/react";
 import { Invoice } from "@prisma/client";
 import { HiDotsVertical } from "react-icons/hi";
-import Link from "next/link";
 import { FaPlus, FaSearch } from "react-icons/fa";
-import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
+import { useRouter} from "next/navigation";
 
 const columns = [
   { name: "Date", uid: "date", sortable: true },
@@ -28,94 +27,104 @@ const columns = [
   { name: "Actions", uid: "actions" },
 ];
 
+const searchColumns = [
+  { name: "Date", uid: "date" },
+  { name: "Total", uid: "total" },
+];
+
 export default function InvoicesTable() {
+
+  const router = useRouter();
   const [invoices, setInvoices] = React.useState<Invoice[]>([]);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [searchColumn, setSearchColumn] = React.useState(columns[0].uid);
+
   useEffect(() => {
     fetch("/api/invoices")
       .then((res) => res.json())
       .then((data) => setInvoices(data));
   }, []);
 
-  const topContent = React.useMemo(() => {
-    return (
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between gap-3 items-end">
-            <Input
-              isClearable
-              className="w-full sm:max-w-[44%]"
-              placeholder="Search by name..."
-              startContent={<FaSearch />}
-            />
-            <div className="flex gap-3">
+  return (
+    <div>
+      <div className="flex justify-between">
+        <div className="flex gap-2 items-center">
+          <Input
+            className="w-64"
+            startContent={<FaSearch />}
+            endContent={
               <Dropdown>
-                <DropdownTrigger className="hidden sm:flex">
-                  <Button endContent={<MdOutlineKeyboardDoubleArrowDown />}>
-                    Filter
+                <DropdownTrigger>
+                  <Button>
+                    {searchColumns.find((column) => column.uid === searchColumn)?.name}
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem key="date">Date</DropdownItem>
-                  <DropdownItem key="total">Total</DropdownItem>
+                  {searchColumns.map((column) => (
+                    <DropdownItem
+                      key={column.uid}
+                      onClick={() => setSearchColumn(column.uid)}
+                    >
+                      {column.name}
+                    </DropdownItem>
+                  ))}
                 </DropdownMenu>
               </Dropdown>
-              <Button
-                className="text-white bg-violet-800"
-                endContent={<FaPlus />}
-              >
-                Add New
-              </Button>
-            </div>
-          </div>
-        </div>  
-    );
-  }, []);
-
-  const bottomContent = React.useMemo(() => {
-    return (
-      <div className="flex w-full justify-center">
-        <Pagination isCompact showControls showShadow color="secondary" />
+            }
+            placeholder="Search by"
+            value={searchValue}
+            onValueChange={(value) => setSearchValue(value)}
+          />
+        </div>
+        <div className="flex gap-2 items-center">
+          <Button
+            className="text-white bg-violet-800 h-full"
+            onClick={() => router.push("/invoices/add")}
+          >
+            Add
+          </Button>
+        </div>
       </div>
-    );
-  }, []);
 
-  return (
-    <div className="p-8 h-screen">
-      <Table
-        aria-label="Invoices Table"
-        topContent={topContent}
-        bottomContent={bottomContent}
-      >
+      <Table className="mt-5">
         <TableHeader>
           {columns.map((column) => (
-            <TableColumn key={column.uid}>{column.name}</TableColumn>
+            <TableColumn key={column.uid}>
+              {column.name}
+            </TableColumn>
           ))}
         </TableHeader>
         <TableBody>
-          {invoices.map((invoice) => (
-            <TableRow key={invoice.id}>
-              <TableCell>
-                {new Date(invoice.date).toLocaleString("en-GB")}
-              </TableCell>
-              <TableCell>{invoice.total}</TableCell>
-              <TableCell>
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button>
-                      <HiDotsVertical />
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu>
-                    <DropdownItem href={`/invoices/${invoice.id}`}>
-                      View
-                    </DropdownItem>
-                    <DropdownItem href={`/invoices/${invoice.id}`}>
-                      Print
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </TableCell>
-            </TableRow>
-          ))}
+          {invoices
+            .filter((item) => {
+              if (searchColumn in item) {
+                const searchValueLower = searchValue.toLowerCase();
+                return String(item[searchColumn as keyof typeof item]).toLowerCase().includes(searchValueLower);
+              }
+              return false;
+            })
+            .map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.date.toString()}</TableCell>
+                <TableCell>{item.total}</TableCell>
+                <TableCell className="w-10">
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button>
+                        <HiDotsVertical />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                      <DropdownItem
+                        onClick={() =>
+                          router.push("/invoices/" + item.id)
+                        }
+                      >View</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>
