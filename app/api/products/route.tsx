@@ -15,3 +15,15 @@ export async function GET(req: Request) {
     });
     return NextResponse.json(products);
 }
+
+export async function POST(req: Request) {
+    const { name, category, sizeList } = await req.json();
+    const newProduct = await prisma.product.create({
+        data: {
+            name,
+            category,
+            sizeList: sizeList
+        },
+    });
+    return NextResponse.json(newProduct);
+}

@@ -42,8 +42,11 @@ type ProductSizeList {
 }
 
 type ProductSizeListRecipe {
-  ingredientId String @db.ObjectId
-  quantity     Float
+  ingredientId        String @db.ObjectId
+  ingredientName      String
+  ingredientUnit      String
+  ingredientUnitPrice Float
+  quantity            Float
 }
 
 type ShiftEmployees {

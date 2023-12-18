@@ -2,7 +2,7 @@
 
 import React, { use, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Button, Input } from '@nextui-org/react';
+import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Button, Input, Select, SelectItem } from '@nextui-org/react';
 import { Order } from '@prisma/client';
 import { HiDotsVertical } from 'react-icons/hi';
 import { FaPlus, FaSearch } from 'react-icons/fa';
@@ -78,24 +78,18 @@ export default function OrdersTable() {
         </div>
 
         <div className="flex gap-2 items-center">
-          <Dropdown>
-            <DropdownTrigger>
-              <Button className="h-full">
+          <Select className="w-32" value={status} onChange={(e) => setStatus(e.target.value)}>
+            {statuses.map((status) => (
+              <SelectItem
+                key={status}
+                value={status}
+                onClick={() => setStatus(status)}
+              >
                 {status}
-                <MdOutlineKeyboardDoubleArrowDown />
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu>
-              {statuses.map((status) => (
-                <DropdownItem
-                  key={status}
-                  onClick={() => setStatus(status)}
-                >
-                  {status}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
+              </SelectItem>
+            ))}
+          </Select>
+
           <Button
             className="text-white bg-violet-800 h-full"
             onClick={() => router.push("/orders/add")}
