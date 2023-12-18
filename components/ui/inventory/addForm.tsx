@@ -1,48 +1,45 @@
-'use client'
+"use client";
+
+import { Button, Divider, Input } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+import { Inventory } from "@prisma/client";
+import React from "react";
 
 export default function InventoryAddForm() {
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const { name, unitPrice, stock, unit } = e.currentTarget;
-        const product = {
-            name: (name as any).value,
-            unitPrice: parseInt(unitPrice.value),
-            stock: parseInt(stock.value),
-            unit: unit.value
-        };
+  const router = useRouter();
+  const [ingredient, setIngredient] = React.useState({} as Inventory);
 
-        fetch("/api/inventory", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(product)
-        })
-            .then((res) => res.json())
-            .then((data) => console.log(data));
-    }
+  const handleSubmit = () => {
+    
 
-    return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="name">Name</label>
-                    <input type="text" name="name" id="name" />
-                </div>
-                <div>
-                    <label htmlFor="unit">Unit</label>
-                    <input type="text" name="unit" id="unit" />
-                </div>
-                <div>
-                    <label htmlFor="unitPrice">Unit Price</label>
-                    <input type="number" name="unitPrice" id="unitPrice" />
-                </div>
-                <div>
-                    <label htmlFor="stock">Stock</label>
-                    <input type="number" name="stock" id="stock" />
-                </div>
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-    )
+    fetch("/api/inventory", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(ingredient),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  };
+
+  return (
+    <div>
+      <label className="text-violet-800 text-3xl">
+        {"Add Ingredient"}
+      </label>
+      <Divider className="my-4" />
+
+      <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
+        <Input label="Name" value={ingredient.name} onValueChange={(value) => setIngredient({...ingredient, name: value})} />
+        <Input label="Stock" value={ingredient.stock?.toString()} onValueChange={(value) => setIngredient({...ingredient, stock: parseInt(value)})} />
+        <Input label="Unit" value={ingredient.unit} onValueChange={(value) => setIngredient({...ingredient, unit: value})} />
+        <Input label="Unit Price" value={ingredient.unitPrice?.toString()} onValueChange={(value) => setIngredient({...ingredient, unitPrice: parseInt(value)})} />
+      </div>
+
+      <div className="flex justify-end gap-3">
+        <Button className="text-white bg-violet-800" onPress={handleSubmit}>Add</Button>
+      </div>
+    </div>
+  );
 }

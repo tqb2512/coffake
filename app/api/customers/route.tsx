@@ -10,3 +10,16 @@ export async function GET(req: Request) {
     });
     return NextResponse.json(customers);
 }
+
+export async function POST(req: Request) {
+    const { name, email, phone } = await req.json();
+    const customer = await prisma.customer.create({
+        data: {
+            name,
+            email,
+            phone,
+            loyaltyPoints: 0
+        }
+    });
+    return NextResponse.json(customer);
+}

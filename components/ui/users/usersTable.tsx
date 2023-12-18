@@ -1,7 +1,7 @@
 "use client";
 
-import { FaEllipsisVertical } from "react-icons/fa6";
 import React from "react";
+import { useRouter } from "next/navigation";
 import {
   Table,
   TableHeader,
@@ -15,10 +15,13 @@ import {
   DropdownItem,
   Button,
   Pagination,
+  Input,
 } from "@nextui-org/react";
 import { Employee } from "@prisma/client";
 import { HiDotsVertical } from "react-icons/hi";
-import Link from "next/link";
+import { FaSearch } from "react-icons/fa";
+import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
+import { FaPlus } from "react-icons/fa";
 
 const columns = [
   { name: "Name", uid: "name", sortable: true },
@@ -28,58 +31,18 @@ const columns = [
   { name: "Actions", uid: "actions" },
 ];
 
-export default function UsersTable() {
-  const [employee, setEmployee] = React.useState<Employee[]>([]);
-  const [filterValue, setFilterValue] = React.useState("");
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
+const searchColumns = [
+  { name: "Name", uid: "name" },
+  { name: "Email", uid: "email" },
+  { name: "Position", uid: "position" },
+  { name: "Salary", uid: "salary" },
+];
 
-    switch (columnKey) {
-      case "name":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold">{user.name}</p>
-          </div>
-        );
-      case "email":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold">{cellValue}</p>
-          </div>
-        );
-      case "position":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-          </div>
-        );
-      case "salary":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-          </div>
-        );
-      case "actions":
-        return (
-          <div className="relative flex justify-start items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <FaEllipsisVertical />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+export default function UsersTable() {
+  const router = useRouter();
+  const [employee, setEmployee] = React.useState<Employee[]>([]);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [searchColumn, setSearchColumn] = React.useState(columns[0].uid);
 
   React.useEffect(() => {
     fetch("/api/users")
@@ -87,44 +50,88 @@ export default function UsersTable() {
       .then((data) => setEmployee(data));
   }, []);
 
-  const handleDelete = (id: string) => {
-    fetch("/api/users", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id }),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  };
-
   return (
-    <div className="w-11/12 flex flex-col">
-      <Table
-        className="flex-wrap"
-        aria-label="Users Table"
-        bottomContent={
-          <div className="flex w-full justify-center">
-            <Pagination isCompact showControls showShadow color="primary" />
-          </div>
-        }
-      >
+    <div>
+      <div className="flex justify-between">
+        <div className="flex gap-2 items-center">
+          <Input
+            className="w-64"
+            startContent={<FaSearch />}
+            endContent={
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button>
+                    {searchColumns.find((column) => column.uid === searchColumn)?.name}
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  {searchColumns.map((column) => (
+                    <DropdownItem
+                      key={column.uid}
+                      onClick={() => setSearchColumn(column.uid)}
+                    >
+                      {column.name}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            }
+            placeholder="Search by"
+            value={searchValue}
+            onValueChange={(value) => setSearchValue(value)}
+          />
+        </div>
+        <div className="flex gap-2 items-center">
+          <Button
+            className="text-white bg-violet-800 h-full"
+            onClick={() => router.push("/users/add")}
+          >
+            Add
+          </Button>
+        </div>
+      </div>
+
+      <Table className="mt-5">
         <TableHeader>
           {columns.map((column) => (
-            <TableColumn key={column.uid}>{column.name}</TableColumn>
+            <TableColumn key={column.uid}>
+              {column.name}
+            </TableColumn>
           ))}
         </TableHeader>
-        <TableBody text-left>
-          {employee.map((employee) => (
-            <TableRow key={employee.id}>
-              {(columnKey) => (
-                <TableCell text-left>
-                  {renderCell(employee, columnKey)}
+        <TableBody>
+          {employee
+            .filter((item) => {
+              if (searchColumn in item) {
+                const searchValueLower = searchValue.toLowerCase();
+                return String(item[searchColumn as keyof typeof item]).toLowerCase().includes(searchValueLower);
+              }
+              return false;
+            })
+            .map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.email}</TableCell>
+                <TableCell>{item.position}</TableCell>
+                <TableCell>{item.salary}</TableCell>
+                <TableCell className="w-10">
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button>
+                        <HiDotsVertical />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                      <DropdownItem
+                        onClick={() =>
+                          router.push("/users/" + item.id)
+                        }
+                      >View</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
                 </TableCell>
-              )}
-            </TableRow>
-          ))}
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>

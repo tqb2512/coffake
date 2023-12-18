@@ -5,7 +5,7 @@ import { AppProviders } from "@/app/providers";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div>
-      <AppProviders>{children}</AppProviders>
+      {children}
     </div>
   );
 }

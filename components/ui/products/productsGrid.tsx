@@ -4,9 +4,10 @@ import { Product } from '@prisma/client';
 import React from "react"
 import ProductCard from './productCard';
 import CategoryGrid from './categoryGrid';
-import { Button } from '@nextui-org/react';
+import { Button, Input } from '@nextui-org/react';
 import { IoAdd } from 'react-icons/io5';
 import { useRouter } from 'next/navigation';
+import { FaSearch } from 'react-icons/fa';
 
 export default function ProductsGrid() {
     const router = useRouter();
@@ -20,9 +21,22 @@ export default function ProductsGrid() {
     }, [category])
 
     return (
-        <div className="flex flex-col flex-1 mt-4 mx-8 bg-heavy-background p-4">
-            <h1 className="text-purple-600 text-2xl font-bold">Select Category</h1>
-            <div className='flex flex-row-reverse'>
+        <div className="flex flex-col flex-1 mt-4 mx-8 bg-heavy-background p-4 mb-16 rounded-lg">
+            <h1 className="text-purple-600 text-2xl font-bold my-4">Select Category</h1>
+
+
+            <CategoryGrid onPress={(category) => setCategory(category)} />
+            <h1 className="text-purple-600 text-2xl font-bold mb-2">Product List</h1>
+            <div className='flex justify-between mt-4 mb-4'>
+                <Input
+                    isClearable
+                    className="w-full sm:max-w-[44%] shadow-md rounded-md"
+                    placeholder="Search by name..."
+                    startContent={<FaSearch />}
+                    // value={filterValue}
+                    // onClear={() => onClear()}
+                    // onValueChange={onSearchChange}
+                />
                 <Button
                     onClick={() => router.push('/products/add')}
                     color="secondary"
@@ -32,14 +46,8 @@ export default function ProductsGrid() {
                     New Product
                     <IoAdd />
                   </Button>
-                <button className=" bg-primary-color rounded-md my-2 py-1 px-2">
-                    <h3 className="text-white font-semibold py-1">Filter</h3>
-                </button>
             </div>
-
-            <CategoryGrid onPress={(category) => setCategory(category)} />
-            <h1 className="text-purple-600 text-2xl font-bold">Product List</h1>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-4">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-4 pb-4">
                 {products.map((product) => (
                     <ProductCard key={product.id} product={product} />
                 ))}
