@@ -14,7 +14,7 @@ export default function ProductCard({
         router.push(`/products/${product.id}`);
     };
     return (
-        <div className="flex flex-col mr-2 bg-white p-2 rounded-md">
+        <div className="flex flex-col mr-2 bg-white p-2 rounded-md shadow-md">
                 <div className="flex flex-1">
                     <Image
                         alt="Card background"
