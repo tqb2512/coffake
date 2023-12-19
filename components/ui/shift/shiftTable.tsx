@@ -32,48 +32,50 @@ export default function ShiftTable() {
     }, [shifts])
 
     return (
-        <div>
-            <div className="float-left max-w my-5">
-                <DateRangePicker className="" enableSelect={false} value={dates} onValueChange={(value) => { setDates(value); }} />
-            </div>  
+        <div className='bg-white p-4 rounded-lg'>
             <div>
-                {shifts.length != 0 &&
-                    <Table
-                        aria-label="Shifts">
-                        <TableHeader>
-                            <TableColumn>Date</TableColumn>
-                            <TableColumn>Employees</TableColumn>
-                            <TableColumn>Actions</TableColumn>
-                        </TableHeader>
-                        <TableBody>
-                            {shifts.map((shift) => (
-                                <TableRow key={shift.id}>
-                                    <TableCell>{shift.date.toString()}</TableCell>
-                                    <TableCell>
-                                        {shift.employees.map((employee) => (
-                                            <div key={employee.employeeID}>{employee.employeeName}</div>
-                                        ))}
-                                    </TableCell>
-                                    <TableCell>
-                                        <Dropdown>
-                                            <DropdownTrigger>
-                                                <Button>
-                                                    <HiDotsVertical />
-                                                </Button>
-                                            </DropdownTrigger>
-                                            <DropdownMenu>
-                                                <DropdownItem onClick={() => {
-                                                    router.push(`/shifts/${shift.id}`)
-                                                }}>View
-                                                </DropdownItem>
-                                            </DropdownMenu>
-                                        </Dropdown>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                }
+                <div className="float-left max-w my-5">
+                    <DateRangePicker className="" enableSelect={false} value={dates} onValueChange={(value) => { setDates(value); }} />
+                </div>  
+                <div>
+                    {shifts.length != 0 &&
+                        <Table
+                            aria-label="Shifts">
+                            <TableHeader>
+                                <TableColumn>Date</TableColumn>
+                                <TableColumn>Employees</TableColumn>
+                                <TableColumn>Actions</TableColumn>
+                            </TableHeader>
+                            <TableBody>
+                                {shifts.map((shift) => (
+                                    <TableRow key={shift.id}>
+                                        <TableCell>{shift.date.toString()}</TableCell>
+                                        <TableCell>
+                                            {shift.employees.map((employee) => (
+                                                <div key={employee.employeeID}>{employee.employeeName}</div>
+                                            ))}
+                                        </TableCell>
+                                        <TableCell>
+                                            <Dropdown>
+                                                <DropdownTrigger>
+                                                    <Button>
+                                                        <HiDotsVertical />
+                                                    </Button>
+                                                </DropdownTrigger>
+                                                <DropdownMenu>
+                                                    <DropdownItem onClick={() => {
+                                                        router.push(`/shifts/${shift.id}`)
+                                                    }}>View
+                                                    </DropdownItem>
+                                                </DropdownMenu>
+                                            </Dropdown>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    }
+                </div>
             </div>
         </div>
     )

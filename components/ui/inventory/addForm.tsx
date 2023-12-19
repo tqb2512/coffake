@@ -24,21 +24,23 @@ export default function InventoryAddForm() {
   };
 
   return (
-    <div>
-      <label className="text-violet-800 text-3xl">
-        {"Add Ingredient"}
-      </label>
-      <Divider className="my-4" />
+    <div className="bg-white rounded-lg p-4">
+      <div>
+        <label className="text-violet-800 text-3xl">
+          {"Add Ingredient"}
+        </label>
+        <Divider className="my-4" />
 
-      <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
-        <Input label="Name" value={ingredient.name} onValueChange={(value) => setIngredient({...ingredient, name: value})} />
-        <Input label="Stock" value={ingredient.stock?.toString()} onValueChange={(value) => setIngredient({...ingredient, stock: parseInt(value)})} />
-        <Input label="Unit" value={ingredient.unit} onValueChange={(value) => setIngredient({...ingredient, unit: value})} />
-        <Input label="Unit Price" value={ingredient.unitPrice?.toString()} onValueChange={(value) => setIngredient({...ingredient, unitPrice: parseInt(value)})} />
-      </div>
+        <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
+          <Input label="Name" value={ingredient.name} onValueChange={(value) => setIngredient({...ingredient, name: value})} />
+          <Input label="Stock" value={ingredient.stock?.toString()} onValueChange={(value) => setIngredient({...ingredient, stock: parseInt(value)})} />
+          <Input label="Unit" value={ingredient.unit} onValueChange={(value) => setIngredient({...ingredient, unit: value})} />
+          <Input label="Unit Price" value={ingredient.unitPrice?.toString()} onValueChange={(value) => setIngredient({...ingredient, unitPrice: parseInt(value)})} />
+        </div>
 
-      <div className="flex justify-end gap-3">
-        <Button className="text-white bg-violet-800" onPress={handleSubmit}>Add</Button>
+        <div className="flex justify-end gap-3">
+          <Button className="text-white bg-violet-800" onPress={handleSubmit}>Add</Button>
+        </div>
       </div>
     </div>
   );

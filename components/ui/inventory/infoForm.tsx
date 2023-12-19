@@ -50,83 +50,85 @@ export default function IngredientInfoForm({ params }: { params: { ingredientId:
   };
 
   return (
-    <div>
-      <label className="text-violet-800 text-3xl">
-        {"Ingredient's Details"}
-        <Button onClick={handleEditClick} className="float-right">
-          {isEditing ? "Apply" : "Edit"}
-        </Button>
-      </label>
+    <div className="bg-white rounded-lg p-4">
+      <div>
+        <label className="text-violet-800 text-3xl">
+          {"Ingredient's Details"}
+          <Button onClick={handleEditClick} className="float-right">
+            {isEditing ? "Apply" : "Edit"}
+          </Button>
+        </label>
 
-      <Divider className="my-4" />
-      <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
-        <Input label="Name" value={inventory?.name} disabled={!isEditing} />
-        <Input label="Unit" value={inventory?.unit} disabled={!isEditing} />
-        <Input label="Quantity" value={inventory?.stock.toString()} disabled={!isEditing} />
-        <Input label="Unit Price" value={inventory?.unitPrice.toString()} disabled={!isEditing} />
+        <Divider className="my-4" />
+        <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
+          <Input label="Name" value={inventory?.name} disabled={!isEditing} />
+          <Input label="Unit" value={inventory?.unit} disabled={!isEditing} />
+          <Input label="Quantity" value={inventory?.stock.toString()} disabled={!isEditing} />
+          <Input label="Unit Price" value={inventory?.unitPrice.toString()} disabled={!isEditing} />
+        </div>
+
+        <label className="text-violet-800 text-3xl">
+          {"Invoices List"}
+        </label>
+        <Divider className="my-4" />
+        {!invoices.length ? <label className="text-black">
+          {"No invoice found"}
+        </label> :
+          <Table aria-label="Inventory Table">
+            <TableHeader>
+              {columns.map((column) => (
+                <TableColumn key={column.uid}>{column.name}</TableColumn>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {invoices.map((invoice) => (
+                <TableRow key={invoice.id}>
+                  <TableCell>
+                    {new Date(invoice.date).toLocaleString("en-GB")}
+                  </TableCell>
+                  <TableCell>
+                    {
+                      invoice.importList.filter(
+                        (item) => item.ingredientId == params.ingredientId
+                      )[0].supplierName
+                    }
+                  </TableCell>
+                  <TableCell>
+                    {invoice.importList
+                      .filter((item) => item.ingredientId == params.ingredientId)
+                      .reduce((a, b) => a + b.quantity, 0)}
+                  </TableCell>
+                  <TableCell>
+                    {
+                      invoice.importList.filter(
+                        (item) => item.ingredientId == params.ingredientId
+                      )[0].unitPrice
+                    }
+                  </TableCell>
+                  <TableCell>
+                    {invoice.importList
+                      .filter((item) => item.ingredientId == params.ingredientId)
+                      .reduce((a, b) => a + b.quantity * b.unitPrice, 0)}
+                  </TableCell>
+                  <TableCell>
+                    <Dropdown>
+                      <DropdownTrigger>
+                        <Button>
+                          <HiDotsVertical />
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu>
+                        <DropdownItem
+                          href={`/invoices/${invoice.id}`}
+                        ></DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>}
       </div>
-
-      <label className="text-violet-800 text-3xl">
-        {"Invoices List"}
-      </label>
-      <Divider className="my-4" />
-      {!invoices.length ? <label className="text-black">
-        {"No invoice found"}
-      </label> :
-        <Table aria-label="Inventory Table">
-          <TableHeader>
-            {columns.map((column) => (
-              <TableColumn key={column.uid}>{column.name}</TableColumn>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.id}>
-                <TableCell>
-                  {new Date(invoice.date).toLocaleString("en-GB")}
-                </TableCell>
-                <TableCell>
-                  {
-                    invoice.importList.filter(
-                      (item) => item.ingredientId == params.ingredientId
-                    )[0].supplierName
-                  }
-                </TableCell>
-                <TableCell>
-                  {invoice.importList
-                    .filter((item) => item.ingredientId == params.ingredientId)
-                    .reduce((a, b) => a + b.quantity, 0)}
-                </TableCell>
-                <TableCell>
-                  {
-                    invoice.importList.filter(
-                      (item) => item.ingredientId == params.ingredientId
-                    )[0].unitPrice
-                  }
-                </TableCell>
-                <TableCell>
-                  {invoice.importList
-                    .filter((item) => item.ingredientId == params.ingredientId)
-                    .reduce((a, b) => a + b.quantity * b.unitPrice, 0)}
-                </TableCell>
-                <TableCell>
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button>
-                        <HiDotsVertical />
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu>
-                      <DropdownItem
-                        href={`/invoices/${invoice.id}`}
-                      ></DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>}
     </div>
   );
 }

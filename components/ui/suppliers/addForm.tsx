@@ -31,21 +31,23 @@ export default function SupplierAddForm() {
   };
 
   return (
-    <div>
-      <label className="text-violet-800 text-3xl">
-        {"Add Supplier"}
-      </label>
-      <Divider className="my-4" />
+    <div className="bg-white rounded-lg p-4">
+      <div className="">
+        <label className="text-violet-800 text-3xl">
+          {"Add Supplier"}
+        </label>
+        <Divider className="my-4" />
 
-      <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
-        <Input label="Name" value={supplier.name} />
-        <Input label="Company" value={supplier.company} />
-        <Input label="Phone Number" value={supplier.phone} />
-        <Input label="Email" value={supplier.email} />
-      </div>
+        <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
+          <Input label="Name" value={supplier.name} />
+          <Input label="Company" value={supplier.company} />
+          <Input label="Phone Number" value={supplier.phone} />
+          <Input label="Email" value={supplier.email} />
+        </div>
 
-      <div className="flex justify-end gap-3">
-        <Button className="text-white bg-violet-800" onPress={handleSubmit}>Add</Button>
+        <div className="flex justify-end gap-3">
+          <Button className="text-white bg-violet-800" onPress={handleSubmit}>Add</Button>
+        </div>
       </div>
     </div>
   );

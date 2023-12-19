@@ -45,41 +45,43 @@ export default function InvoiceAddForm() {
     }
 
     return (
-        <div>
-            <InvoiceImportModal invoice={invoice} setInvoice={setInvoice}/>
-            <Table>
-                <TableHeader>
-                    {collumns.map((collumn) => (
-                        <TableColumn key={collumn.key}>{collumn.name}</TableColumn>
-                    ))}
-                </TableHeader>
-                <TableBody>
-                    {invoice.importList?.map((item) => (
-                        <TableRow key={item.ingredientId + item.suppilerId}>
-                            <TableCell>{item.ingredientName}</TableCell>
-                            <TableCell>{item.quantity}</TableCell>
-                            <TableCell>{item.unitPrice}</TableCell>
-                            <TableCell>{item.supplierName}</TableCell>
-                            <TableCell>{item.quantity * item.unitPrice}</TableCell>
-                            <TableCell>
-                                <Dropdown>
-                                    <DropdownTrigger>
-                                        <Button>
-                                            <HiDotsVertical />
-                                        </Button>
-                                    </DropdownTrigger>
-                                    <DropdownMenu>
-                                        <DropdownItem>
-                                            <Button onClick={() => handleDelete(invoice.importList?.indexOf(item) || 0)}>Delete</Button>
-                                        </DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-            <Button onClick={handleSubmmit}>Submit</Button>
-        </div>   
+        <div className="bg-white rounded-lg p-4">
+            <div>
+                <InvoiceImportModal invoice={invoice} setInvoice={setInvoice}/>
+                <Table>
+                    <TableHeader>
+                        {collumns.map((collumn) => (
+                            <TableColumn key={collumn.key}>{collumn.name}</TableColumn>
+                        ))}
+                    </TableHeader>
+                    <TableBody>
+                        {invoice.importList?.map((item) => (
+                            <TableRow key={item.ingredientId + item.suppilerId}>
+                                <TableCell>{item.ingredientName}</TableCell>
+                                <TableCell>{item.quantity}</TableCell>
+                                <TableCell>{item.unitPrice}</TableCell>
+                                <TableCell>{item.supplierName}</TableCell>
+                                <TableCell>{item.quantity * item.unitPrice}</TableCell>
+                                <TableCell>
+                                    <Dropdown>
+                                        <DropdownTrigger>
+                                            <Button>
+                                                <HiDotsVertical />
+                                            </Button>
+                                        </DropdownTrigger>
+                                        <DropdownMenu>
+                                            <DropdownItem>
+                                                <Button onClick={() => handleDelete(invoice.importList?.indexOf(item) || 0)}>Delete</Button>
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+                <Button onClick={handleSubmmit}>Submit</Button>
+            </div>   
+        </div>
     )
 }
