@@ -52,7 +52,7 @@ export default function ShiftTable() {
                                         <TableCell>{shift.date.toString()}</TableCell>
                                         <TableCell>
                                             {shift.employees.map((employee) => (
-                                                <div key={employee.employeeID}>{employee.employeeName}</div>
+                                                <div key={employee.employeeID}>{employee.employeeName} from {employee.from} to {employee.to}</div>
                                             ))}
                                         </TableCell>
                                         <TableCell>

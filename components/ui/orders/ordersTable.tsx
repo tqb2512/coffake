@@ -26,8 +26,8 @@ const statuses = [
 
 const searchColumns = [
   { name: "Date", uid: "date" },
-  { name: "Customer", uid: "customer" },
-  { name: "Total", uid: "total" },
+  { name: "Customer", uid: "customerName" },
+  { name: "Total", uid: "totalPrice" },
 ];
 
 
