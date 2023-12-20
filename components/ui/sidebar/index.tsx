@@ -107,7 +107,9 @@ const menuItems = [
 
 export default function SideBar() {
     return (
-        <div className="flex flex-col bg-[#2F2C2B] min-h-full fixed">
+      // <div className='h-full'>
+        // <div className="custom-scrollbar fixed max-md:sticky left-0 top-0 z-20 max-h-full w-52 flex flex-col justify-start bg-[#2F2C2B] border-r min-h-full overflow-auto max-md:w-20 ">
+        <div className="custom-scrollbar fixed left-0 top-0 z-20 max-h-full flex flex-col justify-start bg-[#2F2C2B] border-r min-h-full overflow-auto ">
             <div className="flex items-center">
                 <h1 className='font-extrabold text-white text-3xl mx-auto pt-2 mb-6'>Coffake</h1>
             </div>
@@ -118,6 +120,8 @@ export default function SideBar() {
                     </li>
                 ))}
             </ul>
-        </div>
+        {/* </div> */}
+
+      </div>
     )
 }

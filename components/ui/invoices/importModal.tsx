@@ -3,6 +3,8 @@
 
 import React from "react"
 import { Invoice, Supplier, Inventory } from "@prisma/client"
+import { Input, Select, SelectItem, Textarea } from "@nextui-org/react"
+import { HiX } from "react-icons/hi"
 
 export default function InvoiceImportModal({ invoice, setInvoice}: { invoice: Invoice, setInvoice: React.Dispatch<React.SetStateAction<Invoice>>}) {
 
@@ -34,13 +36,13 @@ export default function InvoiceImportModal({ invoice, setInvoice}: { invoice: In
                 importList: [
                     ...invoice.importList || [],
                     {
-                        ingredientId: e.currentTarget.ingredientId.value,
-                        ingredientName: inventories.find((inventory) => inventory.id === e.currentTarget.ingredientId.value)?.name || "",
-                        quantity: Number(e.currentTarget.quantity.value),
-                        unitPrice: Number(e.currentTarget.unitPrice.value),
-                        suppilerId: e.currentTarget.suppilerId.value,
-                        supplierName: suppliers.find((supplier) => supplier.id === e.currentTarget.suppilerId.value)?.name || "",
-                        note: e.currentTarget.note.value
+                        ingredientId: e.currentTarget.ingredientId?.value,
+                        ingredientName: inventories.find((inventory) => inventory.id === e.currentTarget.ingredientId?.value)?.name || "",
+                        quantity: Number(e.currentTarget.quantity?.value),
+                        unitPrice: Number(e.currentTarget.unitPrice?.value),
+                        suppilerId: e.currentTarget.suppilerId?.value,
+                        supplierName: suppliers.find((supplier) => supplier.id === e.currentTarget.suppilerId?.value)?.name || "",
+                        note: e.currentTarget.note?.value
                     }
                 ]
             }
@@ -51,60 +53,81 @@ export default function InvoiceImportModal({ invoice, setInvoice}: { invoice: In
     return (
         <div className="App">
             <button
-                className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
+                className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-4"
                 type="button"
                 style={{ transition: "all .15s ease" }}
                 onClick={toggleModal}
             >
-                Open Modal
+                Add Ingredient
             </button>
 
             {isOpen && (
                 <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                    <div className="relative w-auto my-6 mx-auto max-w-3xl">
-                        <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                            <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">                                
+                    <div className="relative w-72 my-6 mx-auto max-w-4xl">
+                        <div className="rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none px-4 border ">
+                            <div className="flex items-start justify-between border-gray-300 mb-4 borderrounded-t pt-2"> 
+                                <h3 className="text-purple-500 font-bold text-xl">
+                                    Add Ingredient 
+                                </h3>                               
                                 <button
-                                    className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                    className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl font-semibold outline-none focus:outline-none"
                                     onClick={toggleModal}
                                 >
-                                    <span className="bg-transparent text-black h-6 w-6 text-2xl block outline-none focus:outline-none">×</span>
+                                    <span className="bg-transparenth-6 w-6 text-2xl block outline-none focus:outline-none text-gray-500">
+                                        <HiX />
+                                    </span>
                                 </button>
                             </div>
                             <div>
                                 <form onSubmit={handleSubmmit}>
                                     <div className="flex flex-col">
-                                        <label htmlFor="ingredientId">Ingredient</label>
-                                        <select name="ingredientId" id="ingredientId" className="border border-gray-300 rounded-md">
+                                        <label className="hidden" htmlFor="ingredientId">Ingredient</label>
+                                        <Select 
+                                            label="Select a Supplier" 
+                                            className="max-w-xs" 
+                                        >
                                             {inventories.map((inventory) => (
-                                                <option key={inventory.id} value={inventory.id}>{inventory.name}</option>
+                                                <SelectItem id="ingredientId" key={inventory.id} value={inventory.id}>
+                                                    {inventory.name}
+                                                </SelectItem>
                                             ))}
-                                        </select>
+                                        </Select>
+                                    </div>
+                                    <div className="flex flex-col my-4">
+                                        <label className="hidden" htmlFor="quantity">Quantity</label>
+
+                                        <Input type="number" label="Quantity" name="quantity" id="quantity" placeholder="Enter Quantity" />
+                                    </div>
+                                    <div className="flex flex-col my-4">
+                                        <label className="hidden" htmlFor="unitPrice">Unit Price</label>
+                                        <Input type="number" label="Unit Price" name="unitPrice" id="unitPrice" placeholder="Enter Unitprice" />
                                     </div>
                                     <div className="flex flex-col">
-                                        <label htmlFor="quantity">Quantity</label>
-                                        <input type="number" name="quantity" id="quantity" className="border border-gray-300 rounded-md"/>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <label htmlFor="unitPrice">Unit Price</label>
-                                        <input type="number" name="unitPrice" id="unitPrice" className="border border-gray-300 rounded-md"/>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <label htmlFor="suppilerId">Supplier</label>
-                                        <select name="suppilerId" id="suppilerId" className="border border-gray-300 rounded-md">
+                                        <label className="hidden" htmlFor="suppilerId">Supplier</label>
+                                        <Select 
+                                            label="Select a Supplier" 
+                                            className="max-w-xs" 
+                                        >
                                             {suppliers.map((supplier) => (
-                                                <option key={supplier.id} value={supplier.id}>{supplier.name}</option>
+                                            <SelectItem key={supplier.id} value={supplier.id}>
+                                                {supplier.name}
+                                            </SelectItem>
                                             ))}
-                                        </select>
+                                        </Select>
                                     </div>
-                                    <div className="flex flex-col">
-                                        <label htmlFor="note">Note</label>
-                                        <textarea name="note" id="note" className="border border-gray-300 rounded-md"/>
+                                    <div className="flex flex-col my-4">
+                                        <label className="hidden" htmlFor="note">Note</label>
+                                        <Textarea 
+                                            name="note"
+                                            id="note"
+                                            label="Note"
+                                            placeholder="Addition note"
+                                            className="max-w-xs"
+                                        />
                                     </div>
-                                    <button type="submit">Add</button>
+                                    <button className="text-white font-semibold bg-purple-400 px-4 py-2 rounded-lg float-right mb-4 hover:bg-purple-300" type="submit">Add</button>
                                 </form>
                             </div>
-
                         </div>
                     </div>
                 </div>

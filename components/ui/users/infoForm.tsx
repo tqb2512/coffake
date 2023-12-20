@@ -53,56 +53,58 @@ export default function UserInfoForm({ params, }: { params: { username: string }
   }
 
   return (
-    <div>
-      <label className="text-violet-800 text-3xl">
-        {"Employee's Details"}
-        <Button onClick={handleEditClick} className="float-right">
-          {isEditing ? "Apply" : "Edit"}
-        </Button>
-      </label>
-      <Divider className="my-4" />
-      
-      <div className="grid grid-cols-3 gap-6 mt-5 mb-10">
-        <div className="flex flex-col gap-2">
+    <div className="bg-white p-4 rounded-lg">
+      <div>
+        <label className="text-violet-800 text-3xl">
+          {"Employee's Details"}
+          <Button onClick={handleEditClick} className="float-right">
+            {isEditing ? "Apply" : "Edit"}
+          </Button>
+        </label>
+        <Divider className="my-4" />
+        
+        <div className="grid grid-cols-3 gap-6 mt-5 mb-10">
+          <div className="flex flex-col gap-2">
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Input  label="Name" disabled={!isEditing} value={employee.name} />
+            <Input label="Email" disabled={!isEditing} value={employee.email} />
+            <Input label="Position" disabled={!isEditing} value={employee.position} />
+            <Input label="Salary" disabled={!isEditing} value={employee.salary?.toString()} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Input label="Username" disabled={!isEditing} value={employee.username} />
+            <Input label="Password" disabled={!isEditing} value={password} onValueChange={(value) => {setPassword(value)}} type="password" />
+            <Input label="Phone Number" disabled={!isEditing} value={employee.phone} />
+          </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <Input  label="Name" disabled={!isEditing} value={employee.name} />
-          <Input label="Email" disabled={!isEditing} value={employee.email} />
-          <Input label="Position" disabled={!isEditing} value={employee.position} />
-          <Input label="Salary" disabled={!isEditing} value={employee.salary?.toString()} />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Input label="Username" disabled={!isEditing} value={employee.username} />
-          <Input label="Password" disabled={!isEditing} value={password} onValueChange={(value) => {setPassword(value)}} type="password" />
-          <Input label="Phone Number" disabled={!isEditing} value={employee.phone} />
-        </div>
+        <label className="text-violet-800 text-3xl">
+          {"Employee's Shifts"}
+        </label>
+        <Divider className="my-4" />
+        {!shifts.length ? <label className="text-black">
+          {"No shifts found"}
+        </label> :
+          <Table aria-label="Shifts">
+            <TableHeader>
+              {columns.map((column) => (
+                <TableColumn key={column.key}>{column.name}</TableColumn>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {shifts.map((shift) => (
+                <TableRow key={shift.id}>
+                  <TableCell>{shift.date.toString()}</TableCell>
+                  <TableCell>{shift.employees.find((curEmployee) => curEmployee.employeeID === employee.id)?.from}</TableCell>
+                  <TableCell>{shift.employees.find((curEmployee) => curEmployee.employeeID === employee.id)?.to}</TableCell>
+                  <TableCell>{shift.employees.find((curEmployee) => curEmployee.employeeID === employee.id)?.workHours}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>}
       </div>
-
-      <label className="text-violet-800 text-3xl">
-        {"Employee's Shifts"}
-      </label>
-      <Divider className="my-4" />
-      {!shifts.length ? <label className="text-black">
-        {"No shifts found"}
-      </label> :
-        <Table aria-label="Shifts">
-          <TableHeader>
-            {columns.map((column) => (
-              <TableColumn key={column.key}>{column.name}</TableColumn>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {shifts.map((shift) => (
-              <TableRow key={shift.id}>
-                <TableCell>{shift.date.toString()}</TableCell>
-                <TableCell>{shift.employees.find((curEmployee) => curEmployee.employeeID === employee.id)?.from}</TableCell>
-                <TableCell>{shift.employees.find((curEmployee) => curEmployee.employeeID === employee.id)?.to}</TableCell>
-                <TableCell>{shift.employees.find((curEmployee) => curEmployee.employeeID === employee.id)?.workHours}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>}
     </div>
   );
 }

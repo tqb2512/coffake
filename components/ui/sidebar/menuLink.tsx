@@ -15,12 +15,12 @@ export default function MenuLink(item: Props) {
     <Link
       href={item.path}
       className={`text-white flex flex-row items-center justify-start px-4 h-12 w-10/12 mx-4 my-2 rounded-md ${
-        pathname == item.path ? "bg-purple-400" : ""
+        pathname.startsWith(item.path) ? "bg-purple-400" : ""
       }`}
     >
       {item.icon}
       &nbsp; &nbsp;
-      {item.title}
+      <h1 className="max-md:hidden">{item.title}</h1>
     </Link>
   );
 }
