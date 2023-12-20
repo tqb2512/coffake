@@ -9,7 +9,8 @@ const nextConfig = {
                 pathname: '**',
             },
         ],
-    }
+    },
+    transpilePackages: ['@mui/x-charts']
 }
 
 module.exports = nextConfig
