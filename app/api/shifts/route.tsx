@@ -8,7 +8,7 @@ export async function GET(req: Request) {
     const query = new URL(req.url).searchParams;
     const from = query.get("from") ?? "";
     const to = query.get("to") ?? "";
-    if (from == "undefined" || to == "undefined") 
+    if (from == "undefined" || to == "undefined")
         return NextResponse.json([])
     const shifts = await prisma.shift.findMany({
         where: {
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     const { date, employees } = await req.json();
 
     if (!date || !employees) {
-        return NextResponse.json({"message": "Missing fields"}, { status: 400 });
+        return NextResponse.json({ "message": "Missing fields" }, { status: 400 });
     }
 
     const shift = await prisma.shift.create({
@@ -38,8 +38,8 @@ export async function POST(req: Request) {
     });
 
     if (!shift) {
-        return NextResponse.json({"message": "Shift not created"}, { status: 500 });
+        return NextResponse.json({ "message": "Shift not created" }, { status: 500 });
     }
-    
+
     return NextResponse.json(shift);
 }

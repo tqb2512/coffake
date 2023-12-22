@@ -68,6 +68,7 @@ model Customer {
 model Employee {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   email    String
+  imageUrl String
   name     String
   password String
   phone    String
@@ -104,6 +105,7 @@ model Order {
 model Product {
   id       String            @id @default(auto()) @map("_id") @db.ObjectId
   category String
+  imageUrl String
   name     String
   sizeList ProductSizeList[]
 }

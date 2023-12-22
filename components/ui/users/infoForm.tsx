@@ -14,7 +14,9 @@ import {
   SelectItem,
 } from "@nextui-org/react";
 import { Employee, Shift } from "@prisma/client";
+import { CldUploadWidget } from "next-cloudinary";
 import React from "react";
+import { HiOutlineCamera } from "react-icons/hi2";
 
 const columns = [
   { name: "Date", key: "date" },
@@ -72,29 +74,56 @@ export default function UserInfoForm({ params, }: { params: { username: string }
           </Button>
         </label>
         <Divider className="my-4" />
-        
-        <div className="grid grid-cols-3 gap-6 mt-5 mb-10">
-          <div className="flex flex-col gap-2">
+
+        <div className="grid grid-cols-3 gap-7 mt-5 mb-10">
+          <div className="flex flex-col gap-1">
+            <label className="border w-50 h-54 bg-gray-300 rounded-md flex items-center text-center relative">
+              <CldUploadWidget uploadPreset="zwrrw7i4" options={{
+                sources: ['local', 'url'],
+                multiple: false,
+                maxFiles: 1
+              }}
+                onSuccess={(result) => {
+                  setEmployee({ ...employee, imageUrl: (result.info as { secure_url: string }).secure_url });
+                }}
+              >
+                {({ open }) => {
+                  if (employee.imageUrl !== "") {
+                    return (
+                      <div className="absolute inset-0 h-[260px] rounded-lg" onClick={() => open()}>
+                        <img src={employee.imageUrl} className="object-cover w-full h-full rounded-lg" />
+                      </div>
+                    )
+                  }
+                  return (
+                    <div className="absolute inset-0 flex flex-col justify-center items-center" onClick={() => open()}>
+                      <HiOutlineCamera className="text-4xl" />
+                      <p className="text-gray-500">Upload Image</p>
+                    </div>
+                  )
+                }}
+              </CldUploadWidget>
+            </label>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <Input  label="Name" disabled={!isEditing} value={employee?.name} onValueChange={(value) => {setEmployee({...employee, name: value})}} />
-            <Input label="Email" disabled={!isEditing} value={employee?.email} onValueChange={(value) => {setEmployee({...employee, email: value})}} />
+          <div className="flex flex-col gap-3">
+            <Input label="Name" disabled={!isEditing} value={employee?.name} onValueChange={(value) => { setEmployee({ ...employee, name: value }) }} />
+            <Input label="Email" disabled={!isEditing} value={employee?.email} onValueChange={(value) => { setEmployee({ ...employee, email: value }) }} />
             <Select
               label="Position"
               value={employee.position}
               selectedKeys={[employee.position]}
-              onChange={(e) => setEmployee({...employee, position: e.target.value})}>
+              onChange={(e) => setEmployee({ ...employee, position: e.target.value })}>
               <SelectItem key="Manager" value="Manager">Manager</SelectItem>
               <SelectItem key="Cashier" value="Cashier">Cashier</SelectItem>
               <SelectItem key="Barista" value="Barista">Barista</SelectItem>
             </Select>
-            <Input label="Salary" type="number" endContent="$" disabled={!isEditing} value={employee?.salary?.toString()} onValueChange={(value) => {setEmployee({...employee, salary: parseInt(value)})}} />
+            <Input label="Salary" type="number" endContent="$" disabled={!isEditing} value={employee?.salary?.toString()} onValueChange={(value) => { setEmployee({ ...employee, salary: parseInt(value) }) }} />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-3">
             <Input label="Username" disabled={!isEditing} value={employee?.username} />
-            <Input label="Password" disabled={!isEditing} value={password} onValueChange={(value) => {setPassword(value)}} type="password" />
-            <Input label="Phone Number" disabled={!isEditing} value={employee?.phone}/>
+            <Input label="Password" disabled={!isEditing} value={password} onValueChange={(value) => { setPassword(value) }} type="password" />
+            <Input label="Phone Number" disabled={!isEditing} value={employee?.phone} />
           </div>
         </div>
 

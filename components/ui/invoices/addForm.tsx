@@ -17,6 +17,8 @@ import {
 } from "@nextui-org/react";
 import InvoiceImportModal from "./importModal";
 import { HiDotsVertical } from "react-icons/hi";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const collumns = [
   { name: "Name", key: "name" },
@@ -28,6 +30,8 @@ const collumns = [
 ];
 
 export default function InvoiceAddForm() {
+  const router = useRouter();
+  const { data: session, status } = useSession()
   const [invoice, setInvoice] = React.useState<Invoice>({
     date: new Date(),
   } as Invoice);
@@ -54,6 +58,11 @@ export default function InvoiceAddForm() {
       importList: invoice.importList?.filter((_, i) => i !== index),
     });
   };
+
+  if (status === "loading") return <p>Loading...</p>;
+  if (status === "unauthenticated") {
+    router.push("/login")
+  }
 
   return (
     <div className="bg-white rounded-lg p-4">

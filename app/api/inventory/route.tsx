@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     const { name, stock, unit, unitPrice } = await req.json();
 
     if (!name || !unit || !unitPrice || stock === undefined) {
-        return NextResponse.json({"message": "Missing fields"}, { status: 400 });
+        return NextResponse.json({ "message": "Missing fields" }, { status: 400 });
     }
 
     const inventory = await prisma.inventory.create({
@@ -28,8 +28,8 @@ export async function POST(req: Request) {
     });
 
     if (!inventory) {
-        return NextResponse.json({"message": "Inventory not created"}, { status: 500 });
+        return NextResponse.json({ "message": "Inventory not created" }, { status: 500 });
     }
 
-    return NextResponse.json({"message": "Inventory created"});
+    return NextResponse.json({ "message": "Inventory created" });
 }

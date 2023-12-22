@@ -36,7 +36,10 @@ export default function ShiftTable() {
             <div>
                 <div className="float-left max-w my-5">
                     <DateRangePicker className="" enableSelect={false} value={dates} onValueChange={(value) => { setDates(value); }} />
-                </div>  
+                </div>
+                <div className="float-right my-5">
+                    <Button onClick={() => router.push('/shifts/add')}>Add Shift</Button>
+                </div>
                 <div>
                     {shifts.length != 0 &&
                         <Table

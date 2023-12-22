@@ -9,7 +9,7 @@ export async function GET(req: Request) {
     const status = query.get("status") ?? "";
     const orders = await prisma.order.findMany({
         where: {
-            status: (status!=='All' ? status: {})
+            status: (status !== 'All' ? status : {})
         },
         cacheStrategy: { ttl: 60 },
     });
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     });
 
     if (!createdOrder) {
-        return NextResponse.json({"message": "Order not created"}, { status: 500 });
+        return NextResponse.json({ "message": "Order not created" }, { status: 500 });
     }
 
     return NextResponse.json(createdOrder);

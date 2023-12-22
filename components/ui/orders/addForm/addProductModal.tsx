@@ -10,7 +10,7 @@ const columns = [
   { name: "Action", key: "action" },
 ]
 
-export default function AddProductModal({ order, setOrder, orderItem, isOpen, setIsOpen }: { order: Order, setOrder: React.Dispatch<React.SetStateAction<Order>>, orderItem: OrderItems, isOpen: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
+export default function AddProductModal({ order, setOrder, orderItem, isOpen, setIsOpen }: { order: Order, setOrder: React.Dispatch<React.SetStateAction<Order>>, orderItem: OrderItems, isOpen: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
 
   const [products, setProducts] = React.useState<Product[]>([])
   const [selectedToppings, setSelectedToppings] = React.useState([] as Product[])

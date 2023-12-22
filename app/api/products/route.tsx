@@ -9,7 +9,7 @@ export async function GET(req: Request) {
     const category = query.get("category") ?? "";
     const products = await prisma.product.findMany({
         where: {
-            category: (category!=='All' ? category: {})
+            category: (category !== 'All' ? category : {})
         },
         cacheStrategy: { ttl: 60 },
     });
@@ -17,12 +17,13 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-    const { name, category, sizeList } = await req.json();
+    const { name, category, sizeList, imageUrl } = await req.json();
     const newProduct = await prisma.product.create({
         data: {
             name,
             category,
-            sizeList: sizeList
+            sizeList: sizeList,
+            imageUrl,
         },
     });
     return NextResponse.json(newProduct);

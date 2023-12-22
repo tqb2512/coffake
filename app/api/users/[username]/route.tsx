@@ -5,9 +5,9 @@ import { hash } from 'bcrypt'
 
 const prisma = new PrismaClient().$extends(withAccelerate());
 
-export async function GET(req : Request) {
+export async function GET(req: Request) {
     const username = new URL(req.url).pathname.split("/").pop();
-    
+
     const employee = await prisma.employee.findFirst({
         where: {
             username: username
@@ -21,7 +21,7 @@ export async function GET(req : Request) {
 export async function PUT(req: Request) {
     const { id, name, email, position, salary, username, phone, password } = await req.json();
 
-    if ( !id || !name || !email || !position || !salary || !username || !phone ) {
+    if (!id || !name || !email || !position || !salary || !username || !phone) {
         return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 

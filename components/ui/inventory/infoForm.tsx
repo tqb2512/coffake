@@ -20,6 +20,8 @@ import {
 } from "@nextui-org/react";
 import { Inventory, Invoice } from "@prisma/client";
 import { HiDotsVertical } from "react-icons/hi";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const columns = [
   { name: "Date", uid: "date", sortable: true },
@@ -31,6 +33,9 @@ const columns = [
 ];
 
 export default function IngredientInfoForm({ params }: { params: { ingredientId: string } }) {
+
+  const router = useRouter();
+  const { data: session, status } = useSession()
   const [inventory, setInventory] = React.useState<Inventory>({} as Inventory);
   const [invoices, setInvoices] = React.useState<Invoice[]>([]);
   const [isEditing, setIsEditing] = React.useState(false);
@@ -57,6 +62,11 @@ export default function IngredientInfoForm({ params }: { params: { ingredientId:
     }
   };
 
+  if (status === "loading") return <p>Loading...</p>;
+  if (status === "unauthenticated") {
+    router.push("/login")
+  }
+
   return (
     <div className="bg-white rounded-lg p-4">
       <div>
@@ -69,7 +79,7 @@ export default function IngredientInfoForm({ params }: { params: { ingredientId:
 
         <Divider className="my-4" />
         <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
-          <Input label="Name" value={inventory?.name} disabled={!isEditing} onChange={(e) => setInventory({ ...inventory, name: e.target.value }) } />
+          <Input label="Name" value={inventory?.name} disabled={!isEditing} onChange={(e) => setInventory({ ...inventory, name: e.target.value })} />
           <Select
             label="Unit"
             onChange={(e) => setInventory({ ...inventory, unit: e.target.value })}

@@ -116,13 +116,13 @@ export default function OrdersTable() {
           </div>
         </div>
 
-        <Table 
+        <Table
           className="mt-5"
           aria-label='Orders Table'
         >
           <TableHeader>
             {columns.map((column) => (
-              <TableColumn key={column.uid}> 
+              <TableColumn key={column.uid}>
                 {column.sortable ? (
                   <div className="flex flex-row items-center gap-1 justify-between">
                     <span>{column.name}</span>
@@ -178,12 +178,11 @@ export default function OrdersTable() {
                           }
                         >View</DropdownItem>
                         <DropdownItem
-                          onClick={() =>
-                            {
-                              fetch("/api/orders/" + item.id, {
-                                method: "DELETE",
-                              })
-                            }
+                          onClick={() => {
+                            fetch("/api/orders/" + item.id, {
+                              method: "DELETE",
+                            })
+                          }
                           }
                         >Delete</DropdownItem>
                       </DropdownMenu>

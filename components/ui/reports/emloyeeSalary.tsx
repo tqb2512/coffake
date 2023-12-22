@@ -27,12 +27,12 @@ export default function EmployeeSalary({ shifts, employees }: { shifts: Shift[],
         const data: EmployeeSalary[] = [];
         shifts.forEach((shift) => {
             shift.employees.forEach((employee) => {
-                
+
                 const index = data.findIndex((item) => item.id === employee.employeeID);
                 const salary = employees.find((employee) => employee.id === employee.id)?.salary;
 
                 console.log(salary);
-                
+
                 if (index === -1) {
                     data.push({
                         id: employee.employeeID,

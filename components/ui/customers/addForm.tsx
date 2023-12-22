@@ -10,12 +10,17 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 import { Customer } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function CustomerAddForm() {
+
+  const router = useRouter();
+  const { data: session, status } = useSession()
   const [customer, setCustomer] = React.useState({} as Customer);
 
   const handleSubmit = () => {
-    
+
     fetch("/api/customers", {
       method: "POST",
       headers: {
@@ -26,6 +31,11 @@ export default function CustomerAddForm() {
       .then((res) => res.json())
       .then((data) => console.log(data));
   };
+
+  if (status === "loading") return <p>Loading...</p>;
+  if (status === "unauthenticated") {
+    router.push("/login")
+  }
 
   return (
     <div className="bg-white p-4  rounded-lg">
@@ -46,6 +56,6 @@ export default function CustomerAddForm() {
         </div>
       </div>
     </div>
-    
+
   );
 }

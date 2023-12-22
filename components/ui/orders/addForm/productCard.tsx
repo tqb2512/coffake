@@ -46,7 +46,7 @@ export default function ProductCard({
                 removeWrapper
                 alt="Relaxing app background"
                 className="z-0 w-full h-full object-cover"
-                src="https://images.foody.vn/res/g111/1107037/prof/s/foody-upload-api-foody-mobile-in-854905df-210926200239.jpeg"
+                src={product.imageUrl}
             />
             <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100 backdrop-blur-lg bg-opacity-40">
                 <div className="flex flex-col flex-grow gap-2">
@@ -62,7 +62,7 @@ export default function ProductCard({
                                     value={sizeInfo.size}
                                     onChange={(e) => {
                                         setSelectedSize(e.target.value),
-                                         setSelectedPrice(sizeInfo.price);
+                                            setSelectedPrice(sizeInfo.price);
                                     }}
                                 >
                                     <p className="text-white">{sizeInfo.size}</p>
@@ -75,14 +75,14 @@ export default function ProductCard({
                     Add
                 </Button>
                 {isOpen && (
-                <AddProductModal
-                    order={order}
-                    setOrder={setOrder}
-                    orderItem={orderItem}
-                    isOpen={isOpen}
-                    setIsOpen={setIsOpen}
-                />
-            )}
+                    <AddProductModal
+                        order={order}
+                        setOrder={setOrder}
+                        orderItem={orderItem}
+                        isOpen={isOpen}
+                        setIsOpen={setIsOpen}
+                    />
+                )}
             </CardFooter>
         </Card>
     );

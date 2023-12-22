@@ -1,6 +1,6 @@
 import { LineChart } from "@mui/x-charts";
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
-import { Product, Inventory, Order} from "@prisma/client";
+import { Product, Inventory, Order } from "@prisma/client";
 
 import React from "react";
 
@@ -18,7 +18,7 @@ type ProfitPerDay = {
     profit: number;
 }
 
-export default function ProfitPerDay({orders}: {orders: Order[]}) {
+export default function ProfitPerDay({ orders }: { orders: Order[] }) {
 
     const [tableData, setTableData] = React.useState<ProfitPerDay[]>([]);
     const [products, setProducts] = React.useState<Product[]>([]);
@@ -46,7 +46,7 @@ export default function ProfitPerDay({orders}: {orders: Order[]}) {
                         });
                     }
                 }
-                
+
                 item.toppings.forEach((topping) => {
                     const product = products.find((product) => product.id === topping.productID);
                     if (product) {
@@ -74,7 +74,7 @@ export default function ProfitPerDay({orders}: {orders: Order[]}) {
             }
         });
         setTableData(data);
-           
+
     }, [orders]);
 
     return (
@@ -117,7 +117,7 @@ export default function ProfitPerDay({orders}: {orders: Order[]}) {
             <div className="h-60 w-full mt-5">
                 <Table
                     aria-label="Profit Per Day"
-                    >
+                >
                     <TableHeader>
                         {columns.map((column) => (
                             <TableColumn key={column.uid}>{column.name}</TableColumn>

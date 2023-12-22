@@ -13,11 +13,11 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-    
-    const { name, email, position, salary, username, password, phone } = await req.json();
 
-    if (!name || !email || !position || !salary || !username || !password || !phone) {
-        return NextResponse.json({"message": "Missing fields"}, { status: 400 });
+    const { name, email, position, salary, username, password, phone, imageUrl } = await req.json();
+
+    if (!name || !email || !position || !salary || !username || !password || !phone ) {
+        return NextResponse.json({ "message": "Missing fields" }, { status: 400 });
     }
 
     const hashedPassword = await hash(password, 10);
@@ -30,21 +30,22 @@ export async function POST(req: Request) {
             salary,
             username,
             password: hashedPassword,
-            phone
+            phone,
+            imageUrl
         },
     });
 
     if (!employee) {
-        return NextResponse.json({"message": "Employee not created"}, { status: 500 });
+        return NextResponse.json({ "message": "Employee not created" }, { status: 500 });
     }
-    
-    return NextResponse.json({"message": "Employee created"});
+
+    return NextResponse.json({ "message": "Employee created" });
 }
 
 export async function DELETE(req: Request) {
     const { id } = await req.json();
     if (!id) {
-        return NextResponse.json({"message": "Missing fields"}, { status: 400 });
+        return NextResponse.json({ "message": "Missing fields" }, { status: 400 });
     }
 
     const employee = await prisma.employee.delete({
@@ -54,10 +55,10 @@ export async function DELETE(req: Request) {
     });
 
     if (!employee) {
-        return NextResponse.json({"message": "Employee not deleted"}, { status: 500 });
+        return NextResponse.json({ "message": "Employee not deleted" }, { status: 500 });
     }
-    
-    return NextResponse.json({"message": "Employee deleted"});
+
+    return NextResponse.json({ "message": "Employee deleted" });
 }
 
 
@@ -65,7 +66,7 @@ export async function UPDATE(req: Request) {
     const { id, name, email, position, salary, username, password, phone } = await req.json();
 
     if (!id || !name || !email || !position || !salary || !username || !password || !phone) {
-        return NextResponse.json({"message": "Missing fields"}, { status: 400 });
+        return NextResponse.json({ "message": "Missing fields" }, { status: 400 });
     }
 
     const employee = await prisma.employee.update({
@@ -84,8 +85,8 @@ export async function UPDATE(req: Request) {
     });
 
     if (!employee) {
-        return NextResponse.json({"message": "Employee not updated"}, { status: 500 });
+        return NextResponse.json({ "message": "Employee not updated" }, { status: 500 });
     }
-    
-    return NextResponse.json({"message": "Employee updated"});
+
+    return NextResponse.json({ "message": "Employee updated" });
 }

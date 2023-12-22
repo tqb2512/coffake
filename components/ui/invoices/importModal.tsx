@@ -62,7 +62,7 @@ export default function InvoiceImportModal({
   return (
     <div className="App">
       <Button onClick={toggleModal} className="mb-5">
-        Add Ingredient        
+        Add Ingredient
       </Button>
 
       {isOpen && (

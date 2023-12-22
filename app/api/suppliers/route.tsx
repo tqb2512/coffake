@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     const { name, email, phone, company } = await req.json();
 
     if (!name || !email || !phone || !company) {
-        return NextResponse.json({"message": "Missing fields"}, { status: 400 });
+        return NextResponse.json({ "message": "Missing fields" }, { status: 400 });
     }
 
     const supplier = await prisma.supplier.create({
@@ -28,8 +28,8 @@ export async function POST(req: Request) {
     });
 
     if (!supplier) {
-        return NextResponse.json({"message": "Supplier not created"}, { status: 500 });
+        return NextResponse.json({ "message": "Supplier not created" }, { status: 500 });
     }
 
-    return NextResponse.json({"message": "Supplier created"});
+    return NextResponse.json({ "message": "Supplier created" });
 }

@@ -76,7 +76,7 @@ export default function OrderAddForm() {
                                 order={order}
                                 setOrder={setOrder}
                             />
-                        ))} 
+                        ))}
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@ export default function OrderAddForm() {
                 </Table>
 
                 <div className="flex flex-col border border-purple-600 mt-4 p-4 rounded-md">
-                    
+
                     <div className="flex justify-between">
                         <h2 className="font-bold">Subtotal</h2>
                         <h2 className="font-bold">

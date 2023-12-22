@@ -8,7 +8,7 @@ import AddIngredientModal from "./addIngredientModal";
 
 const columns = [
     { name: "Name", uid: "size" },
-    { name: "Quantiy", uid: "quantity"},
+    { name: "Quantiy", uid: "quantity" },
     { name: "Unit", uid: "unit" },
     { name: "Unit Price", uid: "unitPrice" },
     { name: "Actions", uid: "actions" },
@@ -62,7 +62,7 @@ export default function AddSizeModal({ product, setProduct, isOpen, setIsOpen }:
                         <Divider className="my-4" />
                         <div className="grid grid-cols-2 gap-6 mt-5 mb-10">
                             <Input label="Size Name" value={productSize.size} onValueChange={(value) => setProductSize({ ...productSize, size: value })} />
-                            <Input label="Price" value={productSize.price?.toString()} onValueChange={(value) => setProductSize({ ...productSize, price: Number(value) })} type="number" endContent="$"/>
+                            <Input label="Price" value={productSize.price?.toString()} onValueChange={(value) => setProductSize({ ...productSize, price: Number(value) })} type="number" endContent="$" />
                         </div>
 
                         <label className="text-violet-800 text-xl">
@@ -72,7 +72,7 @@ export default function AddSizeModal({ product, setProduct, isOpen, setIsOpen }:
                         <Divider className="my-4" />
 
                         <AddIngredientModal productSizeList={productSize} setProductSizeList={setProductSize} isOpen={isOpenIngredient} setIsOpen={setIsOpenIngredient} />
-                        
+
                         <Table>
                             <TableHeader>
                                 {columns.map((column) => (

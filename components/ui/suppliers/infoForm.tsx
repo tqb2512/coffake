@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 const columns = [
   { name: "Date", key: "date" },
   { name: "Ingredients", key: "ingredients" },
-  { name: "Action", key: "action"}
+  { name: "Action", key: "action" }
 ];
 
 export default function SupplierInfoForm({ params }: { params: { supplierId: string } }) {
@@ -33,7 +33,7 @@ export default function SupplierInfoForm({ params }: { params: { supplierId: str
       .then((res) => res.json())
       .then((data) => setSupplier(data));
   }, []);
-  
+
   React.useEffect(() => {
     fetch(`/api/invoices/bySupplierID?supplierId=${supplier.id}`)
       .then((res) => res.json())

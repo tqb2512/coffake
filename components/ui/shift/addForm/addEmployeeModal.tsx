@@ -39,7 +39,7 @@ export default function AddEmployeeModal({ shift, setShift, isOpen, setIsOpen }:
                                 {employees.map((employee) => (
                                     <TableRow key={employee.id}>
                                         <TableCell>{employee.name}</TableCell>
-                                        <TableCell>
+                                        <TableCell className="w-10">
                                             <Button
                                                 {...(shift.employees?.find((e) => e.employeeID == employee.id) ? { disabled: true } : {})}
                                                 {...(selectedEmployee.employeeID == employee.id ? { color: "secondary" } : {})}

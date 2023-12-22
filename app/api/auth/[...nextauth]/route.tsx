@@ -12,8 +12,8 @@ const handler = NextAuth({
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-              username: { label: "Username", type: "text", placeholder: "jsmith" },
-              password: { label: "Password", type: "password" }
+                username: { label: "Username", type: "text", placeholder: "jsmith" },
+                password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
                 const user = await prisma.employee.findFirst({
@@ -22,7 +22,7 @@ const handler = NextAuth({
                     },
                     cacheStrategy: { ttl: 60 },
                 });
-                
+
                 const correctPassword = await compare(credentials?.password as string, user?.password ?? "");
 
                 if (correctPassword) {
@@ -33,18 +33,18 @@ const handler = NextAuth({
                 }
                 return null
             },
-          })
+        })
     ],
     callbacks: {
-        async jwt({token, user}) {
+        async jwt({ token, user }) {
             if (user) {
                 token.name = user.name;
                 token.postion = user.position;
             }
             return token;
         },
-        
-        async session({session, token}) {
+
+        async session({ session, token }) {
             session.user.position = token.postion
             return session;
         },
@@ -57,4 +57,4 @@ const handler = NextAuth({
     },
 });
 
-export { handler as GET, handler as POST}
+export { handler as GET, handler as POST }

@@ -17,6 +17,8 @@ import {
   Divider,
 } from "@nextui-org/react";
 import { Invoice } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const columns = [
   { name: "Name", key: "name" },
@@ -27,6 +29,8 @@ const columns = [
 ];
 
 export default function InvoiceInfoForm({ params }: { params: { invoiceId: string } }) {
+  const router = useRouter();
+  const { data: session, status } = useSession()
   const [invoice, setInvoice] = useState<Invoice>();
 
   useEffect(() => {
@@ -39,9 +43,15 @@ export default function InvoiceInfoForm({ params }: { params: { invoiceId: strin
     return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
   }
 
+  if (status === "loading") return <p>Loading...</p>;
+  if (status === "unauthenticated") {
+    router.push("/login")
+  }
+
   if (!invoice) {
     return <div>Loading...</div>;
   }
+
   return (
     <div className="bg-white p-4 rounded-lg">
       <div>
@@ -51,8 +61,8 @@ export default function InvoiceInfoForm({ params }: { params: { invoiceId: strin
         <Divider className="my-4" />
 
         <div className="flex flex-col gap-4 mt-5 mb-10">
-          <Input label="Date" value={formatDate(invoice.date?.toString())} disabled/>
-          <Input label="Total" value={invoice.total.toString()} disabled endContent="$"/>
+          <Input label="Date" value={formatDate(invoice.date?.toString())} disabled />
+          <Input label="Total" value={invoice.total.toString()} disabled endContent="$" />
         </div>
 
         <label className="text-violet-800 text-3xl">

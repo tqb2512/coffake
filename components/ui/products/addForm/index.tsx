@@ -7,6 +7,7 @@ import React from "react";
 import AddSizeModal from "./addSizeModal";
 import { HiDotsVertical } from "react-icons/hi";
 import { HiOutlineCamera } from "react-icons/hi2";
+import { CldUploadButton, CldUploadWidget } from 'next-cloudinary';
 
 const categoryList = [
     "Drink",
@@ -25,6 +26,7 @@ export default function ProductAddForm() {
     const router = useRouter();
     const [isOpen, setIsOpen] = React.useState(false);
     const [product, setProduct] = React.useState({} as Product);
+    const [image, setImage] = React.useState("");
 
     const handleSubmit = () => {
         if (product.sizeList?.length == 0 || product.sizeList == undefined) {
@@ -41,15 +43,13 @@ export default function ProductAddForm() {
         }
         fetch("/api/products", {
             method: "POST",
-            body: JSON.stringify(product),
+            body: JSON.stringify({ ...product, imageUrl: image } as Product),
         })
             .then((res) => res.json())
             .then((data) => {
                 router.push("/products");
             });
     };
-
-    const upLoadImage = () => {}
 
     return (
         <div className="bg-white rounded-lg p-4">
@@ -62,20 +62,32 @@ export default function ProductAddForm() {
                 <div className="grid grid-cols-5 gap-6 mt-5 mb-10">
                     <div className="flex flex-col gap-2">
                         <div className="flex flex-col">
-                            <label className="border w-50 h-54 bg-gray-300 rounded-md flex items-center text-center relative">
-                                <HiOutlineCamera className="bg-white rounded-md shadow-lg border -m-1 h-12 w-12 text-purple-500 absolute top-0 right-0" />
-                                <input
-                                    type="file"
-                                    className="hidden"
-                                    onChange={upLoadImage}
-                                />
-
-                                <div className="h-48">
-                                    <img
-                                        src="https://loremflickr.com/360/480"
-                                        className="rounded-lg"
-                                    />
-                                </div>
+                            <label className="border w-50 h-full bg-gray-300 rounded-md flex items-center text-center relative">
+                                <CldUploadWidget uploadPreset="zwrrw7i4" options={{
+                                    sources: ['local', 'url'],
+                                    multiple: false,
+                                    maxFiles: 1
+                                }}
+                                    onSuccess={(result) => {
+                                        setImage((result?.info as { secure_url: string })?.secure_url || "");
+                                    }}
+                                >
+                                    {({ open }) => {
+                                        if (image !== "") {
+                                            return (
+                                                <div className="absolute inset-0 h-[360px] rounded-lg">
+                                                    <img src={image} className="object-cover w-full h-full rounded-lg" />
+                                                </div>
+                                            )
+                                        }
+                                        return (
+                                            <div className="absolute inset-0 flex flex-col justify-center items-center" onClick={() => open()}>
+                                                <HiOutlineCamera className="text-4xl" />
+                                                <p className="text-gray-500">Upload Image</p>
+                                            </div>
+                                        )
+                                    }}
+                                </CldUploadWidget>
                             </label>
                         </div>
                     </div>
@@ -90,33 +102,33 @@ export default function ProductAddForm() {
                                 setProduct({ ...product, name: value })
                             }
                         />
-                            <Dropdown className="">
-                                <DropdownTrigger>
-                                    <Input
-                                        label="Category"
-                                        placeholder="Category"
-                                        value={product.category}
-                                        onValueChange={(value) =>
-                                            setProduct({
-                                                ...product,
-                                                category: value,
-                                            })
+                        <Dropdown className="">
+                            <DropdownTrigger>
+                                <Input
+                                    label="Category"
+                                    placeholder="Category"
+                                    value={product.category}
+                                    onValueChange={(value) =>
+                                        setProduct({
+                                            ...product,
+                                            category: value,
+                                        })
+                                    }
+                                />
+                            </DropdownTrigger>
+                            <DropdownMenu className="">
+                                {categoryList.map((category) => (
+                                    <DropdownItem
+                                        key={category}
+                                        onClick={() =>
+                                            setProduct({ ...product, category })
                                         }
-                                    />
-                                </DropdownTrigger>
-                                <DropdownMenu className="">
-                                    {categoryList.map((category) => (
-                                        <DropdownItem
-                                            key={category}
-                                            onClick={() =>
-                                                setProduct({ ...product, category })
-                                            }
-                                        >
-                                            {category}
-                                        </DropdownItem>
-                                    ))}
-                                </DropdownMenu>
-                            </Dropdown>
+                                    >
+                                        {category}
+                                    </DropdownItem>
+                                ))}
+                            </DropdownMenu>
+                        </Dropdown>
                         <div>
                             <Divider className="my-4 bg-gray-100" />
                             <label className="text-violet-800 text-3xl">
