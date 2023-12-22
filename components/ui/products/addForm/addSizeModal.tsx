@@ -21,6 +21,22 @@ export default function AddSizeModal({ product, setProduct, isOpen, setIsOpen }:
     const [productSizeRecipe, setProductSizeRecipe] = React.useState([] as ProductSizeListRecipe[]);
 
     const handleSubmit = () => {
+        if (product.sizeList?.find((item) => item.size === productSize.size)) {
+            alert("Size already exists");
+            return;
+        }
+        if (productSize.size === "" || productSize.size == undefined) {
+            alert("Size name cannot be empty");
+            return;
+        }
+        if (productSize.price === 0 || productSize.price == undefined) {
+            alert("Price cannot be empty");
+            return;
+        }
+        if (productSize.recipe?.length == 0 || productSize.recipe == undefined) {
+            alert("Please add at least one ingredient");
+            return;
+        }
         setProduct({ ...product, sizeList: [...product.sizeList ?? [], productSize] });
         setProductSize({
             size: "",
@@ -46,7 +62,7 @@ export default function AddSizeModal({ product, setProduct, isOpen, setIsOpen }:
                         <Divider className="my-4" />
                         <div className="grid grid-cols-2 gap-6 mt-5 mb-10">
                             <Input label="Size Name" value={productSize.size} onValueChange={(value) => setProductSize({ ...productSize, size: value })} />
-                            <Input label="Price" value={productSize.price?.toString()} onValueChange={(value) => setProductSize({ ...productSize, price: Number(value) })} />
+                            <Input label="Price" value={productSize.price?.toString()} onValueChange={(value) => setProductSize({ ...productSize, price: Number(value) })} type="number" endContent="$"/>
                         </div>
 
                         <label className="text-violet-800 text-xl">
@@ -71,7 +87,7 @@ export default function AddSizeModal({ product, setProduct, isOpen, setIsOpen }:
                                         <TableCell>{recipe.ingredientName}</TableCell>
                                         <TableCell>{recipe.quantity}</TableCell>
                                         <TableCell>{recipe.ingredientUnit}</TableCell>
-                                        <TableCell>{recipe.ingredientUnitPrice}</TableCell>
+                                        <TableCell>$ {recipe.ingredientUnitPrice}</TableCell>
                                         <TableCell className="w-10">
                                             <Button className="text-white bg-violet-800" onPress={() => { setProductSize({ ...productSize, recipe: productSize.recipe?.filter((item) => item.ingredientId !== recipe.ingredientId) }) }}>Delete</Button>
                                         </TableCell>

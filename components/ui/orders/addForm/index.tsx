@@ -12,6 +12,7 @@ const categoryList = [
     "Food",
     "Topping"
 ]
+
 export default function OrderAddForm() {
 
     const router = useRouter()
@@ -35,12 +36,17 @@ export default function OrderAddForm() {
     }, [category])
 
     const handleSubmit = () => {
-        fetch('/api/orders', {
-            method: 'POST',
-            body: JSON.stringify(order)
-        })
-            .then(res => res.json())
-            .then(data => router.push(`/orders/add/${data.id}`))
+        if (order.totalPrice == 0) {
+            alert("Please add at least one item to the order")
+            return
+        } else {
+            fetch('/api/orders', {
+                method: 'POST',
+                body: JSON.stringify(order)
+            })
+                .then(res => res.json())
+                .then(data => router.push(`/orders/add/${data.id}`))
+        }
     }
 
     return (
@@ -99,6 +105,7 @@ export default function OrderAddForm() {
                                     <Button onPress={() => {
                                         setOrder(prevOrder => ({
                                             ...prevOrder,
+                                            totalPrice: prevOrder.totalPrice - item.price - item.toppings?.reduce((total, topping) => total + topping.price, 0),
                                             items: prevOrder.items?.filter((_, i) => i !== index)
                                         }))
                                     }}>
@@ -115,7 +122,7 @@ export default function OrderAddForm() {
                     <div className="flex justify-between">
                         <h2 className="font-bold">Subtotal</h2>
                         <h2 className="font-bold">
-                            ${order.items?.reduce((total, item) => total + item.price, 0) + order.items?.reduce((total, item) => total + item.toppings?.reduce((total, topping) => total + topping.price, 0), 0)}
+                            ${order.totalPrice}
                         </h2>
                     </div>
                     <button

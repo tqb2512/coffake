@@ -35,64 +35,70 @@ export default function CustomerInfoForm({ params }: { params: { customerId: str
         setIsEditing(!isEditing);
     };
 
+    const formatDate = (date: string) => {
+        return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
+    }
+
     return (
-        <div>
-            <label className="text-violet-800 text-3xl">
-                {"Customer's Details"}
-                <Button onClick={handleEditClick} className="float-right">
-                    {isEditing ? "Apply" : "Edit"}
-                </Button>
-            </label>
-            <Divider className="my-4" />
+        <div className='bg-white p-4  rounded-lg'>
+            <div>
+                <label className="text-violet-800 text-3xl">
+                    {"Customer's Details"}
+                    <Button onClick={handleEditClick} className="float-right">
+                        {isEditing ? "Apply" : "Edit"}
+                    </Button>
+                </label>
+                <Divider className="my-4" />
 
-            <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
-                <Input label="Name" value={customer?.name} disabled={!isEditing} />
-                <Input label="Phone" value={customer?.phone} disabled={!isEditing} />
-                <Input label="Email" value={customer?.email} disabled={!isEditing} />
-                <Input label="Loyalty Points" value={customer?.loyaltyPoints.toString()} disabled={!isEditing} />
+                <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
+                    <Input label="Name" value={customer?.name} disabled={!isEditing} />
+                    <Input label="Phone" value={customer?.phone} disabled={!isEditing} />
+                    <Input label="Email" value={customer?.email} disabled={!isEditing} />
+                    <Input label="Loyalty Points" value={customer?.loyaltyPoints.toString()} disabled={!isEditing} />
+                </div>
+
+                <label className="text-violet-800 text-3xl">
+                    {"Customer's Orders"}
+                </label>
+                <Divider className="my-4" />
+                {!orders.length ? <label className="text-black">
+                    {"No order found"}
+                </label> :
+                    <Table aria-label="Orders">
+                        <TableHeader>
+                            {columns.map((column) => (
+                                <TableColumn key={column.uid}>
+                                    {column.name}
+                                </TableColumn>
+                            ))}
+                        </TableHeader>
+                        <TableBody>
+                            {orders.map((order) => (
+                                <TableRow key={order.id}>
+                                    <TableCell>{formatDate(order.date.toString())}</TableCell>
+                                    <TableCell>$ {order.totalPrice.toString()}</TableCell>
+                                    <TableCell>{order.status}</TableCell>
+                                    <TableCell className='w-10'>
+                                        <Dropdown>
+                                            <DropdownTrigger>
+                                                <Button>
+                                                    <HiDotsVertical />
+                                                </Button>
+                                            </DropdownTrigger>
+                                            <DropdownMenu>
+                                                <DropdownItem>
+                                                    <Link href={`/orders/${order.id}`}>
+                                                        View
+                                                    </Link>
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>}
             </div>
-
-            <label className="text-violet-800 text-3xl">
-                {"Customer's Orders"}
-            </label>
-            <Divider className="my-4" />
-            {!orders.length ? <label className="text-black">
-                {"No order found"}
-            </label> :
-                <Table aria-label="Orders">
-                    <TableHeader>
-                        {columns.map((column) => (
-                            <TableColumn key={column.uid}>
-                                {column.name}
-                            </TableColumn>
-                        ))}
-                    </TableHeader>
-                    <TableBody>
-                        {orders.map((order) => (
-                            <TableRow key={order.id}>
-                                <TableCell>{order.date.toString()}</TableCell>
-                                <TableCell>{order.totalPrice.toString()}</TableCell>
-                                <TableCell>{order.status}</TableCell>
-                                <TableCell>
-                                    <Dropdown>
-                                        <DropdownTrigger>
-                                            <Button>
-                                                <HiDotsVertical />
-                                            </Button>
-                                        </DropdownTrigger>
-                                        <DropdownMenu>
-                                            <DropdownItem>
-                                                <Link href={`/orders/${order.id}`}>
-                                                    View
-                                                </Link>
-                                            </DropdownItem>
-                                        </DropdownMenu>
-                                    </Dropdown>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>}
         </div>
     )
 }

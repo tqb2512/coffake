@@ -14,7 +14,7 @@ export async function GET() {
 export async function POST(req: Request) {
     const { name, stock, unit, unitPrice } = await req.json();
 
-    if (!name || !stock || !unit || !unitPrice) {
+    if (!name || !unit || !unitPrice || stock === undefined) {
         return NextResponse.json({"message": "Missing fields"}, { status: 400 });
     }
 

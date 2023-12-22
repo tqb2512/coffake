@@ -15,3 +15,26 @@ export async function GET(req: Request) {
 
     return NextResponse.json(inventory);
 }
+
+export async function PUT(req: Request) {
+    const ingredientId = new URL(req.url).pathname.split("/")[3];
+    const body = await req.json();
+
+    const data = {
+        unit: body.unit,
+        unitPrice: body.unitPrice,
+        stock: body.stock,
+        name: body.name,
+    }
+
+    const inventory = await prisma.inventory.update({
+        where: {
+            id: ingredientId
+        },
+        data: {
+            ...data
+        }
+    });
+
+    return NextResponse.json(inventory);
+}

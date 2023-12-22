@@ -25,6 +25,10 @@ export default function AddIngredientModal({ productSizeList, setProductSizeList
     }, []);
 
     const handleSubmit = () => {
+        if (quantity === 0 || quantity == undefined) {
+            alert("Please enter quantity");
+            return;
+        }
         setProductSizeList({ ...productSizeList, 
             recipe: [...productSizeList.recipe ?? [], {
                 ingredientId: selectedIngredient?.id,
@@ -69,7 +73,7 @@ export default function AddIngredientModal({ productSizeList, setProductSizeList
                                 <TableRow key={item.id}>
                                     <TableCell align="center">{item.name}</TableCell>
                                     <TableCell align="center">{item.unit}</TableCell>
-                                    <TableCell align="center">{item.unitPrice}</TableCell>
+                                    <TableCell align="center">$ {item.unitPrice}</TableCell>
                                     <TableCell className="w-10" align="center">
                                         <Button {...(selectedIngredient?.id === item.id ? { className: "text-white bg-violet-800" } : {})}
                                         onClick={() => handleSelect(item)}>Select</Button>
@@ -79,7 +83,7 @@ export default function AddIngredientModal({ productSizeList, setProductSizeList
                         </TableBody>
                     </Table>
 
-                    <Input className="my-5"label="Quantity" value={quantity.toString()} onValueChange={(value) => setQuantity(Number(value))} />
+                    <Input className="my-5"label="Quantity" value={quantity.toString()} onValueChange={(value) => setQuantity(Number(value))} type="number"/>
 
                     <Button className="float-right" onPress={handleSubmit}>Add</Button>
                 </div>

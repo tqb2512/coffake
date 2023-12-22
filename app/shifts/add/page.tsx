@@ -7,7 +7,7 @@ export default function AddShiftPage() {
                 <h1 className="text-purple-600 text-2xl font-bold">Shifts</h1>
                 <h4 className="text-sm text-gray-400">Add shift</h4>
             </div>
-            <div className="mt-8 mx-8 bg-white p-4  rounded-lg">
+            <div className="mt-8 mx-8 h-screen">
                 <AddShiftForm />
             </div>
         </div>

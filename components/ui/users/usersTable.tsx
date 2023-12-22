@@ -113,7 +113,7 @@ export default function UsersTable() {
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.email}</TableCell>
                 <TableCell>{item.position}</TableCell>
-                <TableCell>{item.salary}</TableCell>
+                <TableCell>$ {item.salary}</TableCell>
                 <TableCell className="w-10">
                   <Dropdown>
                     <DropdownTrigger>
@@ -124,7 +124,7 @@ export default function UsersTable() {
                     <DropdownMenu>
                       <DropdownItem
                         onClick={() =>
-                          router.push("/users/" + item.id)
+                          router.push("/users/" + item.username)
                         }
                       >View</DropdownItem>
                     </DropdownMenu>

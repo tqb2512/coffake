@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation';
 import React from 'react'
 import { Order, Customer } from '@prisma/client'
 import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Textarea, RadioGroup, Radio, Select, SelectItem, Button, Divider, Input } from '@nextui-org/react';
@@ -9,7 +10,8 @@ const columns = [
     { name: "Name", uid: "name", sortable: true },
     { name: "Quantity", uid: "quantity" },
     { name: "Size", uid: "size" },
-    { name: "Toppings", uid: "toppings" }
+    { name: "Toppings", uid: "toppings" },
+    { name: "Price", uid: "price" },
 ];
 
 const statusList = [
@@ -19,6 +21,7 @@ const statusList = [
 
 export default function CheckOutForm({ params }: { params: { orderId: string } }) {
 
+    const router = useRouter();
     const [order, setOrder] = React.useState<Order>({} as Order);
     const [isOpen, setIsOpen] = React.useState(false);
 
@@ -37,10 +40,12 @@ export default function CheckOutForm({ params }: { params: { orderId: string } }
             body: JSON.stringify(order)
         })
             .then(res => res.json())
-            .then(data => {
-                console.log(data);
-            })
+            .then(data => router.push('/orders/add'))
     }
+
+    const formatDate = (date: string) => {
+        return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
+      }
 
     return (
         <div>
@@ -67,7 +72,7 @@ export default function CheckOutForm({ params }: { params: { orderId: string } }
 
             <div className="flex flex-row gap-4 my-5">
                 <div className="flex flex-col w-1/2">
-                    <Input label="Date" value={order?.date?.toString()} disabled />
+                    <Input label="Date" value={formatDate(order?.date?.toString())} disabled />
                 </div>
                 <div className="flex flex-col w-1/2">
                     <Select label="Status" value={order?.status} onChange={(e) => setOrder({ ...order as Order, status: e.target.value })}>
@@ -89,6 +94,7 @@ export default function CheckOutForm({ params }: { params: { orderId: string } }
                             <TableCell>{item.quantity}</TableCell>
                             <TableCell>{item.size}</TableCell>
                             <TableCell>{item.toppings?.map((topping) => topping.productName).join(", ")}</TableCell>
+                            <TableCell>$ {item.price + item.toppings?.reduce((total, topping) => total + topping.price, 0)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -96,10 +102,10 @@ export default function CheckOutForm({ params }: { params: { orderId: string } }
 
             <div className="flex flex-row gap-4 my-5">
                 <div className="flex flex-col w-1/2">
-                    <Input label="Total Price" value={order?.totalPrice?.toString()} disabled />
+                    <Input label="Total Price" value={order?.totalPrice?.toString()} disabled endContent="$"/>
                 </div>
                 <div className="flex flex-col w-1/2">
-                    <Button className="float-right h-full" onPress={handleSubmit}>Submit</Button>
+                    <Button className="float-right h-full" color="primary" onPress={handleSubmit}>Submit</Button>
                 </div>
             </div>
         

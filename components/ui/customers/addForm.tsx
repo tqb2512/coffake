@@ -28,20 +28,22 @@ export default function CustomerAddForm() {
   };
 
   return (
-    <div>
-      <label className="text-violet-800 text-3xl">
-        {"Add Customer"}
-      </label>
+    <div className="bg-white p-4  rounded-lg">
+      <div>
+        <label className="text-violet-800 text-3xl">
+          {"Add Customer"}
+        </label>
 
-      <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
-        <Input label="Name" value={customer.name} />
-        <Input label="Email" value={customer.email} />
-        <Input label="Phone" value={customer.phone} />
-        <Input label="Loyalty Points" value={customer.loyaltyPoints?.toString()} />
-      </div>
+        <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
+          <Input label="Name" value={customer.name} />
+          <Input label="Email" value={customer.email} />
+          <Input label="Phone" value={customer.phone} />
+          <Input label="Loyalty Points" value={customer.loyaltyPoints?.toString()} />
+        </div>
 
-      <div className="flex justify-end gap-3">
-        <Button className="text-white bg-violet-800" onPress={handleSubmit}>Add</Button>
+        <div className="flex justify-end gap-3">
+          <Button className="text-white bg-violet-800" onPress={handleSubmit}>Add</Button>
+        </div>
       </div>
     </div>
     

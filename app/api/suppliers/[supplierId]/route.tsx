@@ -16,3 +16,24 @@ export async function GET(req : Request) {
 
     return NextResponse.json(supplier);
 }
+
+export async function PUT(req : Request) {
+    const supplierId = new URL(req.url).pathname.split("/").pop();
+    const body = await req.json();
+    const data = {
+        name: body.name,
+        company: body.company,
+        phone: body.phone,
+        email: body.email,
+    }
+
+
+    const supplier = await prisma.supplier.update({
+        where: {
+            id: supplierId
+        },
+        data: data
+    });
+
+    return NextResponse.json(supplier);
+}
