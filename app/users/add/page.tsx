@@ -10,7 +10,7 @@ export default function UserAddPage() {
         <Link className="text-sm text-gray-400" href="/users/add"> Add </Link>
       </div>
       <div className="mt-8 mx-8 h-screen">
-        <UserAddForm/>
+        <UserAddForm />
       </div>
     </div>
   )

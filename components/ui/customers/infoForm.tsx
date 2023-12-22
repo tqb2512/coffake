@@ -5,6 +5,8 @@ import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Dropdo
 import { Customer, Order } from '@prisma/client';
 import { HiDotsVertical } from 'react-icons/hi';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const columns = [
     { name: "Date", uid: "date", sortable: true },
@@ -15,6 +17,8 @@ const columns = [
 
 export default function CustomerInfoForm({ params }: { params: { customerId: string } }) {
 
+    const router = useRouter();
+    const { data: session, status } = useSession()
     const [customer, setCustomer] = React.useState<Customer>();
     const [orders, setOrders] = React.useState<Order[]>([]);
     const [isEditing, setIsEditing] = React.useState(false);
@@ -37,6 +41,11 @@ export default function CustomerInfoForm({ params }: { params: { customerId: str
 
     const formatDate = (date: string) => {
         return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
+    }
+
+    if (status === "loading") return <p>Loading...</p>;
+    if (status === "unauthenticated") {
+        router.push("/login")
     }
 
     return (

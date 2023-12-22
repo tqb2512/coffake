@@ -4,9 +4,9 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient().$extends(withAccelerate());;
 
-export async function GET(req : Request) {
+export async function GET(req: Request) {
     const supplierId = new URL(req.url).pathname.split("/").pop();
-    
+
     const supplier = await prisma.supplier.findFirst({
         where: {
             id: supplierId
@@ -17,7 +17,7 @@ export async function GET(req : Request) {
     return NextResponse.json(supplier);
 }
 
-export async function PUT(req : Request) {
+export async function PUT(req: Request) {
     const supplierId = new URL(req.url).pathname.split("/").pop();
     const body = await req.json();
     const data = {

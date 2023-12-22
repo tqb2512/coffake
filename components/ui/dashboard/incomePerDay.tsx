@@ -5,7 +5,7 @@ import React from "react";
 
 const columns = [
     { name: "Date", uid: "date" },
-    { name: "Total Orders", uid: "totalOrders"},
+    { name: "Total Orders", uid: "totalOrders" },
     { name: "Total Income", uid: "totalPrice" },
 ];
 
@@ -77,7 +77,9 @@ export default function IncomePerDay({ orders }: { orders: Order[] }) {
             </div>
 
             <div className="w-full mt-5">
-                <Table>
+                <Table
+                    aria-label="Table"
+                >
                     <TableHeader>
                         {columns.map((column) => (
                             <TableColumn key={column.uid}>

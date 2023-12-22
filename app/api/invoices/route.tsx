@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const { date, total, importList } = await req.json();
 
     if (!date || !total || !importList) {
-        return NextResponse.json({"message": "Missing fields"}, { status: 400 });
+        return NextResponse.json({ "message": "Missing fields" }, { status: 400 });
     }
 
     const invoice = await prisma.invoice.create({
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
             }
         });
         if (!inventory) {
-            return NextResponse.json({"message": "Inventory not found"}, { status: 404 });
+            return NextResponse.json({ "message": "Inventory not found" }, { status: 404 });
         }
         await prisma.inventory.update({
             where: {
@@ -47,8 +47,8 @@ export async function POST(req: Request) {
     });
 
     if (!invoice) {
-        return NextResponse.json({"message": "Invoice not created"}, { status: 500 });
+        return NextResponse.json({ "message": "Invoice not created" }, { status: 500 });
     }
 
-    return NextResponse.json({"message": "Invoice created"});
+    return NextResponse.json({ "message": "Invoice created" });
 }

@@ -10,7 +10,7 @@ export default function SupplierAddPage() {
         <Link className="text-sm text-gray-400" href="/suppliers/add"> Add </Link>
       </div>
       <div className="mt-8 mx-8 h-screen">
-        <SupplierAddForm/>
+        <SupplierAddForm />
       </div>
     </div>
   );

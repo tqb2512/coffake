@@ -14,9 +14,8 @@ export default function MenuLink(item: Props) {
   return (
     <Link
       href={item.path}
-      className={`text-white flex flex-row items-center justify-start px-4 h-12 w-10/12 mx-4 my-2 rounded-md ${
-        pathname.startsWith(item.path) ? "bg-purple-400" : ""
-      }`}
+      className={`text-white flex flex-row items-center justify-start px-4 h-12 w-10/12 mx-4 my-2 rounded-md ${pathname.startsWith(item.path) ? "bg-purple-400" : ""
+        }`}
     >
       {item.icon}
       &nbsp; &nbsp;

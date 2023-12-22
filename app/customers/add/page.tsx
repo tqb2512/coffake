@@ -10,7 +10,7 @@ export default function CustomerAddPage() {
         <Link className="text-sm text-gray-400" href="/customers/add">&nbsp;Add</Link>
       </div>
       <div className="mt-8 mx-8 h-screen ">
-        <CustomerAddForm/>
+        <CustomerAddForm />
       </div>
     </div>
   )

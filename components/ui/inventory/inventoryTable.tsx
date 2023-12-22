@@ -21,6 +21,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const columns = [
   { name: "Name", uid: "name", sortable: true },
@@ -39,6 +40,7 @@ const searchColumns = [
 
 export default function InventoryTable() {
   const router = useRouter();
+  const { data: session, status } = useSession()
   const [inventory, setInventory] = React.useState<Inventory[]>([]);
   const [searchValue, setSearchValue] = React.useState("");
   const [searchColumn, setSearchColumn] = React.useState(columns[0].uid);
@@ -49,6 +51,10 @@ export default function InventoryTable() {
       .then((data) => setInventory(data))
   }, []);
 
+  if (status === "loading") return <p>Loading...</p>;
+  if (status === "unauthenticated") {
+    router.push("/login")
+  }
 
   return (
     <div className="bg-white p-4 rounded-lg">

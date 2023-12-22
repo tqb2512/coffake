@@ -18,9 +18,10 @@ import {
 } from "@nextui-org/react";
 import { Customer } from "@prisma/client";
 import { HiDotsVertical } from "react-icons/hi";
-import { useRouter } from "next/navigation";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const columns = [
   { name: "Name", uid: "name", sortable: true },
@@ -36,10 +37,12 @@ const searchColumns = [
 ];
 
 export default function CustomersTable() {
+
+  const { data: session, status } = useSession()
+  const router = useRouter();
   const [customers, setCustomers] = React.useState<Customer[]>([]);
   const [searchValue, setSearchValue] = React.useState("");
   const [searchColumn, setSearchColumn] = React.useState(columns[0].uid);
-  const router = useRouter();
 
   useEffect(() => {
     fetch("/api/customers")
@@ -47,6 +50,10 @@ export default function CustomersTable() {
       .then((data) => setCustomers(data));
   }, []);
 
+  if (status === "loading") return <p>Loading...</p>;
+  if (status === "unauthenticated") {
+    router.push("/login")
+  }
 
   return (
     <div className="p-4 bg-white rounded-lg">

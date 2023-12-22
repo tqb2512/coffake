@@ -64,7 +64,13 @@ export default function PageShell() {
         <main>
             <div className="flex justify-between my-3 mx-5">
                 <h1 className="text-2xl font-bold">Reports</h1>
-                <DateRangePicker className="h-full w-full" value={dateRange} onValueChange={setDateRange} />
+                <DateRangePicker className="h-full w-full" value={dateRange} onValueChange={(value) => {
+                    setDateRange({
+                        from: value.from || new Date(),
+                        to: new Date((value.to || new Date()).getTime() + 86400000)
+                    })
+                }
+                } />
             </div>
 
             <Grid numItemsLg={11} className="gap-6 mt-6">
@@ -85,8 +91,6 @@ export default function PageShell() {
                     <div className="space-y-6">
                         <Card>
                             <MostSoldProduct orders={orderForList} />
-                        </Card>
-                        <Card>
                         </Card>
                     </div>
                 </Col>

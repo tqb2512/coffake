@@ -45,7 +45,7 @@ export default function CheckOutForm({ params }: { params: { orderId: string } }
 
     const formatDate = (date: string) => {
         return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
-      }
+    }
 
     return (
         <div>
@@ -102,13 +102,13 @@ export default function CheckOutForm({ params }: { params: { orderId: string } }
 
             <div className="flex flex-row gap-4 my-5">
                 <div className="flex flex-col w-1/2">
-                    <Input label="Total Price" value={order?.totalPrice?.toString()} disabled endContent="$"/>
+                    <Input label="Total Price" value={order?.totalPrice?.toString()} disabled endContent="$" />
                 </div>
                 <div className="flex flex-col w-1/2">
                     <Button className="float-right h-full" color="primary" onPress={handleSubmit}>Submit</Button>
                 </div>
             </div>
-        
+
         </div>
     )
 }

@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     });
 
     if (!order) {
-        return NextResponse.json({"message": "Order not found"}, { status: 404 });
+        return NextResponse.json({ "message": "Order not found" }, { status: 404 });
     }
     return NextResponse.json(order);
 }
@@ -93,7 +93,7 @@ export async function PUT(req: Request) {
     })
 
     if (!updatedOrder) {
-        return NextResponse.json({"message": "Order not updated"}, { status: 500 });
+        return NextResponse.json({ "message": "Order not updated" }, { status: 500 });
     }
 
     return NextResponse.json(updatedOrder);
@@ -113,7 +113,7 @@ export async function PATCH(req: Request) {
     });
 
     if (!updatedOrder) {
-        return NextResponse.json({"message": "Order not updated"}, { status: 500 });
+        return NextResponse.json({ "message": "Order not updated" }, { status: 500 });
     }
 
     return NextResponse.json(updatedOrder);
@@ -129,7 +129,7 @@ export async function DELETE(req: Request) {
     });
 
     if (!deletedOrder) {
-        return NextResponse.json({"message": "Order not deleted"}, { status: 500 });
+        return NextResponse.json({ "message": "Order not deleted" }, { status: 500 });
     }
 
     return NextResponse.json(deletedOrder);

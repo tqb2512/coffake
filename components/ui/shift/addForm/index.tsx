@@ -64,7 +64,7 @@ export default function AddShiftForm() {
                                 <TableCell>{employee.employeeName}</TableCell>
                                 <TableCell>{employee.from}</TableCell>
                                 <TableCell>{employee.to}</TableCell>
-                                <TableCell>
+                                <TableCell className="w-10">
                                     <Dropdown>
                                         <DropdownTrigger>
                                             <Button>
@@ -72,7 +72,11 @@ export default function AddShiftForm() {
                                             </Button>
                                         </DropdownTrigger>
                                         <DropdownMenu>
-                                            <DropdownItem>Delete</DropdownItem>
+                                            <DropdownItem
+                                                onClick={() => {
+                                                    setShift(prevShift => ({ ...prevShift, employees: prevShift.employees?.filter((emp) => emp.employeeID !== employee.employeeID) }))
+                                                }}
+                                            >Delete</DropdownItem>
                                         </DropdownMenu>
                                     </Dropdown>
                                 </TableCell>

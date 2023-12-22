@@ -19,7 +19,8 @@ import {
 import { Invoice } from "@prisma/client";
 import { HiDotsVertical } from "react-icons/hi";
 import { FaPlus, FaSearch } from "react-icons/fa";
-import { useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const columns = [
   { name: "Date", uid: "date", sortable: true },
@@ -35,6 +36,7 @@ const searchColumns = [
 export default function InvoicesTable() {
 
   const router = useRouter();
+  const { data: session, status } = useSession()
   const [invoices, setInvoices] = React.useState<Invoice[]>([]);
   const [searchValue, setSearchValue] = React.useState("");
   const [searchColumn, setSearchColumn] = React.useState(columns[0].uid);
@@ -47,6 +49,11 @@ export default function InvoicesTable() {
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
+  }
+
+  if (status === "loading") return <p>Loading...</p>;
+  if (status === "unauthenticated") {
+    router.push("/login")
   }
 
   return (

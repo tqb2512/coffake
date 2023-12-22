@@ -54,7 +54,7 @@ export default function ProductsTable() {
                             onPress={() => router.push(`/products/${product.id}`)}>
                             <CardHeader>
                                 {/* PlaceHolder for image */}
-                                <img src="https://picsum.photos/300/300" className="rounded-lg" />
+                                <img src={product.imageUrl} className="rounded-lg" />
                             </CardHeader>
                             <CardBody>
                                 <h4>{product.name}</h4>

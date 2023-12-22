@@ -17,7 +17,7 @@ type IngredientUsed = {
 export default function IngredientUsed({ order, products }: { order: Order[], products: Product[] }) {
 
     const [tableData, setTableData] = React.useState<IngredientUsed[]>([]);
-    
+
     React.useEffect(() => {
         const data: IngredientUsed[] = [];
         order.forEach((order) => {
@@ -45,7 +45,7 @@ export default function IngredientUsed({ order, products }: { order: Order[], pr
         data.sort((a, b) => b.used - a.used);
         setTableData(data);
     }, [order]);
-    
+
 
     return (
         <div>
@@ -53,7 +53,7 @@ export default function IngredientUsed({ order, products }: { order: Order[], pr
             <div className="h-60 w-full mt-5">
                 <Table
                     aria-label="Ingredient Used"
-                    >
+                >
                     <TableHeader>
                         {columns.map((column) => (
                             <TableColumn key={column.uid}>{column.name}</TableColumn>

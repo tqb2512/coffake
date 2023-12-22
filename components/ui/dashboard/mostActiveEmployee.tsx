@@ -3,8 +3,8 @@ import { Shift } from "@prisma/client";
 import React from "react";
 
 const columns = [
-  { name: "Name", uid: "name" },
-  { name: "Total hours", uid: "totalHours" },
+    { name: "Name", uid: "name" },
+    { name: "Total hours", uid: "totalHours" },
 ];
 
 type EmployeeWithHours = {
@@ -41,7 +41,9 @@ export default function MostActiveEmployee({ shifts }: { shifts: Shift[] }) {
         <div>
             <h2 className="text-xl font-bold">Most Active Employee</h2>
             <div className="h-60 w-full mt-5">
-                <Table>
+                <Table
+                    aria-label="Table"
+                >
                     <TableHeader>
                         {columns.map((column) => (
                             <TableColumn key={column.uid}>{column.name}</TableColumn>

@@ -13,16 +13,19 @@ import OrderByStatus from "./ordersByStatus";
 import MostSoldProduct from "./mostSoldProduct";
 import IncomePerDay from "./incomePerDay";
 import MostActiveEmployee from "./mostActiveEmployee";
-
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function PageShell() {
 
+    const router = useRouter();
+    const { data: session, status } = useSession()
     const [orders, setOrders] = useState<Order[]>([]);
     const [shifts, setShifts] = useState<Shift[]>([]);
     const [orderForList, setOrderForList] = useState<Order[]>([]);
     const [dateRange, setDateRange] = useState<DateRangePickerValue>({
         from: new Date(),
-        to: new Date(),
+        to: new Date(new Date().getTime() + 86400000)
     });
 
     useEffect(() => {
@@ -34,8 +37,8 @@ export default function PageShell() {
     useEffect(() => {
         let orderFromTo: Order[] = []
         orders.forEach((order) => {
-            const orderDate = new Date(order.date);
-            if (orderDate >= (dateRange.from as Date) && orderDate <= (dateRange.to as Date)) {
+            const orderDate = new Date(order.date)
+            if (orderDate >= (dateRange.from || new Date()) && orderDate <= (dateRange.to || new Date())) {
                 orderFromTo.push(order);
             }
         });
@@ -48,11 +51,22 @@ export default function PageShell() {
             .then((data) => setShifts(data))
     }, [dateRange]);
 
+    if (status === "loading") return <p>Loading...</p>;
+    if (status === "unauthenticated") {
+        router.push("/login")
+    }
+
     return (
         <main>
             <div className="flex justify-between my-3 mx-5">
                 <h1 className="text-2xl font-bold">Dashboard</h1>
-                <DateRangePicker className="h-full w-full" value={dateRange} onValueChange={setDateRange} />
+                <DateRangePicker className="h-full w-full" value={dateRange} onValueChange={(value) => {
+                    setDateRange({
+                        from: value.from || new Date(),
+                        to: new Date((value.to || new Date()).getTime() + 86400000)
+                    })
+                }
+                } />
             </div>
 
             <Grid numItemsLg={11} className="gap-6 mt-6">
