@@ -7,6 +7,7 @@ import { Order } from '@prisma/client';
 import { HiDotsVertical } from 'react-icons/hi';
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import { MdOutlineKeyboardDoubleArrowDown } from 'react-icons/md';
+import { HiChevronDown, HiChevronUp } from 'react-icons/hi2';
 
 const columns = [
   { name: "Date", uid: "date", sortable: true },
@@ -36,6 +37,7 @@ export default function OrdersTable() {
   const router = useRouter();
   const [orders, setOrders] = React.useState<Order[]>([]);
   const [status, setStatus] = React.useState<string>("All");
+  const [sort, setSort] = React.useState<string>("DESC")
   const [searchValue, setSearchValue] = React.useState("");
   const [searchColumn, setSearchColumn] = React.useState(columns[0].uid);
 
@@ -44,6 +46,20 @@ export default function OrdersTable() {
       .then((res) => res.json())
       .then((data) => setOrders(data));
   }, [status]);
+
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
+  }
+
+  const sortOrdersDate = () => {
+    if (sort === "ASC") {
+      setSort("DESC")
+      orders.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    } else {
+      setSort("ASC")
+      orders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    }
+  }
 
   return (
     <div className='bg-white p-4 rounded-lg'>
@@ -56,7 +72,7 @@ export default function OrdersTable() {
               endContent={
                 <Dropdown>
                   <DropdownTrigger>
-                    <Button>
+                    <Button className='mt-0.5'>
                       {searchColumns.find((column) => column.uid === searchColumn)?.name}
                     </Button>
                   </DropdownTrigger>
@@ -100,11 +116,26 @@ export default function OrdersTable() {
           </div>
         </div>
 
-        <Table className="mt-5">
+        <Table 
+          className="mt-5"
+          aria-label='Orders Table'
+        >
           <TableHeader>
             {columns.map((column) => (
-              <TableColumn key={column.uid}>
-                {column.name}
+              <TableColumn key={column.uid}> 
+                {column.sortable ? (
+                  <div className="flex flex-row items-center gap-1 justify-between">
+                    <span>{column.name}</span>
+                    <Button
+                      variant='light'
+                      onClick={() => sortOrdersDate()}
+                    >
+                      {sort === "ASC" ? <HiChevronUp /> : <HiChevronDown />}
+                    </Button>
+                  </div>
+                ) : (
+                  <span>{column.name}</span>
+                )}
               </TableColumn>
             ))}
           </TableHeader>
@@ -119,10 +150,20 @@ export default function OrdersTable() {
               })
               .map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell>{item.date.toString()}</TableCell>
+                  <TableCell>{formatDate(item.date.toString())}</TableCell>
                   <TableCell>{item.customerName}</TableCell>
-                  <TableCell>{item.totalPrice}</TableCell>
-                  <TableCell>{item.status}</TableCell>
+                  <TableCell>$ {item.totalPrice}</TableCell>
+                  <TableCell>
+                    <span className={
+                      "px-2 py-1 rounded-full text-white " +
+                      (item.status === "Pending" ? "bg-yellow-500" :
+                        item.status === "Confirmed" ? "bg-green-500" :
+                          item.status === "Completed" ? "bg-blue-500" :
+                            "bg-red-500")
+                    }>
+                      {item.status}
+                    </span>
+                  </TableCell>
                   <TableCell className="w-10">
                     <Dropdown>
                       <DropdownTrigger>
@@ -136,6 +177,15 @@ export default function OrdersTable() {
                             router.push("/orders/" + item.id)
                           }
                         >View</DropdownItem>
+                        <DropdownItem
+                          onClick={() =>
+                            {
+                              fetch("/api/orders/" + item.id, {
+                                method: "DELETE",
+                              })
+                            }
+                          }
+                        >Delete</DropdownItem>
                       </DropdownMenu>
                     </Dropdown>
                   </TableCell>

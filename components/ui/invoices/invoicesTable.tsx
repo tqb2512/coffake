@@ -45,6 +45,10 @@ export default function InvoicesTable() {
       .then((data) => setInvoices(data));
   }, []);
 
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
+  }
+
   return (
     <div className="bg-white p-4 rounded-lg">
       <div>
@@ -106,8 +110,8 @@ export default function InvoicesTable() {
               })
               .map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell>{item.date.toString()}</TableCell>
-                  <TableCell>{item.total}</TableCell>
+                  <TableCell>{formatDate(item.date.toString())}</TableCell>
+                  <TableCell>$ {item.total}</TableCell>
                   <TableCell className="w-10">
                     <Dropdown>
                       <DropdownTrigger>

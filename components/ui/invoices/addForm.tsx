@@ -35,10 +35,7 @@ export default function InvoiceAddForm() {
   const handleSubmmit = () => {
     setInvoice({
       ...invoice,
-      total: invoice.importList?.reduce(
-        (total, item) => total + item.quantity * item.unitPrice,
-        0
-      ),
+      total: invoice.importList?.reduce((acc, cur) => acc + cur.quantity * cur.unitPrice, 0)
     });
     fetch("/api/invoices", {
       method: "POST",
@@ -73,9 +70,9 @@ export default function InvoiceAddForm() {
               <TableRow key={item.ingredientId + item.suppilerId}>
                 <TableCell>{item.ingredientName}</TableCell>
                 <TableCell>{item.quantity}</TableCell>
-                <TableCell>{item.unitPrice}</TableCell>
+                <TableCell>$ {item.unitPrice}</TableCell>
                 <TableCell>{item.supplierName}</TableCell>
-                <TableCell>{item.quantity * item.unitPrice}</TableCell>
+                <TableCell>$ {item.quantity * item.unitPrice}</TableCell>
                 <TableCell>
                   <Dropdown>
                     <DropdownTrigger>

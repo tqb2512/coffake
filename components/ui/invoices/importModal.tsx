@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Invoice, Supplier, Inventory } from "@prisma/client";
-import { Input, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Input, Select, SelectItem, Textarea, Button } from "@nextui-org/react";
 import { HiX } from "react-icons/hi";
 
 export default function InvoiceImportModal({
@@ -61,14 +61,9 @@ export default function InvoiceImportModal({
 
   return (
     <div className="App">
-      <button
-        className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-4"
-        type="button"
-        style={{ transition: "all .15s ease" }}
-        onClick={toggleModal}
-      >
-        Add Ingredient
-      </button>
+      <Button onClick={toggleModal} className="mb-5">
+        Add Ingredient        
+      </Button>
 
       {isOpen && (
         <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -145,6 +140,7 @@ export default function InvoiceImportModal({
                       name="unitPrice"
                       id="unitPrice"
                       placeholder="Enter Unitprice"
+                      endContent="$"
                     />
                   </div>
                   <div className="flex flex-col">

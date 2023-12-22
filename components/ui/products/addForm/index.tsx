@@ -27,6 +27,18 @@ export default function ProductAddForm() {
     const [product, setProduct] = React.useState({} as Product);
 
     const handleSubmit = () => {
+        if (product.sizeList?.length == 0 || product.sizeList == undefined) {
+            alert("Please add at least one size");
+            return;
+        }
+        if (product.name === "" || product.name == undefined) {
+            alert("Please enter product name");
+            return;
+        }
+        if (product.category === "" || product.category == undefined) {
+            alert("Please enter product category");
+            return;
+        }
         fetch("/api/products", {
             method: "POST",
             body: JSON.stringify(product),
@@ -136,14 +148,14 @@ export default function ProductAddForm() {
                                     {product.sizeList?.map((size) => (
                                         <TableRow key={size.size}>
                                             <TableCell>{size.size}</TableCell>
-                                            <TableCell>{size.price}</TableCell>
+                                            <TableCell>$ {size.price}</TableCell>
                                             <TableCell>
                                                 {size.recipe?.map(
                                                     (recipe) =>
                                                         recipe.ingredientName +
                                                         " x " +
                                                         recipe.quantity
-                                                )}
+                                                ).join(", ")}
                                             </TableCell>
                                             <TableCell className="w-10">
                                                 <Dropdown>

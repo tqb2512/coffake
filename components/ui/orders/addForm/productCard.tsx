@@ -38,15 +38,9 @@ export default function ProductCard({
 
     return (
         <Card className="w-full h-[360px]">
-            <CardHeader className="absolute z-10 top-0 flex-col items-start backdrop-filter backdrop-blur-lg bg-opacity-5 bg-white">
-                <div className="flex">
-                    <h4 className="text-white font-medium text-xl uppercase">
-                        {product.name}
-                    </h4>
-                    <h4 className="text-yellow-300 font-medium text-xl">
-                        &nbsp; ${selectedPrice}
-                    </h4>
-                </div>
+            <CardHeader className="absolute justify-between backdrop-filter backdrop-blur-lg bg-opacity-40">
+                <h1 className="text-white text-xl font-bold">{product.name}</h1>
+                <h1 className="text-white text-xl font-bold">$ {selectedPrice}</h1>
             </CardHeader>
             <Image
                 removeWrapper
@@ -54,7 +48,7 @@ export default function ProductCard({
                 className="z-0 w-full h-full object-cover"
                 src="https://images.foody.vn/res/g111/1107037/prof/s/foody-upload-api-foody-mobile-in-854905df-210926200239.jpeg"
             />
-            <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
+            <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100 backdrop-blur-lg bg-opacity-40">
                 <div className="flex flex-col flex-grow gap-2">
                     <div className="flex">
                         <RadioGroup

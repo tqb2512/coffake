@@ -35,6 +35,10 @@ export default function InvoiceInfoForm({ params }: { params: { invoiceId: strin
       .then((data) => setInvoice(data));
   }, []);
 
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
+  }
+
   if (!invoice) {
     return <div>Loading...</div>;
   }
@@ -47,8 +51,8 @@ export default function InvoiceInfoForm({ params }: { params: { invoiceId: strin
         <Divider className="my-4" />
 
         <div className="flex flex-col gap-4 mt-5 mb-10">
-          <Input label="Date" value={invoice.date.toString()} disabled />
-          <Input label="Total" value={invoice.total.toString()} disabled />
+          <Input label="Date" value={formatDate(invoice.date?.toString())} disabled/>
+          <Input label="Total" value={invoice.total.toString()} disabled endContent="$"/>
         </div>
 
         <label className="text-violet-800 text-3xl">
@@ -71,9 +75,9 @@ export default function InvoiceInfoForm({ params }: { params: { invoiceId: strin
                 <TableRow key={item.ingredientId + item.suppilerId}>
                   <TableCell>{item.ingredientName}</TableCell>
                   <TableCell>{item.quantity}</TableCell>
-                  <TableCell>{item.unitPrice}</TableCell>
+                  <TableCell>$ {item.unitPrice}</TableCell>
                   <TableCell>{item.supplierName}</TableCell>
-                  <TableCell>{item.quantity * item.unitPrice}</TableCell>
+                  <TableCell>$ {item.quantity * item.unitPrice}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

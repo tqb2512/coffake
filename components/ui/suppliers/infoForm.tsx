@@ -13,6 +13,7 @@ import {
 } from "@nextui-org/react";
 import { Supplier, Invoice } from "@prisma/client";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const columns = [
   { name: "Date", key: "date" },
@@ -21,6 +22,8 @@ const columns = [
 ];
 
 export default function SupplierInfoForm({ params }: { params: { supplierId: string } }) {
+
+  const router = useRouter();
   const [supplier, setSupplier] = React.useState({} as Supplier);
   const [isEditing, setIsEditing] = React.useState(false);
   const [invoices, setInvoices] = React.useState([] as Invoice[]);
@@ -37,21 +40,34 @@ export default function SupplierInfoForm({ params }: { params: { supplierId: str
       .then((data) => setInvoices(data));
   }, [supplier]);
 
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-end gap-3">
-          <div className="flex gap-3">
-            <Button className="text-white bg-violet-800">Edit</Button>
-          </div>
-        </div>
-      </div>
-    );
-  }, []);
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
+  }
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
-    
+    if (isEditing) {
+      if (supplier.name === "" || supplier.name == undefined) {
+        alert("Please enter supplier name");
+        return;
+      }
+      if (supplier.company === "" || supplier.company == undefined) {
+        alert("Please enter supplier company");
+        return;
+      }
+      if (supplier.phone === "" || supplier.phone == undefined) {
+        alert("Please enter supplier phone number");
+        return;
+      }
+      if (supplier.email === "" || supplier.email == undefined) {
+        alert("Please enter supplier email");
+        return;
+      }
+      fetch("/api/suppliers/" + params.supplierId, {
+        method: "PUT",
+        body: JSON.stringify(supplier),
+      })
+    }
   }
 
   return (
@@ -66,10 +82,10 @@ export default function SupplierInfoForm({ params }: { params: { supplierId: str
         <Divider className="my-4" />
 
         <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
-          <Input label="Name" value={supplier.name} />
-          <Input label="Company" value={supplier.company} />
-          <Input label="Email" value={supplier.email} />
-          <Input label="Phone Number" value={supplier.phone} />
+          <Input label="Name" value={supplier.name} onValueChange={(value) => setSupplier({ ...supplier, name: value })} disabled={!isEditing} />
+          <Input label="Company" value={supplier.company} onValueChange={(value) => setSupplier({ ...supplier, company: value })} disabled={!isEditing} />
+          <Input label="Email" value={supplier.email} onValueChange={(value) => setSupplier({ ...supplier, email: value })} disabled={!isEditing} />
+          <Input label="Phone Number" value={supplier.phone} onValueChange={(value) => setSupplier({ ...supplier, phone: value })} disabled={!isEditing} />
         </div>
 
         <label className="text-violet-800 text-3xl">
@@ -88,10 +104,10 @@ export default function SupplierInfoForm({ params }: { params: { supplierId: str
             <TableBody>
               {invoices.map((invoice) => (
                 <TableRow key={invoice.id}>
-                  <TableCell>{invoice.date.toString()}</TableCell>
-                  <TableCell>{invoice.importList?.find((importList) => importList.suppilerId == supplier.id)?.ingredientName}</TableCell>
-                  <TableCell>
-                    <Button>
+                  <TableCell>{formatDate(invoice.date.toString())}</TableCell>
+                  <TableCell>{invoice.importList.map((item) => item.ingredientName).join(", ")}</TableCell>
+                  <TableCell className="w-10">
+                    <Button onClick={() => router.push(`/invoices/${invoice.id}`)}>
                       View
                     </Button>
                   </TableCell>

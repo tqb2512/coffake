@@ -114,7 +114,7 @@ export default function InventoryTable() {
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.stock}</TableCell>
                   <TableCell>{item.unit}</TableCell>
-                  <TableCell>{item.unitPrice}</TableCell>
+                  <TableCell>$ {item.unitPrice}</TableCell>
                   <TableCell className="w-10">
                     <Dropdown>
                       <DropdownTrigger>
@@ -128,7 +128,6 @@ export default function InventoryTable() {
                         >
                           Edit
                         </DropdownItem>
-                        <DropdownItem>Delete</DropdownItem>
                       </DropdownMenu>
                     </Dropdown>
                   </TableCell>

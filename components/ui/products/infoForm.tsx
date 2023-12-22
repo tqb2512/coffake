@@ -35,6 +35,18 @@ export default function ProductInfoForm(params: { productId: string }) {
   }, []);
 
   const handleEditClick = () => {
+    if (product.sizeList?.length == 0 || product.sizeList == undefined) {
+        alert("Please add at least one size");
+        return;
+    }
+    if (product.name === "" || product.name == undefined) {
+        alert("Please enter product name");
+        return;
+    }
+    if (product.category === "" || product.category == undefined) {
+        alert("Please enter product category");
+        return;
+    }
     setIsEditing(!isEditing);
     if (isEditing) {
       fetch(`/api/products/${params.productId}`, {
@@ -149,14 +161,14 @@ export default function ProductInfoForm(params: { productId: string }) {
                               {product.sizeList?.map((size) => (
                                   <TableRow key={size.size}>
                                       <TableCell>{size.size}</TableCell>
-                                      <TableCell>{size.price}</TableCell>
+                                      <TableCell>$ {size.price}</TableCell>
                                       <TableCell>
                                           {size.recipe?.map(
                                               (recipe) =>
                                                   recipe.ingredientName +
                                                   " x " +
                                                   recipe.quantity
-                                          )}
+                                          ).join(", ")}
                                       </TableCell>
                                       <TableCell className="w-10">
                                           <Dropdown>

@@ -35,6 +35,10 @@ export default function CustomerInfoForm({ params }: { params: { customerId: str
         setIsEditing(!isEditing);
     };
 
+    const formatDate = (date: string) => {
+        return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
+    }
+
     return (
         <div className='bg-white p-4  rounded-lg'>
             <div>
@@ -71,10 +75,10 @@ export default function CustomerInfoForm({ params }: { params: { customerId: str
                         <TableBody>
                             {orders.map((order) => (
                                 <TableRow key={order.id}>
-                                    <TableCell>{order.date.toString()}</TableCell>
-                                    <TableCell>{order.totalPrice.toString()}</TableCell>
+                                    <TableCell>{formatDate(order.date.toString())}</TableCell>
+                                    <TableCell>$ {order.totalPrice.toString()}</TableCell>
                                     <TableCell>{order.status}</TableCell>
-                                    <TableCell>
+                                    <TableCell className='w-10'>
                                         <Dropdown>
                                             <DropdownTrigger>
                                                 <Button>

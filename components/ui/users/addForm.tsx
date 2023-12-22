@@ -13,6 +13,8 @@ import {
   DropdownItem,
   Textarea,
   Divider,
+  SelectItem,
+  Select,
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { HiCamera, HiOutlineCamera, HiPhoto } from "react-icons/hi2";
@@ -58,15 +60,22 @@ export default function UserAddForm() {
           </div>
 
           <div className="flex flex-col gap-2 col-span-2">
-            <Input label="Name" value={employee.name} />
-            <Input label="Email" value={employee.email} />
-            <Input label="Position" value={employee.position} />
-            <Input label="Salary" value={employee.salary?.toString()} />
+            <Input label="Name" value={employee.name} onValueChange={(value) => {setEmployee({...employee, name: value})}} />
+            <Input label="Email" value={employee.email} onValueChange={(value) => {setEmployee({...employee, email: value})}} />
+            <Select
+              label="Position"
+              value={employee.position}
+              onChange={(e) => setEmployee({...employee, position: e.target.value})}>
+              <SelectItem key="Manager" value="Manager">Manager</SelectItem>
+              <SelectItem key="Cashier" value="Cashier">Cashier</SelectItem>
+              <SelectItem key="Barista" value="Barista">Barista</SelectItem>
+            </Select>
+            <Input label="Salary" value={employee.salary?.toString()} type="number" endContent="$" onValueChange={(value) => {setEmployee({...employee, salary: parseInt(value)})}} />
           </div>
           <div className="flex flex-col gap-2 col-span-2">
-            <Input label="Username" value={employee.username} />
-            <Input label="Password" value={employee.password} type="password" />
-            <Input label="Phone Number" value={employee.phone} />
+            <Input label="Username" value={employee.username} onValueChange={(value) => {setEmployee({...employee, username: value})}} />
+            <Input label="Password" value={employee.password} type="password" onValueChange={(value) => {setEmployee({...employee, password: value})}} />
+            <Input label="Phone Number" value={employee.phone} onValueChange={(value) => {setEmployee({...employee, phone: value})}} />
           </div>
         </div>
 

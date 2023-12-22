@@ -118,3 +118,19 @@ export async function PATCH(req: Request) {
 
     return NextResponse.json(updatedOrder);
 }
+
+export async function DELETE(req: Request) {
+    const orderId = new URL(req.url).pathname.split("/").pop();
+
+    const deletedOrder = await prisma.order.delete({
+        where: {
+            id: orderId
+        }
+    });
+
+    if (!deletedOrder) {
+        return NextResponse.json({"message": "Order not deleted"}, { status: 500 });
+    }
+
+    return NextResponse.json(deletedOrder);
+}

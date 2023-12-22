@@ -14,7 +14,9 @@ import {
   DropdownItem,
   Button,
   Divider,
-  Input
+  Input,
+  Select,
+  SelectItem
 } from "@nextui-org/react";
 import { Inventory, Invoice } from "@prisma/client";
 import { HiDotsVertical } from "react-icons/hi";
@@ -29,7 +31,7 @@ const columns = [
 ];
 
 export default function IngredientInfoForm({ params }: { params: { ingredientId: string } }) {
-  const [inventory, setInventory] = React.useState<Inventory>();
+  const [inventory, setInventory] = React.useState<Inventory>({} as Inventory);
   const [invoices, setInvoices] = React.useState<Invoice[]>([]);
   const [isEditing, setIsEditing] = React.useState(false);
 
@@ -47,6 +49,12 @@ export default function IngredientInfoForm({ params }: { params: { ingredientId:
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
+    if (isEditing) {
+      fetch("/api/inventory/" + params.ingredientId, {
+        method: "PUT",
+        body: JSON.stringify(inventory),
+      })
+    }
   };
 
   return (
@@ -61,10 +69,21 @@ export default function IngredientInfoForm({ params }: { params: { ingredientId:
 
         <Divider className="my-4" />
         <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
-          <Input label="Name" value={inventory?.name} disabled={!isEditing} />
-          <Input label="Unit" value={inventory?.unit} disabled={!isEditing} />
-          <Input label="Quantity" value={inventory?.stock.toString()} disabled={!isEditing} />
-          <Input label="Unit Price" value={inventory?.unitPrice.toString()} disabled={!isEditing} />
+          <Input label="Name" value={inventory?.name} disabled={!isEditing} onChange={(e) => setInventory({ ...inventory, name: e.target.value }) } />
+          <Select
+            label="Unit"
+            onChange={(e) => setInventory({ ...inventory, unit: e.target.value })}
+            disabled={!isEditing}
+          >
+            <SelectItem key="1" value="Phần" isReadOnly={!isEditing}>Phần</SelectItem>
+            <SelectItem key="2" value="Chai" isReadOnly={!isEditing}>Chai</SelectItem>
+            <SelectItem key="3" value="Lon" isReadOnly={!isEditing}>Lon</SelectItem>
+            <SelectItem key="4" value="Gói" isReadOnly={!isEditing}>Gói</SelectItem>
+            <SelectItem key="4" value="g" isReadOnly={!isEditing}>g</SelectItem>
+            <SelectItem key="5" value="ml" isReadOnly={!isEditing}>ml</SelectItem>
+          </Select>
+          <Input label="Quantity" value={inventory?.stock?.toString()} disabled={!isEditing} onChange={(e) => setInventory({ ...inventory, stock: parseInt(e.target.value) })} />
+          <Input label="Unit Price" type="number" value={inventory?.unitPrice?.toString()} disabled={!isEditing} endContent="$" onChange={(e) => setInventory({ ...inventory, unitPrice: parseFloat(e.target.value) })} />
         </div>
 
         <label className="text-violet-800 text-3xl">
