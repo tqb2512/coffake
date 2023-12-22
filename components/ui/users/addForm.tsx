@@ -18,6 +18,7 @@ import {
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { HiCamera, HiOutlineCamera, HiPhoto } from "react-icons/hi2";
+import { CldUploadWidget } from "next-cloudinary";
 
 export default function UserAddForm() {
   const router = useRouter();
@@ -32,12 +33,8 @@ export default function UserAddForm() {
       body: JSON.stringify(employee),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => router.push("/users"));
   };
-
-  function upLoadImage() {
-
-  }
 
   return (
     <div className="bg-white rounded-lg p-4">
@@ -48,14 +45,33 @@ export default function UserAddForm() {
         <Divider className="my-4" />
 
         <div className="grid grid-cols-5 gap-6 mt-5 mb-10">
-          <div className="flex flex-col items-center">
-            <label className="border w-48 h-64 bg-gray-300 rounded-md flex items-center text-center relative">
-              <HiOutlineCamera className="bg-white rounded-md shadow-lg border -m-1 h-12 w-12 text-purple-500 absolute top-0 right-0" />
-              <input type="file" className="hidden" onChange={upLoadImage} />
-
-              <div className="h-64">
-                <img src="https://loremflickr.com/480/640" className="rounded-lg" />
-              </div>
+          <div className="flex flex-col gap-1">
+            <label className="border w-50 h-54 bg-gray-300 rounded-md flex items-center text-center relative">
+              <CldUploadWidget uploadPreset="zwrrw7i4" options={{
+                sources: ['local', 'url'],
+                multiple: false,
+                maxFiles: 1
+              }}
+                onSuccess={(result) => {
+                  setEmployee({ ...employee, imageUrl: (result.info as { secure_url: string }).secure_url });
+                }}
+              >
+                {({ open }) => {
+                  if (employee.imageUrl !== "") {
+                    return (
+                      <div className="absolute inset-0 h-[260px] rounded-lg" onClick={() => open()}>
+                        <img src={employee.imageUrl} className="object-cover w-full h-full rounded-lg" />
+                      </div>
+                    )
+                  }
+                  return (
+                    <div className="absolute inset-0 flex flex-col justify-center items-center" onClick={() => open()}>
+                      <HiOutlineCamera className="text-4xl" />
+                      <p className="text-gray-500">Upload Image</p>
+                    </div>
+                  )
+                }}
+              </CldUploadWidget>
             </label>
           </div>
 

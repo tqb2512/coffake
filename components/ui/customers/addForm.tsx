@@ -32,11 +32,6 @@ export default function CustomerAddForm() {
       .then((data) => console.log(data));
   };
 
-  if (status === "loading") return <p>Loading...</p>;
-  if (status === "unauthenticated") {
-    router.push("/login")
-  }
-
   return (
     <div className="bg-white p-4  rounded-lg">
       <div>
