@@ -36,20 +36,20 @@ export default function ProductInfoForm(params: { productId: string }) {
     }, []);
 
     const handleEditClick = () => {
-        if (product.sizeList?.length == 0 || product.sizeList == undefined) {
-            alert("Please add at least one size");
-            return;
-        }
-        if (product.name === "" || product.name == undefined) {
-            alert("Please enter product name");
-            return;
-        }
-        if (product.category === "" || product.category == undefined) {
-            alert("Please enter product category");
-            return;
-        }
         setIsEditing(!isEditing);
         if (isEditing) {
+            if (product.sizeList?.length == 0 || product.sizeList == undefined) {
+                alert("Please add at least one size");
+                return;
+            }
+            if (product.name === "" || product.name == undefined) {
+                alert("Please enter product name");
+                return;
+            }
+            if (product.category === "" || product.category == undefined) {
+                alert("Please enter product category");
+                return;
+            }
             fetch(`/api/products/${params.productId}`, {
                 method: "PUT",
                 body: JSON.stringify(product),

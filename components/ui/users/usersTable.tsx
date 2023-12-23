@@ -50,6 +50,19 @@ export default function UsersTable() {
       .then((data) => setEmployee(data));
   }, []);
 
+  const handleDelete = (id: string) => {
+    fetch("/api/users/", {
+      method: "DELETE",
+      body: JSON.stringify({ id }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setEmployee(employee.filter((item) => item.id !== id));
+        }
+      });
+  }
+
   return (
     <div>
       <div className="flex justify-between">
@@ -127,6 +140,9 @@ export default function UsersTable() {
                           router.push("/users/" + item.username)
                         }
                       >View</DropdownItem>
+                      <DropdownItem
+                        onClick={() => handleDelete(item.id)}
+                      >Delete</DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </TableCell>

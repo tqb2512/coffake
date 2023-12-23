@@ -73,7 +73,7 @@ export default function AddEmployeeModal({ shift, setShift, isOpen, setIsOpen }:
                             onClick={() => {
                                 setShift(prevShift => ({
                                     ...prevShift,
-                                    employees: [...prevShift.employees || [], { ...selectedEmployee, workHours: (new Date(`1970-01-01T${selectedEmployee.to}:00.000Z`).getTime() - new Date(`1970-01-01T${selectedEmployee.from}:00.000Z`).getTime()) / 1000 / 60 / 60 }]
+                                    employees: [...prevShift.employees || [], { ...selectedEmployee, workHours: Math.abs((new Date(`1970-01-01T${selectedEmployee.to}:00.000Z`).getTime() - new Date(`1970-01-01T${selectedEmployee.from}:00.000Z`).getTime())) / 1000 / 60 / 60 }]
                                 }))
                                 toggleModal()
                             }}

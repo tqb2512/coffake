@@ -31,6 +31,10 @@ export default function ShiftTable() {
         })
     }, [shifts])
 
+    const formatDate = (date: string) => {
+        return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
+    }
+
     return (
         <div className='bg-white p-4 rounded-lg'>
             <div>
@@ -52,7 +56,7 @@ export default function ShiftTable() {
                             <TableBody>
                                 {shifts.map((shift) => (
                                     <TableRow key={shift.id}>
-                                        <TableCell>{shift.date.toString()}</TableCell>
+                                        <TableCell>{formatDate(shift.date.toString())}</TableCell>
                                         <TableCell>
                                             {shift.employees.map((employee) => (
                                                 <div key={employee.employeeID}>{employee.employeeName} from {employee.from} to {employee.to}</div>
