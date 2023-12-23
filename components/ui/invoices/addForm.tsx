@@ -34,13 +34,10 @@ export default function InvoiceAddForm() {
   const { data: session, status } = useSession()
   const [invoice, setInvoice] = React.useState<Invoice>({
     date: new Date(),
+    total: 0,
   } as Invoice);
 
   const handleSubmmit = () => {
-    setInvoice({
-      ...invoice,
-      total: invoice.importList?.reduce((acc, cur) => acc + cur.quantity * cur.unitPrice, 0)
-    });
     fetch("/api/invoices", {
       method: "POST",
       headers: {
