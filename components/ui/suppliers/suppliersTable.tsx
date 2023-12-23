@@ -40,6 +40,15 @@ export default function SuppliersTable() {
   const [suppliers, setSuppliers] = React.useState<Supplier[]>([]);
   const [searchValue, setSearchValue] = React.useState("");
   const [searchColumn, setSearchColumn] = React.useState(columns[0].uid);
+  const [page, setPage] = React.useState(1);
+  const rowPerPage = 8;
+
+
+  const paginatedSuppliers = React.useMemo(() => {
+    const start = (page - 1) * rowPerPage;
+    const end = page * rowPerPage;
+    return suppliers.slice(start, end);
+  }, [page, suppliers]);
 
   React.useEffect(() => {
     fetch("/api/suppliers")
@@ -58,7 +67,11 @@ export default function SuppliersTable() {
               <Dropdown>
                 <DropdownTrigger>
                   <Button>
-                    {searchColumns.find((column) => column.uid === searchColumn)?.name}
+                    {
+                      searchColumns.find(
+                        (column) => column.uid === searchColumn
+                      )?.name
+                    }
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
@@ -88,20 +101,35 @@ export default function SuppliersTable() {
         </div>
       </div>
 
-      <Table className="mt-5">
+      <Table
+        bottomContent={
+          <div className="flex w-full justify-center">
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color="secondary"
+              page={page}
+              total={Math.ceil(suppliers.length / rowPerPage)}
+              onChange={(page) => setPage(page)}
+            />
+          </div>
+        }
+        className="mt-4 min-h-[100px]"
+      >
         <TableHeader>
           {columns.map((column) => (
-            <TableColumn key={column.uid}>
-              {column.name}
-            </TableColumn>
+            <TableColumn key={column.uid}>{column.name}</TableColumn>
           ))}
         </TableHeader>
-        <TableBody>
-          {suppliers
+        <TableBody items={paginatedSuppliers}>
+          {paginatedSuppliers
             .filter((item) => {
               if (searchColumn in item) {
                 const searchValueLower = searchValue.toLowerCase();
-                return String(item[searchColumn as keyof typeof item]).toLowerCase().includes(searchValueLower);
+                return String(item[searchColumn as keyof typeof item])
+                  .toLowerCase()
+                  .includes(searchValueLower);
               }
               return false;
             })
@@ -119,10 +147,10 @@ export default function SuppliersTable() {
                     </DropdownTrigger>
                     <DropdownMenu>
                       <DropdownItem
-                        onClick={() =>
-                          router.push("/suppliers/" + item.id)
-                        }
-                      >View</DropdownItem>
+                        onClick={() => router.push("/suppliers/" + item.id)}
+                      >
+                        View
+                      </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </TableCell>
