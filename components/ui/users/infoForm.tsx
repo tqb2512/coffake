@@ -15,6 +15,7 @@ import {
 } from "@nextui-org/react";
 import { Employee, Shift } from "@prisma/client";
 import React from "react";
+import { HiOutlineCamera } from "react-icons/hi2";
 
 const columns = [
   { name: "Date", key: "date" },
@@ -62,6 +63,10 @@ export default function UserInfoForm({ params, }: { params: { username: string }
     return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
   }
 
+  function upLoadImage() {
+    
+  }
+
   return (
     <div className="bg-white p-4 rounded-lg">
       <div>
@@ -73,11 +78,19 @@ export default function UserInfoForm({ params, }: { params: { username: string }
         </label>
         <Divider className="my-4" />
         
-        <div className="grid grid-cols-3 gap-6 mt-5 mb-10">
-          <div className="flex flex-col gap-2">
+        <div className="grid grid-cols-5 gap-6 mt-5 mb-10">
+          <div className="flex flex-col items-center">
+          <label className="border w-48 h-64 bg-gray-300 rounded-md flex items-center text-center relative">
+                      <HiOutlineCamera className="bg-white rounded-md shadow-lg border -m-1 h-12 w-12 text-purple-500 absolute top-0 right-0"/>
+                      <input type="file" className="hidden" onChange={upLoadImage}/>
+                      
+                      <div className="h-64">
+                        <img src="https://loremflickr.com/480/640" className="rounded-lg"/>
+                      </div>
+            </label>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 col-span-2">
             <Input  label="Name" disabled={!isEditing} value={employee?.name} onValueChange={(value) => {setEmployee({...employee, name: value})}} />
             <Input label="Email" disabled={!isEditing} value={employee?.email} onValueChange={(value) => {setEmployee({...employee, email: value})}} />
             <Select
@@ -91,7 +104,7 @@ export default function UserInfoForm({ params, }: { params: { username: string }
             </Select>
             <Input label="Salary" type="number" endContent="$" disabled={!isEditing} value={employee?.salary?.toString()} onValueChange={(value) => {setEmployee({...employee, salary: parseInt(value)})}} />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 col-span-2">
             <Input label="Username" disabled={!isEditing} value={employee?.username} />
             <Input label="Password" disabled={!isEditing} value={password} onValueChange={(value) => {setPassword(value)}} type="password" />
             <Input label="Phone Number" disabled={!isEditing} value={employee?.phone}/>
