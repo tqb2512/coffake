@@ -15,3 +15,22 @@ export async function GET(req: Request) {
 
     return NextResponse.json(customer);
 }
+
+export async function PUT(req: Request) {
+    const customerId = new URL(req.url).pathname.split("/")[3];
+    const data = await req.json();
+
+    const customer = await prisma.customer.update({
+        where: {
+            id: customerId
+        },
+        data: {
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            loyaltyPoints: data.loyaltyPoints
+        }
+    });
+
+    return NextResponse.json(customer);
+}
