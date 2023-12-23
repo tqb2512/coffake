@@ -6,7 +6,7 @@ import { Customer, Order } from '@prisma/client';
 import { HiDotsVertical } from 'react-icons/hi';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const columns = [
     { name: "Date", uid: "date", sortable: true },
