@@ -181,7 +181,9 @@ export default function OrdersTable() {
                           onClick={() => {
                             fetch("/api/orders/" + item.id, {
                               method: "DELETE",
-                            })
+                            }).then(() => {
+                              setOrders(orders.filter((order) => order.id !== item.id));
+                            });
                           }
                           }
                         >Delete</DropdownItem>

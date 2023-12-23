@@ -17,7 +17,6 @@ import { Employee, Shift } from "@prisma/client";
 import { CldUploadWidget } from "next-cloudinary";
 import React from "react";
 import { HiOutlineCamera } from "react-icons/hi2";
-import { HiOutlineCamera } from "react-icons/hi2";
 
 const columns = [
   { name: "Date", key: "date" },
