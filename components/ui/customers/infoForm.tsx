@@ -76,7 +76,7 @@ export default function CustomerInfoForm({ params }: { params: { customerId: str
                     <Input label="Name" value={customer?.name} disabled={!isEditing} onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, name: value }))} />
                     <Input label="Phone" value={customer?.phone} disabled={!isEditing} onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, phone: value }))} />
                     <Input label="Email" value={customer?.email} type="email" disabled={!isEditing} onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, email: value }))} />
-                    <Input label="Loyalty Points" value={customer?.loyaltyPoints.toString()} type="number" disabled={!isEditing} onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, loyaltyPoints: parseInt(value) }))} />
+                    <Input label="Loyalty Points" value={customer?.loyaltyPoints?.toString()} type="number" disabled={!isEditing} onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, loyaltyPoints: parseInt(value) }))} />
                 </div>
 
                 <label className="text-violet-800 text-3xl">
