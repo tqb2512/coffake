@@ -17,6 +17,7 @@ import { Employee, Shift } from "@prisma/client";
 import { CldUploadWidget } from "next-cloudinary";
 import React from "react";
 import { HiOutlineCamera } from "react-icons/hi2";
+import { HiOutlineCamera } from "react-icons/hi2";
 
 const columns = [
   { name: "Date", key: "date" },
@@ -64,6 +65,10 @@ export default function UserInfoForm({ params, }: { params: { username: string }
     return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
   }
 
+  function upLoadImage() {
+    
+  }
+
   return (
     <div className="bg-white p-4 rounded-lg">
       <div>
@@ -106,7 +111,7 @@ export default function UserInfoForm({ params, }: { params: { username: string }
             </label>
           </div>
 
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 col-span-2">
             <Input label="Name" disabled={!isEditing} value={employee?.name} onValueChange={(value) => { setEmployee({ ...employee, name: value }) }} />
             <Input label="Email" disabled={!isEditing} value={employee?.email} onValueChange={(value) => { setEmployee({ ...employee, email: value }) }} />
             <Select
