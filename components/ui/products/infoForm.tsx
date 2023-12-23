@@ -57,8 +57,6 @@ export default function ProductInfoForm(params: { productId: string }) {
         }
     }
 
-    const upLoadImage = () => { }
-
     return (
         <div className="bg-white p-4 rounded-lg">
             <div>
@@ -80,7 +78,7 @@ export default function ProductInfoForm(params: { productId: string }) {
                                     maxFiles: 1
                                 }}
                                     onSuccess={(result) => {
-                                        setProduct({ ...product, imageUrl: (result.info as { secure_url: string }).secure_url });
+                                        setProduct((prevProduct) => ({ ...prevProduct, imageUrl: (result.info as { secure_url: string }).secure_url }));
                                     }}
                                 >
                                     {({ open }) => {
@@ -107,7 +105,7 @@ export default function ProductInfoForm(params: { productId: string }) {
                         <Input
                             label="Name"
                             placeholder="Name"
-                            value={product.name}
+                            value={product?.name}
                             onValueChange={(value) =>
                                 setProduct({ ...product, name: value })
                             }
