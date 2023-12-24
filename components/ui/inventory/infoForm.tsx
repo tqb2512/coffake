@@ -44,13 +44,13 @@ export default function IngredientInfoForm({ params }: { params: { ingredientId:
     fetch("/api/inventory/" + params.ingredientId)
       .then((res) => res.json())
       .then((data) => setInventory(data));
-  }, []);
+  }, [params.ingredientId]);
 
   useEffect(() => {
     fetch("/api/inventory/" + params.ingredientId + "/getInvoices")
       .then((res) => res.json())
       .then((data) => setInvoices(data));
-  }, []);
+  }, [params.ingredientId]);
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);

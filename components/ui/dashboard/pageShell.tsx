@@ -43,7 +43,7 @@ export default function PageShell() {
             }
         });
         setOrderForList(orderFromTo);
-    }, [dateRange]);
+    }, [orders,dateRange]);
 
     useEffect(() => {
         fetch("/api/shifts?from=" + dateRange.from?.toISOString() + "&to=" + dateRange.to?.toISOString())

@@ -27,13 +27,13 @@ export default function CustomerInfoForm({ params }: { params: { customerId: str
         fetch("/api/customers/" + params.customerId)
             .then((res) => res.json())
             .then((data) => setCustomer(data));
-    }, []);
+    }, [params.customerId]);
 
     useEffect(() => {
         fetch("/api/customers/" + params.customerId + "/getOrders")
             .then((res) => res.json())
             .then((data) => setOrders(data));
-    }, []);
+    }, [params.customerId]);
 
     const handleEditClick = () => {
         setIsEditing(!isEditing);

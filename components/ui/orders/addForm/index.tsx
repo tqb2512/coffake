@@ -72,6 +72,7 @@ export default function OrderAddForm() {
                     <div className="grid grid-cols-3 gap-6 mt-5 mb-10">
                         {products.map((product) => (
                             <ProductCard
+                                key={product.id}
                                 product={product}
                                 order={order}
                                 setOrder={setOrder}
@@ -94,7 +95,9 @@ export default function OrderAddForm() {
                     </TableHeader>
                     <TableBody>
                         {order.items?.map((item, index) => (
-                            <TableRow>
+                            <TableRow
+                                key={item.productName + item.size}
+                            >
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{item.productName}</TableCell>
                                 <TableCell>{item.size}</TableCell>

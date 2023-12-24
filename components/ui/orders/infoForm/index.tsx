@@ -20,7 +20,7 @@ export default function OrderInfoForm({ params }: { params: { orderId: string } 
         fetch(`/api/orders/${params.orderId}`)
             .then((res) => res.json())
             .then((data) => setOrder(data));
-    }, []);
+    }, [params.orderId]);
 
     const handleCompleteOrder = () => {
         fetch(`/api/orders/${params.orderId}`, {

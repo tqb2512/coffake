@@ -29,7 +29,7 @@ export default function CheckOutForm({ params }: { params: { orderId: string } }
         fetch(`/api/orders/${params.orderId}`)
             .then((res) => res.json())
             .then((data) => setOrder(data));
-    }, []);
+    }, [params.orderId]);
 
     const handleSubmit = () => {
         fetch(`/api/orders/${params.orderId}`, {

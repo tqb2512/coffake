@@ -37,7 +37,7 @@ export default function InvoiceInfoForm({ params }: { params: { invoiceId: strin
     fetch(`/api/invoices/${params.invoiceId}`)
       .then((res) => res.json())
       .then((data) => setInvoice(data));
-  }, []);
+  }, [params.invoiceId]);
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();

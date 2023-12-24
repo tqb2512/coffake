@@ -2,7 +2,7 @@
 
 import { Product } from '@prisma/client';
 import React from "react"
-import { Button, Divider, Input, Card, CardHeader, CardBody } from '@nextui-org/react';
+import { Button, Divider, Input, Card, CardHeader, CardBody, Image, CardFooter } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 
 const categoryList = [
@@ -50,15 +50,22 @@ export default function ProductsTable() {
                 <div className="grid grid-cols-4 gap-6 mt-5 mb-10">
                     {products.map((product) => (
                         <Card
+                            className="h-[360px]"
+                            key={product.id}
                             isPressable
                             onPress={() => router.push(`/products/${product.id}`)}>
-                            <CardHeader>
-                                {/* PlaceHolder for image */}
-                                <img src={product.imageUrl} className="rounded-lg" />
-                            </CardHeader>
                             <CardBody>
-                                <h4>{product.name}</h4>
+                                {/* PlaceHolder for image */}
+                                <Image
+                                    removeWrapper
+                                    alt="Relaxing app background"
+                                    className="z-0 w-full h-full object-cover"
+                                    src={product.imageUrl}
+                                />
                             </CardBody>
+                            <CardFooter>
+                                <h4>{product.name}</h4>
+                            </CardFooter>
                         </Card>
                     ))}
                 </div>

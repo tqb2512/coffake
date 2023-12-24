@@ -58,6 +58,7 @@ export default function ProductCard({
                         >
                             {product.sizeList.map((sizeInfo) => (
                                 <Radio
+                                    key={sizeInfo.size}
                                     className="me-0"
                                     value={sizeInfo.size}
                                     onChange={(e) => {

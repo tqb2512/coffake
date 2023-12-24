@@ -62,10 +62,10 @@ export async function DELETE(req: Request) {
 }
 
 
-export async function UPDATE(req: Request) {
-    const { id, name, email, position, salary, username, password, phone } = await req.json();
+export async function PUT(req: Request) {
+    const { id, name, email, position, salary, username, password, phone, imageUrl } = await req.json();
 
-    if (!id || !name || !email || !position || !salary || !username || !password || !phone) {
+    if (!id || !name || !email || !position || !salary || !username || !password || !phone || !imageUrl) {
         return NextResponse.json({ "message": "Missing fields" }, { status: 400 });
     }
 
@@ -80,7 +80,8 @@ export async function UPDATE(req: Request) {
             salary,
             username,
             password,
-            phone
+            phone,
+            imageUrl
         }
     });
 
