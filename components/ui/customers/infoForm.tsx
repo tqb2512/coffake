@@ -6,7 +6,7 @@ import { Customer, Order } from '@prisma/client';
 import { HiDotsVertical } from 'react-icons/hi';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const columns = [
     { name: "Date", uid: "date", sortable: true },
@@ -19,7 +19,7 @@ export default function CustomerInfoForm({ params }: { params: { customerId: str
 
     const router = useRouter();
     const { data: session, status } = useSession()
-    const [customer, setCustomer] = React.useState<Customer>();
+    const [customer, setCustomer] = React.useState<Customer>({} as Customer);
     const [orders, setOrders] = React.useState<Order[]>([]);
     const [isEditing, setIsEditing] = React.useState(false);
 
@@ -37,6 +37,19 @@ export default function CustomerInfoForm({ params }: { params: { customerId: str
 
     const handleEditClick = () => {
         setIsEditing(!isEditing);
+        if (isEditing) {
+            if (customer.name === "" || customer.email === "" || customer.phone === "" || customer.name === undefined || customer.email === undefined || customer.phone === undefined) {
+                alert("Please fill all the fields");
+                return;
+            }
+            fetch(`/api/customers/${params.customerId}`, {
+                method: "PUT",
+                body: JSON.stringify(customer),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
     };
 
     const formatDate = (date: string) => {
@@ -60,10 +73,10 @@ export default function CustomerInfoForm({ params }: { params: { customerId: str
                 <Divider className="my-4" />
 
                 <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
-                    <Input label="Name" value={customer?.name} disabled={!isEditing} />
-                    <Input label="Phone" value={customer?.phone} disabled={!isEditing} />
-                    <Input label="Email" value={customer?.email} disabled={!isEditing} />
-                    <Input label="Loyalty Points" value={customer?.loyaltyPoints.toString()} disabled={!isEditing} />
+                    <Input label="Name" value={customer?.name} disabled={!isEditing} onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, name: value }))} />
+                    <Input label="Phone" value={customer?.phone} disabled={!isEditing} onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, phone: value }))} />
+                    <Input label="Email" value={customer?.email} type="email" disabled={!isEditing} onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, email: value }))} />
+                    <Input label="Loyalty Points" value={customer?.loyaltyPoints?.toString()} type="number" disabled={!isEditing} onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, loyaltyPoints: parseInt(value) }))} />
                 </div>
 
                 <label className="text-violet-800 text-3xl">

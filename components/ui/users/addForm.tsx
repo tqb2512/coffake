@@ -25,6 +25,39 @@ export default function UserAddForm() {
   const [employee, setEmployee] = React.useState({} as Employee);
 
   const handleSubmit = () => {
+    if (employee.name === "" || employee.name === undefined) {
+      alert("Name cannot be empty");
+      return;
+    }
+    if (employee.email === "" || employee.email === undefined) {
+      alert("Email cannot be empty");
+      return;
+    }
+    if (employee.username === "" || employee.username === undefined) {
+      alert("Username cannot be empty");
+      return;
+    }
+    if (employee.password === "" || employee.password === undefined) {
+      alert("Password cannot be empty");
+      return;
+    }
+    if (employee.phone === "" || employee.phone === undefined) {
+      alert("Phone cannot be empty");
+      return;
+    }
+    if (employee.position === "" || employee.position === undefined) {
+      alert("Position cannot be empty");
+      return;
+    }
+    if (employee.salary === undefined) {
+      alert("Salary cannot be empty");
+      return;
+    }
+    if (employee.imageUrl === "" || employee.imageUrl === undefined) {
+      alert("Image cannot be empty");
+      return;
+    }
+
     fetch("/api/users", {
       method: "POST",
       headers: {

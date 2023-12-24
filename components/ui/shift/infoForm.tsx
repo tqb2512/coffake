@@ -29,6 +29,10 @@ export default function ShiftInfoForm({ params }: { params: { shiftId: string } 
             .then((data) => setShift(data));
     }, []);
 
+    const formatDate = (date: string) => {
+        return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
+    }
+
     return (
         <div className="bg-white p-4 rounded-lg">
             <div>
@@ -39,7 +43,7 @@ export default function ShiftInfoForm({ params }: { params: { shiftId: string } 
 
                 <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
                     <div className="flex flex-col gap-2">
-                        <Input label="Date" value={shift?.date?.toString()} disabled />
+                        <Input label="Date" value={formatDate(shift?.date?.toString())} disabled />
                     </div>
                 </div>
 

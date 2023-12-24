@@ -57,7 +57,7 @@ export default function PageShell() {
     }
 
     return (
-        <main>
+        <main className="flex-1 p-4">
             <div className="flex justify-between my-3 mx-5">
                 <h1 className="text-2xl font-bold">Dashboard</h1>
                 <DateRangePicker className="h-full w-full" value={dateRange} onValueChange={(value) => {

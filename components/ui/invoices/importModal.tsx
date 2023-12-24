@@ -36,6 +36,7 @@ export default function InvoiceImportModal({
     e.preventDefault();
     setInvoice({
       ...invoice,
+      total: invoice.total + Number(e.currentTarget.unitPrice?.value),
       importList: [
         ...(invoice.importList || []),
         {

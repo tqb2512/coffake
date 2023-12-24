@@ -6,6 +6,7 @@ import { Table, TableHeader, TableBody, TableCell, TableColumn, TableRow, Dropdo
 import { HiDotsVertical } from 'react-icons/hi';
 import { DatePicker } from '@tremor/react';
 import AddEmployeeModal from './addEmployeeModal';
+import { useRouter } from 'next/navigation';
 
 const columns = [
     { name: "Name", key: "name" },
@@ -16,6 +17,7 @@ const columns = [
 
 export default function AddShiftForm() {
 
+    const router = useRouter();
     const [shift, setShift] = React.useState<Shift>({ date: new Date() } as Shift);
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const [employees, setEmployees] = React.useState<Employee[]>([]);
@@ -34,6 +36,8 @@ export default function AddShiftForm() {
                 'Content-Type': 'application/json'
             }
         })
+            .then(res => res.json())
+            .then(() => router.push('/shifts'))
     }
 
     const handleSubmit = () => {

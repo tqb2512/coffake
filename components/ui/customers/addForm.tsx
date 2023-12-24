@@ -21,6 +21,11 @@ export default function CustomerAddForm() {
 
   const handleSubmit = () => {
 
+    if (!customer.name || !customer.email || !customer.phone || !customer.loyaltyPoints) {
+      alert("Please fill all fields");
+      return;
+    }
+
     fetch("/api/customers", {
       method: "POST",
       headers: {
@@ -29,7 +34,7 @@ export default function CustomerAddForm() {
       body: JSON.stringify(customer),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then(() => router.push("/customers"));
   };
 
   return (
@@ -40,10 +45,10 @@ export default function CustomerAddForm() {
         </label>
 
         <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
-          <Input label="Name" value={customer.name} />
-          <Input label="Email" value={customer.email} />
-          <Input label="Phone" value={customer.phone} />
-          <Input label="Loyalty Points" value={customer.loyaltyPoints?.toString()} />
+          <Input label="Name" value={customer.name} onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, name: value }))} />
+          <Input label="Email" value={customer.email} type="email" onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, email: value }))} />
+          <Input label="Phone" value={customer.phone} onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, phone: value }))} />
+          <Input label="Loyalty Points" value={customer.loyaltyPoints?.toString()} type="number" onValueChange={(value) => setCustomer(prevCustomer => ({ ...prevCustomer, loyaltyPoints: parseInt(value) }))} />
         </div>
 
         <div className="flex justify-end gap-3">

@@ -42,7 +42,7 @@ export default function AddProductModal({ order, setOrder, orderItem, isOpen, se
     setOrder(prevOrder => ({
       ...prevOrder,
       items: [...prevOrder.items || [], item],
-      totalPrice: prevOrder.totalPrice + item.price
+      totalPrice: prevOrder.totalPrice + item.price + selectedToppings.reduce((acc, topping) => acc + topping.sizeList[0].price, 0)
     }))
   }
 
