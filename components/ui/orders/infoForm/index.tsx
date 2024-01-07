@@ -46,6 +46,18 @@ export default function OrderInfoForm({ params }: { params: { orderId: string } 
             .then((data) => setOrder(data));
     }
 
+    const handleConfirmOrder = () => {
+        fetch(`/api/orders/${params.orderId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status: "Confirmed" }),
+        })
+            .then((res) => res.json())
+            .then((data) => setOrder(data));
+    }
+
     const formatDate = (date: string) => {
         return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
     }
@@ -58,6 +70,12 @@ export default function OrderInfoForm({ params }: { params: { orderId: string } 
                     <div className="float-right">
                         <Button className="mr-3" color="danger" onPress={handleCancelOrder}>Cancel Order</Button>
                         <Button className="mr-5" color="success" onClick={handleCompleteOrder}>Complete Order</Button>
+                    </div>
+                )}
+                {order?.status === "Pending" && (
+                    <div className="float-right">
+                        <Button className="mr-3" color="danger" onPress={handleCancelOrder}>Cancel Order</Button>
+                        <Button className="mr-5" color="success" onClick={handleConfirmOrder}>Confirm Order</Button>
                     </div>
                 )}
             </label>

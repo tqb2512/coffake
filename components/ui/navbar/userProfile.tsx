@@ -22,10 +22,11 @@ export default function UserProfile() {
                         className="rounded-full border border-spacing-3 border-black" />
                 </DropdownTrigger>
                 <DropdownMenu>
-                    <DropdownItem>
-                        <Link href="/api/auth/signout" onClick={() => signOut()}>
-                            Sign out
-                        </Link>
+                    <DropdownItem href={`/profile/${session?.user?.name}`}>
+                        Profile
+                    </DropdownItem>
+                    <DropdownItem href="/api/auth/signout" onClick={() => signOut()}>
+                        Sign out
                     </DropdownItem>
                 </DropdownMenu>
             </Dropdown>

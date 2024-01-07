@@ -40,18 +40,18 @@ export default function InventoryAddForm() {
 
         <div className="grid grid-cols-1 gap-6 mt-5 mb-10">
           <Input label="Name" value={ingredient.name} onValueChange={(value) => setIngredient({ ...ingredient, name: value })} />
-          <Input label="Stock" value={ingredient.stock?.toString()} onValueChange={(value) => setIngredient({ ...ingredient, stock: parseInt(value) })} />
+          <Input label="Stock" type="number" value={ingredient.stock?.toString()} onValueChange={(value) => setIngredient({ ...ingredient, stock: parseInt(value) })} />
           <Select
             label="Unit"
             value={ingredient.unit}
             onChange={(e) => setIngredient({ ...ingredient, unit: e.target.value })}
           >
-            <SelectItem key="1" value="Phần">Phần</SelectItem>
-            <SelectItem key="2" value="Chai">Chai</SelectItem>
-            <SelectItem key="3" value="Lon">Lon</SelectItem>
-            <SelectItem key="4" value="Gói">Gói</SelectItem>
-            <SelectItem key="4" value="g">g</SelectItem>
-            <SelectItem key="5" value="ml">ml</SelectItem>
+            <SelectItem key="Phần" value="Phần">Phần</SelectItem>
+            <SelectItem key="Chai" value="Chai">Chai</SelectItem>
+            <SelectItem key="Lon" value="Lon">Lon</SelectItem>
+            <SelectItem key="Gói" value="Gói">Gói</SelectItem>
+            <SelectItem key="g" value="g">g</SelectItem>
+            <SelectItem key="ml" value="ml">ml</SelectItem>
           </Select>
           <Input label="Unit Price" type="number" value={ingredient.unitPrice?.toString()} onValueChange={(value) => setIngredient({ ...ingredient, unitPrice: parseFloat(value) })} endContent="$" />
         </div>

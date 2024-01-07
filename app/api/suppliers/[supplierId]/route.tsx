@@ -2,7 +2,7 @@ import { Supplier, PrismaClient } from "@prisma/client";
 import { withAccelerate } from "@prisma/extension-accelerate"
 import { NextResponse } from "next/server";
 
-const prisma = new PrismaClient().$extends(withAccelerate());;
+const prisma = new PrismaClient()
 
 export async function GET(req: Request) {
     const supplierId = new URL(req.url).pathname.split("/").pop();
@@ -10,8 +10,7 @@ export async function GET(req: Request) {
     const supplier = await prisma.supplier.findFirst({
         where: {
             id: supplierId
-        },
-        cacheStrategy: { ttl: 60 },
+        }
     });
 
     return NextResponse.json(supplier);

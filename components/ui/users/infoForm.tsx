@@ -113,6 +113,7 @@ export default function UserInfoForm({ params, }: { params: { username: string }
             <Input label="Name" disabled={!isEditing} value={employee?.name} onValueChange={(value) => { setEmployee({ ...employee, name: value }) }} />
             <Input label="Email" disabled={!isEditing} value={employee?.email} onValueChange={(value) => { setEmployee({ ...employee, email: value }) }} />
             <Select
+              isDisabled={!isEditing}
               label="Position"
               value={employee.position}
               selectedKeys={[employee.position]}

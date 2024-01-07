@@ -79,6 +79,7 @@ export default function IncomePerDay({ orders }: { orders: Order[] }) {
             <div className="w-full mt-5">
                 <Table
                     aria-label="Table"
+                    shadow="none"
                 >
                     <TableHeader>
                         {columns.map((column) => (
