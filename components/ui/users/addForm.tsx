@@ -86,7 +86,7 @@ export default function UserAddForm() {
                 maxFiles: 1
               }}
                 onSuccess={(result) => {
-                  setEmployee({ ...employee, imageUrl: (result.info as { secure_url: string }).secure_url });
+                  setEmployee(prev => ({ ...prev, imageUrl: (result.info as { secure_url: string }).secure_url }))
                 }}
               >
                 {({ open }) => {

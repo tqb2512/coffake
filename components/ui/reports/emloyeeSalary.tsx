@@ -1,5 +1,5 @@
 import { Employee, Shift } from "@prisma/client";
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Pagination } from "@nextui-org/react";
 import React from "react";
 
 const columns = [
@@ -55,8 +55,10 @@ export default function EmployeeSalary({ shifts, employees }: { shifts: Shift[],
     return (
         <div>
             <h2 className="text-xl font-bold">Employee Salary</h2>
-            <div className="h-60 w-full mt-5">
+            <div className="h-72 w-full mt-5">
                 <Table
+                    className="h-70"
+                    isHeaderSticky
                     aria-label="Employee Salary">
                     <TableHeader>
                         {columns.map((column) => (
