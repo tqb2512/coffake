@@ -83,16 +83,18 @@ export default function IngredientInfoForm({ params }: { params: { ingredientId:
           <Select
             label="Unit"
             onChange={(e) => setInventory({ ...inventory, unit: e.target.value })}
-            disabled={!isEditing}
+            value={inventory?.unit}
+            selectedKeys={[inventory?.unit]}
+            isDisabled={!isEditing}
           >
-            <SelectItem key="1" value="Phần" isReadOnly={!isEditing}>Phần</SelectItem>
-            <SelectItem key="2" value="Chai" isReadOnly={!isEditing}>Chai</SelectItem>
-            <SelectItem key="3" value="Lon" isReadOnly={!isEditing}>Lon</SelectItem>
-            <SelectItem key="4" value="Gói" isReadOnly={!isEditing}>Gói</SelectItem>
-            <SelectItem key="4" value="g" isReadOnly={!isEditing}>g</SelectItem>
-            <SelectItem key="5" value="ml" isReadOnly={!isEditing}>ml</SelectItem>
+            <SelectItem key="Phần" value="Phần" isReadOnly={!isEditing}>Phần</SelectItem>
+            <SelectItem key="Chai" value="Chai" isReadOnly={!isEditing}>Chai</SelectItem>
+            <SelectItem key="Lon" value="Lon" isReadOnly={!isEditing}>Lon</SelectItem>
+            <SelectItem key="Gói" value="Gói" isReadOnly={!isEditing}>Gói</SelectItem>
+            <SelectItem key="g" value="g" isReadOnly={!isEditing}>g</SelectItem>
+            <SelectItem key="ml" value="ml" isReadOnly={!isEditing}>ml</SelectItem>
           </Select>
-          <Input label="Quantity" value={inventory?.stock?.toString()} disabled={!isEditing} onChange={(e) => setInventory({ ...inventory, stock: parseInt(e.target.value) })} />
+          <Input label="Quantity" type="number" value={inventory?.stock?.toString()} disabled={!isEditing} onChange={(e) => setInventory({ ...inventory, stock: parseInt(e.target.value) })}/>
           <Input label="Unit Price" type="number" value={inventory?.unitPrice?.toString()} disabled={!isEditing} endContent="$" onChange={(e) => setInventory({ ...inventory, unitPrice: parseFloat(e.target.value) })} />
         </div>
 

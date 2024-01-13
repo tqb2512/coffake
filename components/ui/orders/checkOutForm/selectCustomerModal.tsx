@@ -48,7 +48,7 @@ export default function SelectCustomerModal({ isOpen, setIsOpen, order }: { isOp
             <ModalContent>
                 <ModalHeader className="flex flex-col gap-1">Select Customer</ModalHeader>
                 <ModalBody>
-                    <Input label="Search" placeholder="Search by" value={searchValue} onValueChange={(value) => setSearchValue(value)} endContent={
+                    <Input placeholder="Search by" value={searchValue} onValueChange={(value) => setSearchValue(value)} endContent={
                         <Dropdown>
                             <DropdownTrigger>
                                 <Button>
@@ -86,7 +86,8 @@ export default function SelectCustomerModal({ isOpen, setIsOpen, order }: { isOp
                                     <TableRow key={customer.id}>
                                         <TableCell>{customer.name}</TableCell>
                                         <TableCell>{customer.phone}</TableCell>
-                                        <TableCell>
+                                        <TableCell className="w-10"
+                                        >
                                             <Button
                                                 onClick={() => {
                                                     toggleModal()

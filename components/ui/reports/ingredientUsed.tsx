@@ -50,8 +50,10 @@ export default function IngredientUsed({ order, products }: { order: Order[], pr
     return (
         <div>
             <h2 className="text-xl font-bold">Ingredient used</h2>
-            <div className="h-60 w-full mt-5">
+            <div className="h-72 w-full mt-5">
                 <Table
+                    className="h-70"
+                    isHeaderSticky
                     aria-label="Ingredient Used"
                 >
                     <TableHeader>

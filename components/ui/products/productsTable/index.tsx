@@ -69,8 +69,6 @@ export default function ProductsTable() {
                         </Card>
                     ))}
                 </div>
-
-
             </div>
         </div>
     );

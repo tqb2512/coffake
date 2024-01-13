@@ -1,7 +1,7 @@
 'use client'
 
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Textarea } from "@nextui-org/react"
-import { Order, Product, OrderItems } from "@prisma/client"
+import { Order, Product, OrderItems, Inventory, ProductSizeList } from "@prisma/client"
 import React from "react"
 
 const columns = [
@@ -10,7 +10,7 @@ const columns = [
   { name: "Action", key: "action" },
 ]
 
-export default function AddProductModal({ order, setOrder, orderItem, isOpen, setIsOpen }: { order: Order, setOrder: React.Dispatch<React.SetStateAction<Order>>, orderItem: OrderItems, isOpen: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+export default function AddProductModal({ order, setOrder, orderItem, isOpen, setIsOpen, inventory }: { order: Order, setOrder: React.Dispatch<React.SetStateAction<Order>>, orderItem: OrderItems, isOpen: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, inventory: Inventory[] }) {
 
   const [products, setProducts] = React.useState<Product[]>([])
   const [selectedToppings, setSelectedToppings] = React.useState([] as Product[])
@@ -23,6 +23,22 @@ export default function AddProductModal({ order, setOrder, orderItem, isOpen, se
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
+  };
+
+  const isSizeAvailable = (sizeInfo: ProductSizeList) => {
+    let isAvailable = false;
+    sizeInfo.recipe.forEach((ingredient) => {
+      inventory.forEach((item) => {
+        if (ingredient.ingredientId === item.id) {
+          if (item.stock >= ingredient.quantity) {
+            isAvailable = true;
+          } else {
+            isAvailable = false;
+          }
+        }
+      });
+    });
+    return isAvailable;
   };
 
 
@@ -69,8 +85,9 @@ export default function AddProductModal({ order, setOrder, orderItem, isOpen, se
                     {products.map((product) => (
                       <TableRow key={product.id}>
                         <TableCell>{product.name}</TableCell>
-                        <TableCell>{product.sizeList[0].price}</TableCell>
+                        <TableCell>${product.sizeList[0].price}</TableCell>
                         <TableCell className="w-10">
+                          {isSizeAvailable(product.sizeList[0]) ? 
                           <Button
                             {...(selectedToppings.includes(product) ? { className: 'text-white bg-violet-800' } : {})}
                             onClick={() => {
@@ -83,6 +100,12 @@ export default function AddProductModal({ order, setOrder, orderItem, isOpen, se
                           >
                             Select
                           </Button>
+                          : <Button
+                            isDisabled
+                            className="text-white bg-red-500 w-10 text-xs"
+                          >
+                            Out of stock
+                          </Button>}
                         </TableCell>
                       </TableRow>
                     ))}

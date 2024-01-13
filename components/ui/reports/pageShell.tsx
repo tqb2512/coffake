@@ -75,14 +75,14 @@ export default function PageShell() {
 
             <Grid numItemsLg={11} className="gap-6 mt-6">
                 <Col numColSpanLg={4}>
-                    <Card className="h-full">
+                    <Card className="h-max">
                         <IngredientUsed order={orderForList} products={products} />
                         <EmployeeSalary shifts={shifts} employees={employees} />
                     </Card>
                 </Col>
 
                 <Col numColSpanLg={4}>
-                    <Card className="h-full">
+                    <Card className="h-max">
                         <ProfitPerDay orders={orderForList} />
                     </Card>
                 </Col>

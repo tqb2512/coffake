@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import { withAccelerate } from "@prisma/extension-accelerate"
 import { compare } from "bcrypt";
 
-const prisma = new PrismaClient().$extends(withAccelerate());
+const prisma = new PrismaClient()
 
 const handler = NextAuth({
 
@@ -20,7 +20,6 @@ const handler = NextAuth({
                     where: {
                         username: credentials?.username,
                     },
-                    cacheStrategy: { ttl: 60 },
                 });
 
                 const correctPassword = await compare(credentials?.password as string, user?.password ?? "");

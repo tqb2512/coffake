@@ -78,9 +78,9 @@ export default function ProfitPerDay({ orders }: { orders: Order[] }) {
     }, [orders]);
 
     return (
-        <div>
+        <div className="h-max">
             <h2 className="text-xl font-bold">Profit per day</h2>
-            <div className="h-60 w-full mt-5">
+            <div className="h-72 w-full mt-5">
                 <LineChart
                     series={[
                         {
@@ -114,8 +114,10 @@ export default function ProfitPerDay({ orders }: { orders: Order[] }) {
                     }]}
                 />
             </div>
-            <div className="h-60 w-full mt-5">
+            <div className="h-72 w-full mt-5 mb-7">
                 <Table
+                    className="h-72"
+                    isHeaderSticky
                     aria-label="Profit Per Day"
                 >
                     <TableHeader>

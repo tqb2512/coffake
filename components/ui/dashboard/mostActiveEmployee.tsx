@@ -43,6 +43,7 @@ export default function MostActiveEmployee({ shifts }: { shifts: Shift[] }) {
             <div className="h-60 w-full mt-5">
                 <Table
                     aria-label="Table"
+                    shadow="none"
                 >
                     <TableHeader>
                         {columns.map((column) => (

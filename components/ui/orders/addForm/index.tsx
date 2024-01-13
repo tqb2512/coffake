@@ -1,6 +1,6 @@
 'use client'
 
-import { Order, Product } from "@prisma/client"
+import { Order, Product, Inventory } from "@prisma/client"
 import React from "react"
 import { useRouter } from "next/navigation"
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Button, CardFooter, Checkbox, CheckboxGroup, RadioGroup, Radio } from "@nextui-org/react"
@@ -17,6 +17,7 @@ export default function OrderAddForm() {
 
     const router = useRouter()
     const [products, setProducts] = React.useState<Product[]>([])
+    const [inventory, setInventory] = React.useState<Inventory[]>([])
     const [selectedProduct, setSelectedProduct] = React.useState({} as Product)
     const [category, setCategory] = React.useState("All")
     const [order, setOrder] = React.useState<Order>(
@@ -34,6 +35,12 @@ export default function OrderAddForm() {
             .then(res => res.json())
             .then(data => setProducts(data))
     }, [category])
+
+    React.useEffect(() => {
+        fetch('/api/inventory')
+            .then(res => res.json())
+            .then(data => setInventory(data))
+    }, [inventory])
 
     const handleSubmit = () => {
         if (order.totalPrice == 0) {
@@ -76,6 +83,7 @@ export default function OrderAddForm() {
                                 product={product}
                                 order={order}
                                 setOrder={setOrder}
+                                inventory={inventory}
                             />
                         ))}
                     </div>
@@ -101,7 +109,7 @@ export default function OrderAddForm() {
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{item.productName}</TableCell>
                                 <TableCell>{item.size}</TableCell>
-                                <TableCell>{
+                                <TableCell>${
                                     item.price + item.toppings?.reduce((total, topping) => total + topping.price, 0)
                                 }</TableCell>
                                 <TableCell className="w-10">
